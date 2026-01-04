@@ -1,0 +1,150 @@
+.app {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+.main-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  position: relative;
+}
+
+.content-area {
+  flex: 1;
+  padding: 0;
+  max-width: 100%;
+}
+
+.dashboard {
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--spacing-lg);
+}
+
+/* Panel Styles */
+.panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  animation: fadeIn 0.5s ease;
+}
+
+.panel:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(0, 243, 255, 0.1);
+}
+
+.panel-header {
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--glass-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.panel-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.panel-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.panel-body {
+  padding: var(--spacing-lg);
+}
+
+/* Grid Positioning */
+.network-overview {
+  grid-column: span 12;
+}
+
+.digital-twin-control {
+  grid-column: span 6;
+}
+
+.multi-agent-rl {
+  grid-column: span 6;
+}
+
+.telemetry-stream {
+  grid-column: span 4;
+}
+
+.experiment-manager {
+  grid-column: span 8;
+}
+
+.performance-analytics {
+  grid-column: span 8;
+}
+
+.system-health {
+  grid-column: span 4;
+}
+
+/* Responsive Design */
+@media (max-width: 1600px) {
+  .dashboard {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  .network-overview {
+    grid-column: span 8;
+  }
+
+  .digital-twin-control,
+  .multi-agent-rl {
+    grid-column: span 4;
+  }
+
+  .telemetry-stream {
+    grid-column: span 3;
+  }
+
+  .experiment-manager {
+    grid-column: span 5;
+  }
+
+  .performance-analytics {
+    grid-column: span 5;
+  }
+
+  .system-health {
+    grid-column: span 3;
+  }
+}
+
+@media (max-width: 1200px) {
+  .dashboard {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .network-overview,
+  .digital-twin-control,
+  .multi-agent-rl,
+  .telemetry-stream,
+  .experiment-manager,
+  .performance-analytics,
+  .system-health {
+    grid-column: span 4;
+  }
+}

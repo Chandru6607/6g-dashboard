@@ -1,0 +1,137 @@
+.control-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.control-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.control-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+}
+
+.toggle-switch input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-slider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 220px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    cursor: pointer;
+    padding: 0 var(--spacing-md);
+    transition: all var(--transition-base);
+}
+
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--color-cyan), var(--color-blue));
+    border-radius: 18px;
+    transition: all var(--transition-base);
+    box-shadow: var(--glow-cyan);
+    left: 4px;
+}
+
+.toggle-switch input[type="checkbox"]:checked+.toggle-slider::before {
+    transform: translateX(112px);
+    background: linear-gradient(135deg, var(--color-success), var(--color-cyan));
+}
+
+.toggle-label-left,
+.toggle-label-right {
+    z-index: 1;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: color var(--transition-base);
+}
+
+.toggle-label-left {
+    color: var(--text-primary);
+}
+
+.toggle-label-right {
+    color: var(--text-tertiary);
+}
+
+.toggle-switch input[type="checkbox"]:checked+.toggle-slider .toggle-label-left {
+    color: var(--text-tertiary);
+}
+
+.toggle-switch input[type="checkbox"]:checked+.toggle-slider .toggle-label-right {
+    color: var(--text-primary);
+}
+
+.progress-bar,
+.confidence-meter {
+    position: relative;
+    width: 100%;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-blue));
+    transition: width var(--transition-base);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+}
+
+.confidence-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-success), var(--color-cyan));
+    transition: width var(--transition-base);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+}
+
+.progress-label,
+.confidence-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    z-index: 1;
+}
+
+.chart-container {
+    margin-top: var(--spacing-lg);
+}
+
+.chart-title {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-md);
+    font-weight: 500;
+}
+
+.badge-info {
+    background: rgba(59, 130, 246, 0.2);
+    color: var(--color-info);
+    border: 1px solid var(--color-info);
+}

@@ -1,0 +1,61 @@
+.agents-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.agent-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    transition: all var(--transition-base);
+}
+
+.agent-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-violet);
+    box-shadow: var(--glow-violet);
+}
+
+.agent-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.agent-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.agent-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+}
+
+.agent-stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.agent-stat .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+}
+
+.agent-stat .stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-violet);
+}
+
+.badge-warning {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--color-warning);
+    border: 1px solid var(--color-warning);
+}

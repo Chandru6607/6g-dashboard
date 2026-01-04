@@ -1,0 +1,58 @@
+import { motion } from 'framer-motion';
+import { NavLink } from 'react-router-dom';
+import './Navigation.css';
+
+const Navigation = () => {
+    const navItems = [
+        { path: '/', label: 'Dashboard', icon: '📊' },
+        { path: '/digital-twin', label: 'Digital Twin', icon: '🌐' },
+        { path: '/analytics', label: 'Analytics', icon: '📈' },
+        { path: '/monitoring', label: 'Monitoring', icon: '👁️' },
+        { path: '/config', label: 'Configuration', icon: '⚙️' },
+    ];
+
+    return (
+        <motion.nav
+            className="navigation"
+            initial={{ x: -300 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            <div className="nav-header">
+                <div className="nav-logo">
+                    <div className="nav-logo-icon"></div>
+                    <span className="nav-logo-text">6G Control</span>
+                </div>
+            </div>
+
+            <div className="nav-items">
+                {navItems.map((item) => (
+                    <NavLink
+                        key={item.path}
+                        to={item.path}
+                        className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                        end={item.path === '/'}
+                    >
+                        <span className="nav-icon">{item.icon}</span>
+                        <span className="nav-label">{item.label}</span>
+                        <div className="nav-indicator"></div>
+                    </NavLink>
+                ))}
+            </div>
+
+            <div className="nav-footer">
+                <div className="user-info">
+                    <div className="user-avatar">
+                        <span>👤</span>
+                    </div>
+                    <div className="user-details">
+                        <span className="user-name">Admin User</span>
+                        <span className="user-role">System Administrator</span>
+                    </div>
+                </div>
+            </div>
+        </motion.nav>
+    );
+};
+
+export default Navigation;
