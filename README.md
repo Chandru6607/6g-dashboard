@@ -6,6 +6,7 @@ Enterprise-grade web dashboard for monitoring and controlling a 6G Communication
 
 - **Frontend**: React 18 + Vite
 - **Backend**: Express.js + Node.js
+- **Standard**: Model Context Protocol (MCP) for Telemetry & Control
 - **Real-time**: Socket.io (WebSocket)
 - **Visualization**: Chart.js with react-chartjs-2
 - **Styling**: CSS with Glassmorphism design
@@ -14,6 +15,7 @@ Enterprise-grade web dashboard for monitoring and controlling a 6G Communication
 
 - 🌐 **Global Network Overview** - Real-time 6G network topology visualization with animated nodes
 - 🤖 **Digital Twin Control** - Sync status, mode toggle, and AI-powered predictive analytics
+- 🧠 **AI-Native (MCP)** - Standardized Model Context Protocol interface for AI agent interaction
 - 🧠 **Multi-Agent RL** - Monitor intelligent agents with reward curves and convergence tracking
 - 📡 **Event-Driven Telemetry** - Live Kafka/MQTT event streaming with severity filtering
 - 🧪 **Experiment Manager** - Configure and control network scenarios and traffic profiles
