@@ -6,53 +6,134 @@ class MCPClientService {
         this.client = null;
         this.transport = null;
         this.isConnected = false;
+        this.connectionPromise = null;
+        this.retryCount = 0;
+        this.maxRetries = 10;
+        this.baseDelay = 1000;
+        this.isManualDisconnect = false;
     }
 
     async connect() {
         if (this.isConnected) return;
+        if (this.connectionPromise) return this.connectionPromise;
 
-        console.log("🔌 Connecting to MCP Backend...");
-        const url = new URL("http://localhost:5000/mcp");
-        this.transport = new SSEClientTransport(url);
+        this.connectionPromise = (async () => {
+            console.log(`🔌 [MCP] Connecting to Backend (Attempt ${this.retryCount + 1})...`);
+            this.isManualDisconnect = false; // Reset flag on new connection attempt
 
-        this.client = new Client({
-            name: "6G-Dashboard-Web-Client",
-            version: "1.0.0",
-        }, {
-            capabilities: {
-                resources: {},
-                tools: {},
+            try {
+                const url = new URL("http://localhost:5000/mcp");
+                this.transport = new SSEClientTransport(url);
+
+                this.client = new Client({
+                    name: "6G-Dashboard-Web-Client",
+                    version: "1.0.0",
+                }, {
+                    capabilities: {
+                        resources: {},
+                        tools: {},
+                    }
+                });
+
+                await this.client.connect(this.transport);
+                this.isConnected = true;
+                this.retryCount = 0;
+                this.connectionPromise = null;
+                console.log("✅ [MCP] Backend Connected Successfully");
+
+                this.transport.onclose = () => {
+                    if (this.isManualDisconnect) {
+                        console.log("🔒 [MCP] Clean disconnect completed.");
+                        return;
+                    }
+                    console.warn("⚠️ [MCP] Connection Lost. Attempting reconnection...");
+                    this.isConnected = false;
+                    this.connect();
+                };
+
+            } catch (error) {
+                this.isConnected = false;
+                this.connectionPromise = null;
+                this.retryCount++;
+
+                if (this.retryCount < this.maxRetries) {
+                    const delay = Math.min(this.baseDelay * Math.pow(2, this.retryCount), 30000);
+                    console.error(`❌ [MCP] Connection Error. Retrying in ${delay}ms...`, error.message);
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    return this.connect();
+                } else {
+                    console.error("🔥 [MCP] Max connection retries reached. Please check the backend.");
+                    throw error;
+                }
             }
-        });
+        })();
 
-        await this.client.connect(this.transport);
-        this.isConnected = true;
-        console.log("✅ MCP Backend Connected");
+        return this.connectionPromise;
+    }
+
+    async disconnect() {
+        if (!this.isConnected) return;
+
+        console.log("🔌 [MCP] Disconnecting...");
+        this.isManualDisconnect = true; // Set flag before closing
+        try {
+            if (this.transport) {
+                await this.transport.close();
+            }
+            this.client = null;
+            this.transport = null;
+            this.isConnected = false;
+            console.log("✅ [MCP] Disconnected Successfully");
+        } catch (error) {
+            console.error("❌ [MCP] Disconnect Error:", error.message);
+        } finally {
+            // Optional: reset flag after some time if needed, but for now leave it true 
+            // until next connect() which resets everything via state logic if we wanted.
+            // Actually, connect() logic doesn't explicitly reset this flag but since it
+            // creates a new transport/client, we should ensure next connect resets it
+            // or we reset it here if we want to allow immediate reconnects.
+        }
+    }
+
+    async ensureConnected() {
+        if (!this.isConnected) {
+            await this.connect();
+        }
     }
 
     async callTool(name, args = {}) {
-        if (!this.isConnected) await this.connect();
+        await this.ensureConnected();
 
         try {
             const result = await this.client.callTool({
                 name,
                 arguments: args,
             });
+
+            if (!result || !result.content || !result.content[0]) {
+                throw new Error("Invalid tool response");
+            }
+
             return JSON.parse(result.content[0].text);
         } catch (error) {
-            console.error(`❌ MCP Tool Error (${name}):`, error);
+            console.error(`❌ [MCP] Tool Error (${name}):`, error.message);
             throw error;
         }
     }
 
     async readResource(uri) {
-        if (!this.isConnected) await this.connect();
+        await this.ensureConnected();
 
         try {
             const result = await this.client.readResource({ uri });
+
+            if (!result || !result.contents || !result.contents[0]) {
+                throw new Error("Invalid resource response");
+            }
+
             return JSON.parse(result.contents[0].text);
         } catch (error) {
-            console.error(`❌ MCP Resource Error (${uri}):`, error);
+            console.error(`❌ [MCP] Resource Error (${uri}):`, error.message);
             throw error;
         }
     }

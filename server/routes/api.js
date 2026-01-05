@@ -99,4 +99,32 @@ router.get('/health', (req, res) => {
     });
 });
 
+// System Autoconfig
+router.post('/system/autoconfig', (req, res) => {
+    console.log('🔧 [System] Auto-configuration triggered');
+
+    // In a real scenario, this might involve resetting agents, clearing queues, etc.
+    // For this demo, we'll simulate a successful configuration and ensure generators are fresh.
+
+    res.json({
+        success: true,
+        message: 'System auto-configuration complete',
+        status: 'OPERATIONAL',
+        timestamp: new Date().toISOString(),
+    });
+});
+
+// System Disconnect
+router.post('/system/disconnect', (req, res) => {
+    console.log('🔌 [System] Disconnect triggered');
+
+    // Simulate cleanup and status update
+    res.json({
+        success: true,
+        message: 'System disconnected',
+        status: 'DISCONNECTED',
+        timestamp: new Date().toISOString(),
+    });
+});
+
 export default router;

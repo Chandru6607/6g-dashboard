@@ -1,0 +1,140 @@
+.connected-servers {
+    margin-top: 1.5rem;
+}
+
+.connection-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.summary-label {
+    color: var(--text-tertiary);
+}
+
+.summary-value {
+    color: var(--color-cyan);
+    font-weight: 700;
+}
+
+.server-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.server-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.server-card:hover {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(96, 165, 250, 0.2);
+    transform: translateX(4px);
+}
+
+.server-card.connected {
+    border-left: 4px solid var(--color-success);
+}
+
+.server-card.disconnected {
+    border-left: 4px solid var(--color-danger);
+    opacity: 0.7;
+}
+
+.server-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.server-main {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.server-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.server-type {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.server-endpoint {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+}
+
+.server-status {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.connected .status-indicator {
+    background: var(--color-success);
+    box-shadow: 0 0 10px var(--color-success);
+}
+
+.disconnected .status-indicator {
+    background: var(--color-danger);
+}
+
+.status-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.connected .status-text {
+    color: var(--color-success);
+}
+
+.disconnected .status-text {
+    color: var(--color-danger);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite ease-in-out;
+}

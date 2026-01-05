@@ -21,9 +21,13 @@ const io = new Server(httpServer, {
 const PORT = process.env.PORT || 5000;
 
 // Middleware & MCP
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://localhost:5173'],
+    methods: ['GET', 'POST'],
+    credentials: true
+}));
 
-// Initialize MCP Server (before body parsers to handle stream if needed)
+// Initialize MCP Server (before body parsers to handle stream correctly)
 attachMCPServer(app);
 
 app.use(express.json());

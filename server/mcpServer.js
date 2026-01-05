@@ -28,7 +28,7 @@ const server = new Server(
     }
 );
 
-// Define Resources - same as before
+// Define Resources
 server.setRequestHandler(ListResourcesRequestSchema, async () => {
     return {
         resources: [
@@ -68,7 +68,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
     throw new Error(`Resource not found: ${uri}`);
 });
 
-// Define Tools - same as before
+// Define Tools
 server.setRequestHandler(ListToolsRequestSchema, async () => {
     return {
         tools: [
@@ -102,21 +102,16 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
     if (name === "get_network_info") {
-        return { content: [{ type: "text", text: JSON.stringify({ topology: generateNetworkTopology(), metrics: generateNetworkMetrics() }, null, 2) }] };
+        return { content: [{ type: "text", text: JSON.stringify({ topology: generateNetworkTopology(), metrics: generateNetworkMetrics() }) }] };
     }
     if (name === "get_analytics") {
-        return { content: [{ type: "text", text: JSON.stringify({ predictive: generatePredictiveData(), analytics: generateAnalyticsData() }, null, 2) }] };
+        return { content: [{ type: "text", text: JSON.stringify({ predictive: generatePredictiveData(), analytics: generateAnalyticsData() }) }] };
     }
     if (name === "control_experiment") {
         const { action, scenario, duration } = args ?? {};
-        if (action === "start") {
-            const id = `exp-${Date.now()}`;
-            console.log(`🧪 [MCP] Starting experiment: ${scenario}, duration: ${duration}s`);
-            return { content: [{ type: "text", text: `Experiment ${id} started for scenario: ${scenario}` }] };
-        } else {
-            console.log('⏹️ [MCP] Stopping experiment');
-            return { content: [{ type: "text", text: "Experiment stopped successfully" }] };
-        }
+        const success = true;
+        const msg = action === "start" ? `Experiment started for ${scenario}` : "Experiment stopped";
+        return { content: [{ type: "text", text: JSON.stringify({ success, message: msg }) }] };
     }
     throw new Error(`Tool not found: ${name}`);
 });
@@ -126,20 +121,23 @@ const transports = new Map();
 
 export function attachMCPServer(app) {
     app.get("/mcp", async (req, res) => {
-        console.log("🔌 New MCP SSE connection attempt");
+        console.log("🔌 [MCP] New connection request");
         const transport = new SSEServerTransport("/mcp/messages", res);
 
-        // The transport generates a sessionId after connect
-        await server.connect(transport);
+        try {
+            await server.connect(transport);
+            if (transport.sessionId) {
+                transports.set(transport.sessionId, transport);
+                console.log(`✅ [MCP] Session ${transport.sessionId} opened`);
 
-        if (transport.sessionId) {
-            transports.set(transport.sessionId, transport);
-            console.log(`✅ MCP Session created: ${transport.sessionId}`);
-
-            res.on('close', () => {
-                console.log(`❌ MCP Session closed: ${transport.sessionId}`);
-                transports.delete(transport.sessionId);
-            });
+                res.on('close', () => {
+                    console.log(`❌ [MCP] Session ${transport.sessionId} closed`);
+                    transports.delete(transport.sessionId);
+                });
+            }
+        } catch (err) {
+            console.error("❌ [MCP] Setup error:", err.message);
+            if (!res.headersSent) res.status(500).send("MCP Error");
         }
     });
 
@@ -149,18 +147,15 @@ export function attachMCPServer(app) {
 
         if (transport) {
             try {
-                // If body is already parsed by express.json(), handlePostMessage should still work
-                // but let's see if we need to pass the body explicitly or if req is enough.
                 await transport.handlePostMessage(req, res);
             } catch (err) {
-                console.error("❌ MCP Error handling message:", err);
-                res.status(500).send(err.message);
+                console.error(`❌ [MCP] Message error (${sessionId}):`, err.message);
+                if (!res.headersSent) res.status(500).send("Message Error");
             }
         } else {
-            console.warn(`⚠️ No active MCP transport for session: ${sessionId}`);
-            res.status(400).send("No active MCP transport for this session");
+            res.status(400).send("Session not found");
         }
     });
 
-    console.log("✅ MCP Server mounted at /mcp");
+    console.log("✅ MCP Standard active at /mcp");
 }

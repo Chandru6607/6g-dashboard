@@ -167,16 +167,26 @@ const NetworkScene = ({ topology, onNodeClick }) => {
 // Main Page Component
 const DigitalTwinPage = () => {
     const [topology, setTopology] = useState(null);
+    const [metrics, setMetrics] = useState(null);
     const [selectedNode, setSelectedNode] = useState(null);
     const [viewMode, setViewMode] = useState('3d');
-    const metrics = useSocket('network:metrics');
 
     useEffect(() => {
-        apiService.getNetworkStatus().then((data) => {
-            if (data.topology) {
-                setTopology(data.topology);
+        const fetchData = async () => {
+            try {
+                const data = await apiService.getNetworkStatus();
+                if (data.topology) setTopology(data.topology);
+                if (data.metrics) setMetrics(data.metrics);
+                console.log('✅ [MCP] Data synced:', data);
+            } catch (error) {
+                console.error('❌ [MCP] Fetch failed:', error);
             }
-        });
+        };
+
+        fetchData();
+        const interval = setInterval(fetchData, 3000); // Poll every 3 seconds
+
+        return () => clearInterval(interval);
     }, []);
 
     const handleNodeClick = (node) => {

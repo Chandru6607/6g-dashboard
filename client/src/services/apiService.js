@@ -69,6 +69,23 @@ class ApiService {
         // Mapping scenario selection to a tool if needed
         return { success: true, scenarioId };
     }
+
+    // System endpoints
+    async autoConfigure() {
+        const response = await fetch('http://localhost:5000/api/system/autoconfig', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        return await response.json();
+    }
+
+    async disconnectSystem() {
+        const response = await fetch('http://localhost:5000/api/system/disconnect', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        return await response.json();
+    }
 }
 
 export default new ApiService();

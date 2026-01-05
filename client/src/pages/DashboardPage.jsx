@@ -1,5 +1,6 @@
 import NetworkOverview from '../components/NetworkOverview';
 import SystemHealth from '../components/SystemHealth';
+import ConnectedServers from '../components/ConnectedServers';
 import { motion } from 'framer-motion';
 import '../App.css';
 
@@ -13,6 +14,7 @@ const DashboardPage = () => {
         >
             <div className="network-overview" style={{ gridColumn: 'span 12' }}>
                 <NetworkOverview />
+                <ConnectedServers />
             </div>
             <div className="system-health" style={{ gridColumn: 'span 12' }}>
                 <SystemHealth />

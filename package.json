@@ -3,15 +3,23 @@
   "version": "1.0.0",
   "description": "Multi-Agent Digital Twin Ecosystem for 6G Communication Networks",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "predev": "node scripts/cleanup.js",
     "client:dev": "cd client && npm run dev",
     "server:dev": "cd server && npm run dev",
     "build": "cd client && npm run build",
     "start": "cd server && npm start",
     "install:all": "npm install && cd client && npm install && cd ../server && npm install"
   },
-  "keywords": ["6g", "digital-twin", "telecom", "multi-agent", "reinforcement-learning"],
+  "keywords": [
+    "6g",
+    "digital-twin",
+    "telecom",
+    "multi-agent",
+    "reinforcement-learning"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {

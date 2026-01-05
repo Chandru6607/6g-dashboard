@@ -5,16 +5,24 @@ import './NetworkOverview.css';
 
 const NetworkOverview = () => {
     const canvasRef = useRef(null);
-    const metrics = useSocket('network:metrics');
     const [topology, setTopology] = useState(null);
+    const [metrics, setMetrics] = useState(null);
 
     useEffect(() => {
-        // Load initial topology
-        apiService.getNetworkStatus().then((data) => {
-            if (data.topology) {
-                setTopology(data.topology);
+        const fetchData = async () => {
+            try {
+                const data = await apiService.getNetworkStatus();
+                if (data.topology) setTopology(data.topology);
+                if (data.metrics) setMetrics(data.metrics);
+            } catch (error) {
+                console.error('❌ [MCP] NetworkOverview fetch failed:', error);
             }
-        });
+        };
+
+        fetchData();
+        const interval = setInterval(fetchData, 3000); // Poll every 3 seconds
+
+        return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
