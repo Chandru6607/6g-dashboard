@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Html } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
@@ -91,34 +91,73 @@ const ConnectionLine = ({ start, end }) => {
     );
 };
 
-// Main 3D Scene
-const NetworkScene = ({ topology, onNodeClick, viewMode }) => {
-    const controlsRef = useRef();
+// Camera Controller for smooth transitions
+const CameraController = ({ viewMode }) => {
+    const { camera, controls } = useThree();
 
     useEffect(() => {
-        if (controlsRef.current) {
-            const { object: camera } = controlsRef.current;
+        if (!camera || !controls) return;
 
-            // Set camera position based on view mode
-            switch (viewMode) {
-                case 'top':
-                    camera.position.set(0, 15, 0);
-                    break;
-                case 'side':
-                    camera.position.set(15, 0, 0);
-                    break;
-                case '3d':
-                default:
-                    camera.position.set(10, 10, 10);
-                    break;
-            }
+        let targetPos = [10, 10, 10];
+        let targetLookAt = [0, 0, 0];
 
-            // Reset orbit controls target to center
-            controlsRef.current.target.set(0, 0, 0);
-            controlsRef.current.update();
+        switch (viewMode) {
+            case 'top':
+                targetPos = [0, 20, 0];
+                break;
+            case 'side':
+                targetPos = [20, 0, 0];
+                break;
+            case '3d':
+            default:
+                targetPos = [12, 12, 12];
+                break;
         }
-    }, [viewMode]);
 
+        // Use framer-motion's animate function if possible, but for Three.js 
+        // simple interpolation or manual tween is often better.
+        // We will use a simple object to animate and update camera in each frame.
+        const duration = 1000;
+        const startPos = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+        const startTime = Date.now();
+
+        const animate = () => {
+            const now = Date.now();
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Cubic easing
+            const t = progress < 0.5
+                ? 4 * progress * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+            camera.position.set(
+                startPos.x + (targetPos[0] - startPos.x) * t,
+                startPos.y + (targetPos[1] - startPos.y) * t,
+                startPos.z + (targetPos[2] - startPos.z) * t
+            );
+
+            controls.target.set(
+                0 * (1 - t) + targetLookAt[0] * t,
+                0 * (1 - t) + targetLookAt[1] * t,
+                0 * (1 - t) + targetLookAt[2] * t
+            );
+
+            controls.update();
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        };
+
+        animate();
+    }, [viewMode, camera, controls]);
+
+    return null;
+};
+
+// Main 3D Scene
+const NetworkScene = ({ topology, onNodeClick, viewMode }) => {
     if (!topology) return null;
 
     // Stable 3D conversion (Deterministic height based on node type)
@@ -131,15 +170,16 @@ const NetworkScene = ({ topology, onNodeClick, viewMode }) => {
 
     return (
         <>
-            <PerspectiveCamera makeDefault position={[10, 10, 10]} />
+            <PerspectiveCamera makeDefault position={[12, 12, 12]} />
             <OrbitControls
-                ref={controlsRef}
                 enablePan
                 enableZoom
                 enableRotate
                 minDistance={3}
-                maxDistance={30}
+                maxDistance={40}
+                makeDefault
             />
+            <CameraController viewMode={viewMode} />
 
             {/* Lighting */}
             <ambientLight intensity={0.5} />
