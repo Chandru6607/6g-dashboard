@@ -13,6 +13,7 @@ import ConfigPage from './pages/ConfigPage';
 import DocsPage from './pages/DocsPage';
 import ApiRefPage from './pages/ApiRefPage';
 import SupportPage from './pages/SupportPage';
+import ComparisonPage from './pages/ComparisonPage';
 import Footer from './components/Footer';
 import './styles/global.css';
 import './App.css';
@@ -75,6 +76,7 @@ function App() {
                 <Route path="/analytics" element={<AnalyticsPage />} />
                 <Route path="/monitoring" element={<MonitoringPage />} />
                 <Route path="/config" element={<ConfigPage />} />
+                <Route path="/comparison" element={<ComparisonPage />} />
                 <Route path="/docs" element={<DocsPage />} />
                 <Route path="/api-ref" element={<ApiRefPage />} />
                 <Route path="/support" element={<SupportPage />} />

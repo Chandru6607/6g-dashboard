@@ -10,6 +10,7 @@ const Navigation = ({ isOpen }) => {
         { path: '/analytics', label: 'Analytics', icon: '📈' },
         { path: '/monitoring', label: 'Monitoring', icon: '👁️' },
         { path: '/config', label: 'Configuration', icon: '⚙️' },
+        { path: '/comparison', label: '5G vs 6G', icon: '⚖️' },
         { path: '/docs', label: 'Documentation', icon: '📝' },
         { path: '/api-ref', label: 'API Reference', icon: '💻' },
         { path: '/support', label: 'Support', icon: '🤝' },
