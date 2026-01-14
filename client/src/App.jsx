@@ -19,6 +19,11 @@ import './App.css';
 
 function App() {
   const [connected, setConnected] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(prev => !prev);
+  };
 
   useEffect(() => {
     // Initialize WebSocket connection
@@ -49,9 +54,13 @@ function App() {
     <ErrorBoundary>
       <Router>
         <div className="app">
-          <Navigation />
+          <Navigation isOpen={isSidebarOpen} />
           <div className="main-layout">
-            <Header connected={connected} />
+            <Header
+              connected={connected}
+              isSidebarOpen={isSidebarOpen}
+              onToggleSidebar={toggleSidebar}
+            />
 
             <div className="content-area">
               <Routes>

@@ -15,8 +15,11 @@ const io = new Server(httpServer, {
     cors: {
         origin: ['http://localhost:3000', 'http://localhost:5173'],
         methods: ['GET', 'POST'],
-    },
+        credentials: true
+    }
 });
+
+app.set('io', io);
 
 const PORT = process.env.PORT || 5000;
 

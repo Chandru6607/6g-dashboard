@@ -5,7 +5,12 @@ class ApiService {
     // Network endpoints
     async getNetworkStatus() {
         // Use MCP Tool for composite data
-        return await mcpClient.callTool('get_network_info');
+        try {
+            return await mcpClient.callTool('get_network_info');
+        } catch (error) {
+            console.error("Failed to fetch network status:", error);
+            return null;
+        }
     }
 
     // Agent endpoints

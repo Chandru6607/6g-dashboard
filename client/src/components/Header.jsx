@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import apiService from '../services/apiService';
 import { mcpClient } from '../services/mcpClient';
 import socketService from '../services/socketService';
+import logo from '../assets/logo.png';
 import './Header.css';
 
-const Header = ({ connected }) => {
+const Header = ({ connected, isSidebarOpen, onToggleSidebar }) => {
     const [currentTime, setCurrentTime] = useState(new Date());
     const [activeAgents, setActiveAgents] = useState(3);
     const [isConfiguring, setIsConfiguring] = useState(false);
@@ -61,7 +62,10 @@ const Header = ({ connected }) => {
         <header className="header">
             <div className="header-content">
                 <div className="logo-section">
-                    <div className="logo-icon"></div>
+                    <button className="menu-toggle-btn" onClick={onToggleSidebar}>
+                        {isSidebarOpen ? '◀' : '▶'}
+                    </button>
+                    <img src={logo} alt="6G Dashboard" className="header-logo-image" />
                     <div>
                         <h1 className="logo-title">6G Digital Twin Command Center</h1>
                         <p className="logo-subtitle">Multi-Agent Reinforcement Learning Platform</p>

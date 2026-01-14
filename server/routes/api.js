@@ -99,29 +99,56 @@ router.get('/health', (req, res) => {
     });
 });
 
-// System Autoconfig
+// Simulation State
+let simulationInterval = null;
+
+// System Autoconfig (Start Simulation)
 router.post('/system/autoconfig', (req, res) => {
     console.log('🔧 [System] Auto-configuration triggered');
 
-    // In a real scenario, this might involve resetting agents, clearing queues, etc.
-    // For this demo, we'll simulate a successful configuration and ensure generators are fresh.
+    const io = req.app.get('io');
+
+    // Clear existing interval if any
+    if (simulationInterval) {
+        clearInterval(simulationInterval);
+    }
+
+    // Start Real-Time Simulation Loop
+    simulationInterval = setInterval(() => {
+        const updateData = {
+            timestamp: new Date().toISOString(),
+            topology: generateNetworkTopology(),
+            metrics: generateNetworkMetrics(),
+            agents: generateAgentStates(),
+            analytics: generateAnalyticsData()
+        };
+
+        io.emit('network-update', updateData);
+        // console.log('📡 [Simulation] Emitted network-update');
+    }, 1000); // 1 second heartbeat
 
     res.json({
         success: true,
-        message: 'System auto-configuration complete',
+        message: 'System auto-configuration complete & Simulation Started',
         status: 'OPERATIONAL',
         timestamp: new Date().toISOString(),
     });
 });
 
-// System Disconnect
+// System Disconnect (Stop Simulation)
 router.post('/system/disconnect', (req, res) => {
     console.log('🔌 [System] Disconnect triggered');
 
-    // Simulate cleanup and status update
+    // Stop Simulation
+    if (simulationInterval) {
+        clearInterval(simulationInterval);
+        simulationInterval = null;
+        console.log('🛑 [Simulation] Stopped');
+    }
+
     res.json({
         success: true,
-        message: 'System disconnected',
+        message: 'System disconnected & Simulation Stopped',
         status: 'DISCONNECTED',
         timestamp: new Date().toISOString(),
     });

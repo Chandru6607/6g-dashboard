@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
+import logo from '../assets/logo.png';
 import './Navigation.css';
 
-const Navigation = () => {
+const Navigation = ({ isOpen }) => {
     const navItems = [
         { path: '/', label: 'Dashboard', icon: '📊' },
         { path: '/digital-twin', label: 'Digital Twin', icon: '🌐' },
@@ -16,14 +17,14 @@ const Navigation = () => {
 
     return (
         <motion.nav
-            className="navigation"
+            className={`navigation ${!isOpen ? 'collapsed' : ''}`}
             initial={{ x: -300 }}
             animate={{ x: 0 }}
             transition={{ duration: 0.5 }}
         >
             <div className="nav-header">
                 <div className="nav-logo">
-                    <div className="nav-logo-icon"></div>
+                    <img src={logo} alt="6G Control" className="nav-logo-image" />
                     <span className="nav-logo-text">6G Control</span>
                 </div>
             </div>

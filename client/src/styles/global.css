@@ -1,57 +1,60 @@
 /* ===========================
    6G Digital Twin Dashboard
-   Enterprise-Grade Styling
+   Nvidia-Style Premium Theme
    =========================== */
 
 /* CSS Variables - Design System */
 :root {
-    /* Colors - Dark Theme */
-    --bg-primary: #0a0e27;
-    --bg-secondary: #131829;
-    --bg-tertiary: #1a1f3a;
+    /* Brand Colors */
+    --nvidia-green: #76b900;
+    --nvidia-green-hover: #8cd600;
+    --bg-dark: #000000;
+    --bg-card: #141414;
+    /* Slightly lighter than pure black */
+    --bg-hover: #1f1f1f;
 
-    /* Glassmorphism */
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
-
-    /* Neon Accents */
-    --color-cyan: #00f3ff;
-    --color-blue: #0066ff;
-    --color-violet: #8b5cf6;
-    --color-success: #10b981;
-    --color-warning: #f59e0b;
-    --color-danger: #ef4444;
-    --color-info: #3b82f6;
-
-    /* Text */
+    /* Text Colors */
     --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.7);
-    --text-tertiary: rgba(255, 255, 255, 0.5);
+    --text-secondary: #a1a1a1;
+    --text-accent: var(--nvidia-green);
 
-    /* Shadows & Glows */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
-    --glow-cyan: 0 0 20px rgba(0, 243, 255, 0.3);
-    --glow-blue: 0 0 20px rgba(0, 102, 255, 0.3);
-    --glow-violet: 0 0 20px rgba(139, 92, 246, 0.3);
+    /* Semantic Colors */
+    --color-success: #76b900;
+    --color-warning: #ffd700;
+    --color-error: #ff4444;
+    --color-info: #00f3ff;
 
-    /* Spacing */
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 0.75rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
+    /* Layout & Spacing */
+    --header-height: 70px;
+    --sidebar-width-expanded: 260px;
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
 
-    /* Border Radius */
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 16px;
+    /* Effects */
+    --radius-sm: 2px;
+    /* Sharp, tech feel */
+    --radius-md: 4px;
+    --radius-lg: 8px;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.9);
+
+    /* Glows */
+    --glow-green: 0 0 20px rgba(118, 185, 0, 0.3);
 
     /* Transitions */
-    --transition-fast: 150ms ease;
-    --transition-base: 300ms ease;
-    --transition-slow: 500ms ease;
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+
+    /* Legacy variable mappings (for compatibility) */
+    --bg-primary: var(--bg-dark);
+    --bg-secondary: var(--bg-card);
+    --color-cyan: var(--nvidia-green);
+    --glass-bg: rgba(20, 20, 20, 0.95);
+    --glass-border: #333;
 }
 
 /* Reset & Base Styles */
@@ -62,12 +65,35 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-dark);
     color: var(--text-primary);
-    line-height: 1.6;
+    line-height: 1.5;
     overflow-x: hidden;
     min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom: 0.5em;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+
+a {
+    color: var(--nvidia-green);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--nvidia-green-hover);
 }
 
 /* Scrollbar Styling */
@@ -77,41 +103,30 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--bg-dark);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--color-cyan);
+    background: #333;
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-blue);
+    background: var(--nvidia-green);
 }
 
-/* Animations */
-@keyframes pulse {
-
-    0%,
-    100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.6;
-    }
+/* Utilities */
+.text-accent {
+    color: var(--nvidia-green);
 }
 
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
+.bg-dark {
+    background-color: var(--bg-dark);
+}
 
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
 }
 
 @keyframes fadeIn {
@@ -122,28 +137,4 @@ body {
     to {
         opacity: 1;
     }
-}
-
-@keyframes glow {
-
-    0%,
-    100% {
-        box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
-    }
-
-    50% {
-        box-shadow: 0 0 30px rgba(0, 243, 255, 0.6);
-    }
-}
-
-.pulse {
-    animation: pulse 2s infinite;
-}
-
-.slide-in {
-    animation: slideIn 0.3s ease;
-}
-
-.fade-in {
-    animation: fadeIn 0.5s ease;
 }
