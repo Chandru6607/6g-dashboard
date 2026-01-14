@@ -92,42 +92,70 @@ const ConnectionLine = ({ start, end }) => {
 };
 
 // Main 3D Scene
-const NetworkScene = ({ topology, onNodeClick }) => {
+const NetworkScene = ({ topology, onNodeClick, viewMode }) => {
+    const controlsRef = useRef();
+
+    useEffect(() => {
+        if (controlsRef.current) {
+            const { object: camera } = controlsRef.current;
+
+            // Set camera position based on view mode
+            switch (viewMode) {
+                case 'top':
+                    camera.position.set(0, 15, 0);
+                    break;
+                case 'side':
+                    camera.position.set(15, 0, 0);
+                    break;
+                case '3d':
+                default:
+                    camera.position.set(10, 10, 10);
+                    break;
+            }
+
+            // Reset orbit controls target to center
+            controlsRef.current.target.set(0, 0, 0);
+            controlsRef.current.update();
+        }
+    }, [viewMode]);
+
     if (!topology) return null;
 
-    // Convert 2D positions to 3D (spread out in 3D space)
-    const convert3D = (node) => {
-        const x = (node.x - 400) / 100;
-        const y = Math.random() * 2 - 1;
-        const z = (node.y - 200) / 100;
+    // Stable 3D conversion (Deterministic height based on node type)
+    const convert3D = (node, type) => {
+        const x = (node.x - 400) / 80;
+        const y = type === 'gNB' ? 1.5 : -1.5; // gNB above, UE below
+        const z = (node.y - 200) / 80;
         return [x, y, z];
     };
 
     return (
         <>
-            <PerspectiveCamera makeDefault position={[0, 5, 10]} />
+            <PerspectiveCamera makeDefault position={[10, 10, 10]} />
             <OrbitControls
+                ref={controlsRef}
                 enablePan
                 enableZoom
                 enableRotate
                 minDistance={3}
-                maxDistance={20}
+                maxDistance={30}
             />
 
             {/* Lighting */}
-            <ambientLight intensity={0.3} />
-            <pointLight position={[10, 10, 10]} intensity={1} />
-            <pointLight position={[-10, -10, -10]} intensity={0.5} color="#00f3ff" />
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} intensity={1.5} />
+            <pointLight position={[-10, -10, -10]} intensity={0.8} color="#00f3ff" />
 
-            {/* Grid Helper */}
-            <gridHelper args={[20, 20, '#00f3ff', '#1a1f3a']} />
+            {/* Helper Tools */}
+            <gridHelper args={[30, 30, '#00f3ff', '#1a1f3a']} />
+            <axesHelper args={[10]} />
 
             {/* Render gNBs */}
             {topology.gNBs.map((gnb) => (
                 <NetworkNode
                     key={gnb.id}
                     id={gnb.id}
-                    position={convert3D(gnb)}
+                    position={convert3D(gnb, 'gNB')}
                     type="gNB"
                     status={gnb.status}
                     onClick={onNodeClick}
@@ -139,7 +167,7 @@ const NetworkScene = ({ topology, onNodeClick }) => {
                 <NetworkNode
                     key={ue.id}
                     id={ue.id}
-                    position={convert3D(ue)}
+                    position={convert3D(ue, 'UE')}
                     type="UE"
                     status={ue.status}
                     onClick={onNodeClick}
@@ -153,8 +181,8 @@ const NetworkScene = ({ topology, onNodeClick }) => {
                     return (
                         <ConnectionLine
                             key={`${ue.id}-${connectedGnb.id}`}
-                            start={convert3D(ue)}
-                            end={convert3D(connectedGnb)}
+                            start={convert3D(ue, 'UE')}
+                            end={convert3D(connectedGnb, 'gNB')}
                         />
                     );
                 }
@@ -235,7 +263,11 @@ const DigitalTwinPage = () => {
             <div className="twin-container">
                 <div className="canvas-wrapper">
                     <Canvas>
-                        <NetworkScene topology={topology} onNodeClick={handleNodeClick} />
+                        <NetworkScene
+                            topology={topology}
+                            onNodeClick={handleNodeClick}
+                            viewMode={viewMode}
+                        />
                     </Canvas>
                 </div>
 
