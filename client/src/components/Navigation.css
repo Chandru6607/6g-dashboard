@@ -7,6 +7,7 @@
     flex-direction: column;
     z-index: 1000;
     flex-shrink: 0;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-header {
@@ -144,37 +145,48 @@
 .user-role {
     font-size: 0.7rem;
     color: #666;
+}
 
-    /* Collapsed State */
-    .navigation.collapsed {
-        width: 70px;
-    }
+/* Collapsed State */
+.navigation.collapsed {
+    width: 80px;
+}
 
-    .navigation.collapsed .nav-logo-text,
-    .navigation.collapsed .nav-label,
-    .navigation.collapsed .user-details {
-        display: none;
-    }
+.navigation.collapsed .nav-logo-text,
+.navigation.collapsed .nav-label,
+.navigation.collapsed .user-details {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
 
-    .navigation.collapsed .nav-header {
-        padding: var(--spacing-md);
-    }
+.nav-logo-text,
+.nav-label,
+.user-details {
+    transition: opacity 0.2s ease, width 0.3s ease;
+    white-space: nowrap;
+}
 
-    .navigation.collapsed .nav-logo {
-        justify-content: center;
-    }
+.navigation.collapsed .nav-header {
+    padding: var(--spacing-md);
+}
 
-    .navigation.collapsed .nav-items {
-        padding: var(--spacing-xs);
-    }
+.navigation.collapsed .nav-logo {
+    justify-content: center;
+}
 
-    .navigation.collapsed .nav-item {
-        justify-content: center;
-        padding: 12px;
-    }
+.navigation.collapsed .nav-items {
+    padding: var(--spacing-xs);
+}
 
-    .navigation.collapsed .user-info {
-        justify-content: center;
-        padding: var(--spacing-md) 0;
-    }
+.navigation.collapsed .nav-item {
+    justify-content: center;
+    padding: 12px;
+}
+
+.navigation.collapsed .user-info {
+    justify-content: center;
+    padding: var(--spacing-md) 0;
 }
