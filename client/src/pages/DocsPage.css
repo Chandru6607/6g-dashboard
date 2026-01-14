@@ -157,36 +157,126 @@
     opacity: 0.9;
 }
 
+/* Expandable Card Layout */
+.expandable-card {
+    background: rgba(30, 41, 59, 0.4);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.expandable-card:hover {
+    border-color: rgba(96, 165, 250, 0.4);
+    background: rgba(30, 41, 59, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.expandable-card.expanded {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(96, 165, 250, 0.6);
+}
+
+.card-header {
+    padding: 1.5rem;
+    position: relative;
+}
+
+.title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.title-row h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #f8fafc;
+}
+
+.expand-icon {
+    font-size: 0.8rem;
+    color: #60a5fa;
+}
+
+.subtitle {
+    margin: 0;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.card-details {
+    overflow: hidden;
+}
+
+.details-content {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.details-content h4 {
+    margin: 1.5rem 0 0.75rem 0;
+    color: #60a5fa;
+    font-size: 1rem;
+}
+
+.details-content p {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.details-content ul {
+    margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.details-content li {
+    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.expand-hint {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.75rem;
+    color: rgba(96, 165, 250, 0.5);
+    background: rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-style: italic;
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+/* Reusing and refining existing classes */
+.type-label {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.badge-purple {
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .docs-header h1 {
+        font-size: 2.2rem;
+    }
+}
+
 /* New User Guide Styles */
 .flow-steps {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
     margin-top: 2rem;
-}
-
-.flow-step {
-    position: relative;
-    padding: 2rem;
-    background: rgba(30, 41, 59, 0.4);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.step-num {
-    position: absolute;
-    top: -15px;
-    left: 20px;
-    width: 30px;
-    height: 30px;
-    background: #60a5fa;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 0.8rem;
-    box-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
 }
 
 .badge {
@@ -210,24 +300,6 @@
     border-radius: 12px;
     border: 1px dashed rgba(255, 255, 255, 0.1);
     margin-top: 1.5rem;
-}
-
-.api-card {
-    position: relative;
-    background: rgba(30, 41, 59, 0.5);
-    padding: 1.5rem;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.type-label {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-    color: rgba(255, 255, 255, 0.3);
 }
 
 @media (max-width: 768px) {
