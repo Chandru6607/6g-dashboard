@@ -21,14 +21,12 @@ const Header = ({ connected, simulationActive, isSidebarOpen, onToggleSidebar })
     const handleAutoConfig = async () => {
         setIsConfiguring(true);
         try {
-            console.log('🔄 Starting auto-configuration...');
             await apiService.autoConfigure();
 
             // Re-initialize connections to ensure everything is fresh
             await mcpClient.connect();
             // socketService.connect(); // Already connected by App.jsx
 
-            console.log('✅ Auto-configuration successful');
         } catch (error) {
             console.error('❌ Auto-configuration failed:', error);
         } finally {
@@ -39,14 +37,12 @@ const Header = ({ connected, simulationActive, isSidebarOpen, onToggleSidebar })
     const handleDisconnect = async () => {
         setIsConfiguring(true);
         try {
-            console.log('🔌 Initiating system disconnect...');
             await apiService.disconnectSystem();
 
             // Gracefully stop services
             // await mcpClient.disconnect();
             // socketService.disconnect();
 
-            console.log('✅ System disconnected successfully');
         } catch (error) {
             console.error('❌ Disconnect failed:', error);
         } finally {

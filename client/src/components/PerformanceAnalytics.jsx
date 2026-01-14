@@ -31,48 +31,62 @@ const PerformanceAnalytics = () => {
     }, []);
 
     const handleExport = async () => {
-        const { jsPDF } = await import('jspdf');
-        const { default: autoTable } = await import('jspdf-autotable');
-        const data = analyticsData;
+        try {
+            const { jsPDF } = await import('jspdf');
+            const { default: autoTable } = await import('jspdf-autotable');
 
-        const doc = new jsPDF();
+            // Fetch fresh data if needed, or use existing
+            const data = analyticsData;
+            if (!data) throw new Error("No data available to export");
 
-        // Header
-        doc.setFontSize(22);
-        doc.text('6G Dashboard: Performance Report', 14, 22);
-        doc.setFontSize(12);
-        doc.setTextColor(100);
-        doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 30);
+            const doc = new jsPDF();
 
-        // Summary
-        doc.setFontSize(16);
-        doc.setTextColor(0);
-        doc.text('Network KPI Improvement Summary', 14, 45);
+            // Header Branding
+            doc.setFillColor(15, 23, 42);
+            doc.rect(0, 0, doc.internal.pageSize.width, 40, 'F');
 
-        const tableBody = data.metrics.map(m => [
-            m.name,
-            m.baseline,
-            m.proposed,
-            `${m.improvement}%`
-        ]);
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(22);
+            doc.text('6G DASHBOARD: PERFORMANCE REPORT', 14, 22);
 
-        autoTable(doc, {
-            startY: 50,
-            head: [['Metric', 'Baseline', 'Proposed', 'Improvement']],
-            body: tableBody,
-            theme: 'striped',
-            headStyles: { fillColor: [16, 185, 129] }
-        });
-
-        // Footer
-        const pageCount = doc.internal.getNumberOfPages();
-        for (let i = 1; i <= pageCount; i++) {
-            doc.setPage(i);
             doc.setFontSize(10);
-            doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.width - 30, doc.internal.pageSize.height - 10);
-        }
+            doc.setTextColor(150, 150, 150);
+            doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 32);
 
-        doc.save(`6g-analytics-report-${Date.now()}.pdf`);
+            // 1. KPI Summary Table
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(16);
+            doc.text('Network KPI Improvement Summary', 14, 55);
+
+            const tableBody = data.metrics.map(m => [
+                m.name,
+                m.baseline + (m.unit || ''),
+                m.proposed + (m.unit || ''),
+                `${m.improvement}%`
+            ]);
+
+            autoTable(doc, {
+                startY: 60,
+                head: [['Metric', 'Baseline', 'Proposed', 'Improvement']],
+                body: tableBody,
+                theme: 'striped',
+                headStyles: { fillColor: [16, 185, 129] }
+            });
+
+            // Footer
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(10);
+                doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.width - 30, doc.internal.pageSize.height - 10);
+            }
+
+            doc.save(`6g-performance-report-${Date.now()}.pdf`);
+            alert("✅ Performance report generated and download started!");
+        } catch (error) {
+            console.error('Export Error:', error);
+            alert("❌ Failed to export report: " + error.message);
+        }
     };
 
     const chartData = analyticsData ? {
