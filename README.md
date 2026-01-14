@@ -138,6 +138,21 @@ npm start
 - Smooth transitions and micro-animations
 - Canvas-based network visualization
 
+## GNS3 & MCP Integration
+
+This dashboard is designed to work as a visualization and control layer for a **GNS3 (Graphical Network Simulator-3)** emulated 6G environment.
+
+### Architectural Flow:
+1.  **GNS3 Simulation**: The physical-layer and network-layer simulation runs in GNS3, emulating 6G gNBs and UEs.
+2.  **MCP Abstraction Layer**: The Model Context Protocol (MCP) server (`server/mcpServer.js`) acts as a standardized bridge.
+3.  **Data Ingestion**:
+    - The dashboard uses the `get_network_info` tool to fetch topology and metrics.
+    - In a production setup, the `data/generators.js` are replaced by a **GNS3 REST API Connector** that pulls real-time telemetry from the GNS3 project.
+4.  **Control Loop**: When a user clicks "Connect Network" or starts an experiment, the request is routed through the MCP server to trigger GNS3 orchestration (starting nodes, changing link parameters, or injecting traffic).
+
+### Why MCP?
+Using MCP ensures that the 6G Dashboard remains **Simulation-Agnostic**. While GNS3 is the primary simulation tool, the dashboard can be connected to other simulators (like ns-3 or MATLAB) simply by updating the MCP server implementation without changing the frontend code.
+
 ## License
 
 MIT
