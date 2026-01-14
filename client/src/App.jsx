@@ -19,6 +19,7 @@ import './App.css';
 
 function App() {
   const [connected, setConnected] = useState(false);
+  const [simulationActive, setSimulationActive] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
@@ -36,6 +37,10 @@ function App() {
 
     socketService.on('disconnect', () => {
       setConnected(false);
+    });
+
+    socketService.on('simulation:state', (state) => {
+      setSimulationActive(state.active);
     });
 
     // Initialize MCP connection
@@ -58,6 +63,7 @@ function App() {
           <div className="main-layout">
             <Header
               connected={connected}
+              simulationActive={simulationActive}
               isSidebarOpen={isSidebarOpen}
               onToggleSidebar={toggleSidebar}
             />

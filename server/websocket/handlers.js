@@ -8,16 +8,21 @@ import {
     getSyncProgress,
     getAIConfidence,
 } from '../data/generators.js';
+import { simulationState } from '../data/state.js';
 
 let eventThroughput = 0;
 let eventCount = 0;
 
-// Initialize WebSocket connection handlers
+export const broadcastSimulationState = (io) => {
+    io.emit('simulation:state', { active: simulationState.active });
+};
+
 export const initializeWebSocket = (io) => {
     io.on('connection', (socket) => {
         console.log(`✅ Client connected: ${socket.id}`);
 
         // Send initial data
+        socket.emit('simulation:state', { active: simulationState.active });
         socket.emit('network:metrics', generateNetworkMetrics());
         socket.emit('agents:update', generateAgentStates());
         socket.emit('sync:progress', { progress: getSyncProgress(), confidence: getAIConfidence() });
@@ -28,23 +33,29 @@ export const initializeWebSocket = (io) => {
         // Network metrics - every 2 seconds
         intervals.push(
             setInterval(() => {
-                socket.emit('network:metrics', generateNetworkMetrics());
+                if (simulationState.active) {
+                    socket.emit('network:metrics', generateNetworkMetrics());
+                }
             }, 2000)
         );
 
         // Agent states - every 5 seconds
         intervals.push(
             setInterval(() => {
-                socket.emit('agents:update', generateAgentStates());
+                if (simulationState.active) {
+                    socket.emit('agents:update', generateAgentStates());
+                }
             }, 5000)
         );
 
         // Telemetry events - random intervals (500ms - 2s)
         const scheduleTelemetryEvent = () => {
             setTimeout(() => {
-                const event = generateTelemetryEvent();
-                socket.emit('telemetry:event', event);
-                eventCount++;
+                if (simulationState.active) {
+                    const event = generateTelemetryEvent();
+                    socket.emit('telemetry:event', event);
+                    eventCount++;
+                }
                 scheduleTelemetryEvent();
             }, Math.random() * 1500 + 500);
         };
@@ -53,8 +64,10 @@ export const initializeWebSocket = (io) => {
         // Alerts - random intervals (5s - 15s)
         const scheduleAlert = () => {
             setTimeout(() => {
-                const alert = generateAlert();
-                socket.emit('system:alert', alert);
+                if (simulationState.active) {
+                    const alert = generateAlert();
+                    socket.emit('system:alert', alert);
+                }
                 scheduleAlert();
             }, Math.random() * 10000 + 5000);
         };
@@ -63,10 +76,12 @@ export const initializeWebSocket = (io) => {
         // Sync progress and AI confidence - every 3 seconds
         intervals.push(
             setInterval(() => {
-                socket.emit('sync:progress', {
-                    progress: getSyncProgress(),
-                    confidence: getAIConfidence(),
-                });
+                if (simulationState.active) {
+                    socket.emit('sync:progress', {
+                        progress: getSyncProgress(),
+                        confidence: getAIConfidence(),
+                    });
+                }
             }, 3000)
         );
 

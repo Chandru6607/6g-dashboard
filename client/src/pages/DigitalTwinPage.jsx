@@ -171,22 +171,30 @@ const DigitalTwinPage = () => {
     const [selectedNode, setSelectedNode] = useState(null);
     const [viewMode, setViewMode] = useState('3d');
 
+    const socketData = useSocket('network:update');
+
     useEffect(() => {
-        const fetchData = async () => {
+        if (socketData) {
+            if (socketData.topology) setTopology(socketData.topology);
+            if (socketData.metrics) setMetrics(socketData.metrics);
+        }
+    }, [socketData]);
+
+    useEffect(() => {
+        const fetchInitialData = async () => {
             try {
                 const data = await apiService.getNetworkStatus();
-                if (data.topology) setTopology(data.topology);
-                if (data.metrics) setMetrics(data.metrics);
-                console.log('✅ [MCP] Data synced:', data);
+                if (data) {
+                    if (data.topology) setTopology(data.topology);
+                    if (data.metrics) setMetrics(data.metrics);
+                    console.log('✅ [MCP/API] Initial data synced:', data);
+                }
             } catch (error) {
-                console.error('❌ [MCP] Fetch failed:', error);
+                console.error('❌ [MCP/API] Initial fetch failed:', error);
             }
         };
 
-        fetchData();
-        const interval = setInterval(fetchData, 3000); // Poll every 3 seconds
-
-        return () => clearInterval(interval);
+        fetchInitialData();
     }, []);
 
     const handleNodeClick = (node) => {

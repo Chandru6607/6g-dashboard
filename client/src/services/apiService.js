@@ -4,13 +4,24 @@ import { mcpClient } from './mcpClient.js';
 class ApiService {
     // Network endpoints
     async getNetworkStatus() {
-        // Use MCP Tool for composite data
+        // Primary: Use MCP Tool for composite data
         try {
-            return await mcpClient.callTool('get_network_info');
+            const data = await mcpClient.callTool('get_network_info');
+            if (data) return data;
         } catch (error) {
-            console.error("Failed to fetch network status:", error);
-            return null;
+            console.warn("⚠️ [MCP] get_network_info failed, falling back to REST API:", error.message);
         }
+
+        // Fallback: Standard REST API
+        try {
+            const response = await fetch('http://localhost:5000/api/network/status');
+            if (response.ok) {
+                return await response.json();
+            }
+        } catch (err) {
+            console.error("❌ [API] REST Fallback failed:", err);
+        }
+        return null;
     }
 
     // Agent endpoints

@@ -30,11 +30,11 @@ app.use(cors({
     credentials: true
 }));
 
-// Initialize MCP Server (before body parsers to handle stream correctly)
-attachMCPServer(app);
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Initialize MCP Server (before API routes but after body parsers)
+attachMCPServer(app);
 
 // API Routes
 app.use('/api', apiRoutes);

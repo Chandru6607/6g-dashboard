@@ -9,6 +9,8 @@ import {
     generateRewardCurves,
     generateAnalyticsData,
 } from '../data/generators.js';
+import { simulationState } from '../data/state.js';
+import { broadcastSimulationState } from '../websocket/handlers.js';
 
 const router = express.Router();
 
@@ -106,6 +108,9 @@ let simulationInterval = null;
 router.post('/system/autoconfig', (req, res) => {
     console.log('🔧 [System] Auto-configuration triggered');
 
+    simulationState.active = true;
+    simulationState.startTime = Date.now();
+
     const io = req.app.get('io');
 
     // Clear existing interval if any
@@ -115,6 +120,8 @@ router.post('/system/autoconfig', (req, res) => {
 
     // Start Real-Time Simulation Loop
     simulationInterval = setInterval(() => {
+        if (!simulationState.active) return;
+
         const updateData = {
             timestamp: new Date().toISOString(),
             topology: generateNetworkTopology(),
@@ -123,12 +130,15 @@ router.post('/system/autoconfig', (req, res) => {
             analytics: generateAnalyticsData()
         };
 
-        io.emit('network-update', updateData);
-        // console.log('📡 [Simulation] Emitted network-update');
+        io.emit('network:update', updateData); // Standardized event name
+        // console.log('📡 [Simulation] Emitted network:update');
     }, 1000); // 1 second heartbeat
+
+    broadcastSimulationState(io);
 
     res.json({
         success: true,
+        active: true,
         message: 'System auto-configuration complete & Simulation Started',
         status: 'OPERATIONAL',
         timestamp: new Date().toISOString(),
@@ -139,15 +149,22 @@ router.post('/system/autoconfig', (req, res) => {
 router.post('/system/disconnect', (req, res) => {
     console.log('🔌 [System] Disconnect triggered');
 
-    // Stop Simulation
+    simulationState.active = false;
+    simulationState.startTime = null;
+
+    // Stop Simulation Loop
     if (simulationInterval) {
         clearInterval(simulationInterval);
         simulationInterval = null;
         console.log('🛑 [Simulation] Stopped');
     }
 
+    const io = req.app.get('io');
+    broadcastSimulationState(io);
+
     res.json({
         success: true,
+        active: false,
         message: 'System disconnected & Simulation Stopped',
         status: 'DISCONNECTED',
         timestamp: new Date().toISOString(),
