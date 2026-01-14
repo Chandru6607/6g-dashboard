@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Line, Bar } from 'react-chartjs-2';
 import PerformanceAnalytics from '../components/PerformanceAnalytics';
 import MultiAgentRL from '../components/MultiAgentRL';
@@ -29,6 +30,22 @@ ChartJS.register(
 );
 
 const AnalyticsPage = () => {
+    const [timeRange, setTimeRange] = useState('Last 24 Hours');
+    const [isRefreshing, setIsRefreshing] = useState(false);
+
+    const handleRangeChange = (e) => {
+        const range = e.target.value;
+        setTimeRange(range);
+        setIsRefreshing(true);
+        console.log(`📊 [Analytics] Fetching data for ${range}...`);
+
+        // Simulate a server query delay
+        setTimeout(() => {
+            setIsRefreshing(false);
+            console.log(`✅ [Analytics] Data for ${range} loaded.`);
+        }, 800);
+    };
+
     // Sample historical data
     const historicalData = {
         labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
@@ -86,13 +103,21 @@ const AnalyticsPage = () => {
                 <div className="analytics-panel large">
                     <div className="panel-header">
                         <h3>Historical Performance Trends</h3>
-                        <select className="time-range-select">
-                            <option>Last 24 Hours</option>
-                            <option>Last 7 Days</option>
-                            <option>Last 30 Days</option>
-                        </select>
+                        <div className="analytics-controls">
+                            {isRefreshing && <span className="refresh-spinner">🔄</span>}
+                            <select
+                                className="time-range-select"
+                                value={timeRange}
+                                onChange={handleRangeChange}
+                                disabled={isRefreshing}
+                            >
+                                <option>Last 24 Hours</option>
+                                <option>Last 7 Days</option>
+                                <option>Last 30 Days</option>
+                            </select>
+                        </div>
                     </div>
-                    <div className="chart-wrapper">
+                    <div className={`chart-wrapper ${isRefreshing ? 'refreshing' : ''}`}>
                         <Line data={historicalData} options={chartOptions} />
                     </div>
                 </div>

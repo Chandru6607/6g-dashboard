@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSocket } from '../hooks/useSocket';
 import apiService from '../services/apiService';
 import socketService from '../services/socketService';
 import './ExperimentManager.css';
@@ -17,9 +18,17 @@ const ExperimentManager = () => {
     const [isRunning, setIsRunning] = useState(false);
     const [progress, setProgress] = useState(0);
 
+    // Sync with global simulation state
+    const simState = useSocket('simulation:state');
+    useEffect(() => {
+        if (simState) {
+            setIsRunning(simState.active);
+        }
+    }, [simState]);
+
     const handleSelectScenario = async (scenarioId) => {
         setSelectedScenario(scenarioId);
-        await apiService.selectScenario(scenarioId);
+        // await apiService.selectScenario(scenarioId);
     };
 
     const handleStartExperiment = async () => {

@@ -58,6 +58,12 @@ const MultiAgentRL = () => {
                                 <span className={`badge ${agent.state === 'inference' ? 'badge-success' : 'badge-warning'}`}>
                                     {agent.state.charAt(0).toUpperCase() + agent.state.slice(1)}
                                 </span>
+                                <button
+                                    className={`btn btn-xs ${agent.state === 'training' ? 'btn-secondary' : 'btn-primary'}`}
+                                    onClick={() => apiService.toggleAgentState(agent.id)}
+                                >
+                                    {agent.state === 'training' ? '⏸ Pause' : '▶ Train'}
+                                </button>
                             </div>
                             <div className="agent-stats">
                                 <div className="agent-stat">

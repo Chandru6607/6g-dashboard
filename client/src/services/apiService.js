@@ -31,6 +31,27 @@ class ApiService {
         return { agents: states };
     }
 
+    async toggleAgentState(agentId) {
+        // Assuming a REST endpoint for toggling agent state, as MCP doesn't have a direct equivalent in the provided context
+        // Or, if MCP had a 'control_agent' tool, it could be used:
+        // const result = await mcpClient.callTool('control_agent', { action: 'toggle', agentId });
+        // For now, using a direct REST call as per the instruction's implied structure.
+        try {
+            // Placeholder for API_BASE_URL, assuming it would be defined elsewhere or hardcoded for this example
+            const API_BASE_URL = 'http://localhost:5000/api'; // Example base URL
+            const response = await fetch(`${API_BASE_URL}/agents/${agentId}/toggle`, {
+                method: 'POST',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error toggling agent state:', error);
+            throw error;
+        }
+    }
+
     async getRewardCurves() {
         // Fallback or another tool if needed, but for now let's use the resource if available or a mock
         // Since reward curves weren't explicitly in my MCP resources, I'll use a mocked response or fetch it if I update MCP

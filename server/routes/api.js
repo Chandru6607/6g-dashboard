@@ -25,8 +25,27 @@ router.get('/network/status', (req, res) => {
 // Get all agent states
 router.get('/agents', (req, res) => {
     res.json({
-        agents: generateAgentStates(),
+        agents: simulationState.agents,
     });
+});
+
+// Toggle agent state (training/inference)
+router.post('/agents/:id/toggle', (req, res) => {
+    const { id } = req.params;
+    const agent = simulationState.agents.find(a => a.id === id);
+
+    if (agent) {
+        agent.state = agent.state === 'training' ? 'inference' : 'training';
+        console.log(`🤖 [Agent] ${agent.name} state toggled to ${agent.state}`);
+
+        // Broadcast update via socket
+        const io = req.app.get('io');
+        io.emit('agents:update', simulationState.agents);
+
+        res.json({ success: true, agent });
+    } else {
+        res.status(404).json({ success: false, message: 'Agent not found' });
+    }
 });
 
 // Get reward curves for training visualization

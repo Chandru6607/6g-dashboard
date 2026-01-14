@@ -31,14 +31,48 @@ const PerformanceAnalytics = () => {
     }, []);
 
     const handleExport = async () => {
-        const data = await apiService.exportAnalytics();
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `6g-analytics-${Date.now()}.json`;
-        a.click();
-        URL.revokeObjectURL(url);
+        const { jsPDF } = await import('jspdf');
+        const { default: autoTable } = await import('jspdf-autotable');
+        const data = analyticsData;
+
+        const doc = new jsPDF();
+
+        // Header
+        doc.setFontSize(22);
+        doc.text('6G Dashboard: Performance Report', 14, 22);
+        doc.setFontSize(12);
+        doc.setTextColor(100);
+        doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 30);
+
+        // Summary
+        doc.setFontSize(16);
+        doc.setTextColor(0);
+        doc.text('Network KPI Improvement Summary', 14, 45);
+
+        const tableBody = data.metrics.map(m => [
+            m.name,
+            m.baseline,
+            m.proposed,
+            `${m.improvement}%`
+        ]);
+
+        autoTable(doc, {
+            startY: 50,
+            head: [['Metric', 'Baseline', 'Proposed', 'Improvement']],
+            body: tableBody,
+            theme: 'striped',
+            headStyles: { fillColor: [16, 185, 129] }
+        });
+
+        // Footer
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setFontSize(10);
+            doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.width - 30, doc.internal.pageSize.height - 10);
+        }
+
+        doc.save(`6g-analytics-report-${Date.now()}.pdf`);
     };
 
     const chartData = analyticsData ? {

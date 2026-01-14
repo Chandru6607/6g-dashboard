@@ -25,7 +25,7 @@ export const generateNetworkTopology = () => {
     status: 'active',
   }));
 
-  return{ gNBs, UEs };
+  return { gNBs, UEs };
 };
 
 // Generate real-time network metrics
@@ -37,33 +37,26 @@ export const generateNetworkMetrics = () => ({
   timestamp: Date.now(),
 });
 
+import { simulationState } from './state.js';
+
 // Generate agent states
-export const generateAgentStates = () => [
-  {
-    id: 'resource-allocation',
-    name: 'Resource Allocation Agent',
-    state: Math.random() > 0.3 ? 'inference' : 'training',
-    episodes: randomInt(14000, 16000),
-    avgReward: randomRange(0.80, 0.95).toFixed(2),
-    convergence: randomRange(92, 98).toFixed(0),
-  },
-  {
-    id: 'congestion-control',
-    name: 'Congestion Control Agent',
-    state: Math.random() > 0.7 ? 'inference' : 'training',
-    episodes: randomInt(8000, 9500),
-    avgReward: randomRange(0.65, 0.80).toFixed(2),
-    convergence: randomRange(78, 88).toFixed(0),
-  },
-  {
-    id: 'mobility-management',
-    name: 'Mobility Management Agent',
-    state: Math.random() > 0.2 ? 'inference' : 'training',
-    episodes: randomInt(11000, 13000),
-    avgReward: randomRange(0.85, 0.95).toFixed(2),
-    convergence: randomRange(94, 99).toFixed(0),
-  },
-];
+export const generateAgentStates = () => {
+  if (!simulationState.active) return simulationState.agents;
+
+  // Increment episodes and reward slightly if simulation is active
+  simulationState.agents = simulationState.agents.map(agent => ({
+    ...agent,
+    episodes: agent.state === 'training' ? agent.episodes + 1 : agent.episodes,
+    avgReward: agent.state === 'training'
+      ? Math.min(0.99, parseFloat(agent.avgReward) + 0.0001).toFixed(4)
+      : agent.avgReward,
+    convergence: agent.state === 'training'
+      ? Math.min(100, parseFloat(agent.convergence) + 0.01).toFixed(2)
+      : agent.convergence
+  }));
+
+  return simulationState.agents;
+};
 
 // Generate telemetry events
 const severities = ['info', 'warning', 'error', 'critical'];
@@ -82,7 +75,7 @@ const eventTypes = [
 export const generateTelemetryEvent = () => {
   const severity = severities[randomInt(0, severities.length - 1)];
   const eventType = eventTypes[randomInt(0, eventTypes.length - 1)];
-  
+
   const messages = {
     info: `${eventType}: Operation completed successfully`,
     warning: `${eventType}: Performance degradation detected`,
@@ -104,7 +97,7 @@ export const generateTelemetryEvent = () => {
 export const generateAlert = () => {
   const severities = ['info', 'warning', 'critical'];
   const severity = severities[randomInt(0, severities.length - 1)];
-  
+
   const alertMessages = {
     info: [
       'Agent training epoch completed',
@@ -151,19 +144,19 @@ export const generateRewardCurves = () => ({
   datasets: [
     {
       label: 'Resource Allocation',
-      data: Array.from({ length: 50 }, (_, i) => 
+      data: Array.from({ length: 50 }, (_, i) =>
         Math.min(0.9, 0.3 + (i / 50) * 0.6 + randomRange(-0.05, 0.05))
       ),
     },
     {
       label: 'Congestion Control',
-      data: Array.from({ length: 50 }, (_, i) => 
+      data: Array.from({ length: 50 }, (_, i) =>
         Math.min(0.8, 0.2 + (i / 50) * 0.6 + randomRange(-0.08, 0.08))
       ),
     },
     {
       label: 'Mobility Management',
-      data: Array.from({ length: 50 }, (_, i) => 
+      data: Array.from({ length: 50 }, (_, i) =>
         Math.min(0.95, 0.35 + (i / 50) * 0.6 + randomRange(-0.04, 0.04))
       ),
     },
