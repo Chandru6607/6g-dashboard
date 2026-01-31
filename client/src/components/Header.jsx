@@ -106,8 +106,8 @@ const Header = ({ connected, simulationActive, isSidebarOpen, onToggleSidebar })
                         <button
                             className={`connect-btn ${isConfiguring ? 'loading' : ''}`}
                             onClick={handleAutoConfig}
-                            disabled={isConfiguring || !connected}
-                            title={!connected ? "Connect to server first" : "Start Simulation"}
+                            disabled={isConfiguring}
+                            title="Start Simulation"
                         >
                             {isConfiguring ? 'Configuring...' : 'Connect Network'}
                         </button>
