@@ -12,6 +12,7 @@ import { rescueAgent } from './services/rescueAgent.js';
 
 const app = express();
 const httpServer = createServer(app);
+// CORS Configuration
 const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:3001',
@@ -21,12 +22,26 @@ const allowedOrigins = [
     'http://127.0.0.1:5173'
 ];
 
+const corsOptions = {
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+
+        // Allow any Vercel deployment, Render deployment, or localhost
+        if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.vercel.app') || origin.endsWith('.onrender.com')) {
+            callback(null, true);
+        } else {
+            // For this troubleshooting phase, let's be permissive to ensure connectivity
+            // console.warn('CORS Warning: Origin not explicitly allowed:', origin);
+            callback(null, true);
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true
+};
+
 const io = new Server(httpServer, {
-    cors: {
-        origin: allowedOrigins,
-        methods: ['GET', 'POST'],
-        credentials: true
-    }
+    cors: corsOptions
 });
 
 app.set('io', io);
@@ -34,11 +49,7 @@ app.set('io', io);
 const PORT = process.env.PORT || 5000;
 
 // Middleware & MCP
-app.use(cors({
-    origin: allowedOrigins,
-    methods: ['GET', 'POST'],
-    credentials: true
-}));
+app.use(cors(corsOptions));
 
 // Initialize MCP Server (Must be before body parsers to allow transport to handle its own streams)
 attachMCPServer(app);
