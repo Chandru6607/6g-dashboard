@@ -9,26 +9,47 @@ const Header = ({ connected, simulationActive, isSidebarOpen, onToggleSidebar })
     const [currentTime, setCurrentTime] = useState(new Date());
     const [activeAgents, setActiveAgents] = useState(3);
     const [isConfiguring, setIsConfiguring] = useState(false);
+    const [topologyType, setTopologyType] = useState('Mesh');
 
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentTime(new Date());
         }, 1000);
 
-        return () => clearInterval(timer);
+        const handleNetworkUpdate = (data) => {
+            if (data.topologyType) {
+                setTopologyType(data.topologyType);
+            }
+        };
+
+        socketService.on('network:update', handleNetworkUpdate);
+
+        return () => {
+            clearInterval(timer);
+            socketService.off('network:update', handleNetworkUpdate);
+        };
     }, []);
 
     const handleAutoConfig = async () => {
         setIsConfiguring(true);
+        console.log('🔧 [System] Starting auto-configuration...');
         try {
-            await apiService.autoConfigure();
+            const result = await apiService.autoConfigure();
+            console.log('✅ [System] Auto-config result:', result);
 
             // Re-initialize connections to ensure everything is fresh
             await mcpClient.connect();
-            // socketService.connect(); // Already connected by App.jsx
+            console.log('✅ [MCP] Connected');
+
+            // Force a socket state check if needed, though App.jsx handles it
+            if (!socketService.socket?.connected) {
+                console.log('🔌 [Socket] Reconnecting...');
+                socketService.connect();
+            }
 
         } catch (error) {
-            console.error('❌ Auto-configuration failed:', error);
+            console.error('❌ [System] Auto-configuration failed:', error);
+            alert('Failed to connect network. Please ensure the backend server is running.');
         } finally {
             setIsConfiguring(false);
         }
@@ -107,6 +128,10 @@ const Header = ({ connected, simulationActive, isSidebarOpen, onToggleSidebar })
                         <span className={`stat-value ${getStatusClass()}`}>
                             {getStatusText()}
                         </span>
+                    </div>
+                    <div className="stat-item">
+                        <span className="stat-label">Active Topology</span>
+                        <span className="stat-value text-accent">{topologyType}</span>
                     </div>
                     <div className="stat-item">
                         <span className="stat-label">Active Agents</span>

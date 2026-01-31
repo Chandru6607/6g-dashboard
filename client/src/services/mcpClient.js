@@ -22,7 +22,7 @@ class MCPClientService {
             this.isManualDisconnect = false; // Reset flag on new connection attempt
 
             try {
-                const url = new URL("http://localhost:5000/mcp");
+                const url = new URL("/mcp", window.location.origin);
                 this.transport = new SSEClientTransport(url);
 
                 this.client = new Client({
@@ -36,6 +36,7 @@ class MCPClientService {
                 });
 
                 await this.client.connect(this.transport);
+
                 this.isConnected = true;
                 this.retryCount = 0;
                 this.connectionPromise = null;

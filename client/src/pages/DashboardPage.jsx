@@ -12,11 +12,11 @@ const DashboardPage = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
         >
-            <div className="network-overview" style={{ gridColumn: 'span 12' }}>
+            <div className="network-overview" style={{ gridColumn: 'span 8' }}>
                 <NetworkOverview />
                 <ConnectedServers />
             </div>
-            <div className="system-health" style={{ gridColumn: 'span 12' }}>
+            <div className="system-health" style={{ gridColumn: 'span 4' }}>
                 <SystemHealth />
             </div>
         </motion.main>

@@ -1,14 +1,7 @@
 // REST API Routes for 6G Dashboard
 
 import express from 'express';
-import {
-    generateNetworkTopology,
-    generateNetworkMetrics,
-    generateAgentStates,
-    generatePredictiveData,
-    generateRewardCurves,
-    generateAnalyticsData,
-} from '../data/generators.js';
+import * as generators from '../data/generators.js';
 import { simulationState } from '../data/state.js';
 import { broadcastSimulationState } from '../websocket/handlers.js';
 
@@ -17,8 +10,8 @@ const router = express.Router();
 // Get network status and topology
 router.get('/network/status', (req, res) => {
     res.json({
-        topology: generateNetworkTopology(),
-        metrics: generateNetworkMetrics(),
+        topology: generators.generateNetworkTopology(),
+        metrics: generators.generateNetworkMetrics(),
     });
 });
 
@@ -38,11 +31,32 @@ router.post('/agents/:id/toggle', (req, res) => {
         agent.state = agent.state === 'training' ? 'inference' : 'training';
         console.log(`🤖 [Agent] ${agent.name} state toggled to ${agent.state}`);
 
+        // If starting training, randomize topology
+        if (agent.state === 'training') {
+            const topologies = ['Mesh', 'Ring', 'Bus', 'Star', 'Tree', 'Hybrid'];
+            const types = topologies.filter(t => t !== simulationState.currentTopologyType);
+            simulationState.currentTopologyType = types[Math.floor(Math.random() * types.length)];
+            console.log(`🔄 [Network] Topology switched to ${simulationState.currentTopologyType} for training`);
+        }
+
         // Broadcast update via socket
         const io = req.app.get('io');
         io.emit('agents:update', simulationState.agents);
 
-        res.json({ success: true, agent });
+        // Force immediate network update so UI reflects topology change instantly
+        const updateData = {
+            topology: generators.generateNetworkTopology(),
+            topologyType: simulationState.currentTopologyType,
+            metrics: generators.generateNetworkMetrics(),
+            timestamp: new Date().toISOString()
+        };
+        io.emit('network:update', updateData);
+
+        res.json({
+            success: true,
+            agent,
+            topologyType: simulationState.currentTopologyType
+        });
     } else {
         res.status(404).json({ success: false, message: 'Agent not found' });
     }
@@ -50,19 +64,19 @@ router.post('/agents/:id/toggle', (req, res) => {
 
 // Get reward curves for training visualization
 router.get('/agents/rewards', (req, res) => {
-    res.json(generateRewardCurves());
+    res.json(generators.generateRewardCurves());
 });
 
 // Get predictive analytics data
 router.get('/twin/predictive', (req, res) => {
     res.json({
-        predictions: generatePredictiveData(),
+        predictions: generators.generatePredictiveData(),
     });
 });
 
 // Get performance analytics
 router.get('/analytics', (req, res) => {
-    res.json(generateAnalyticsData());
+    res.json(generators.generateAnalyticsData());
 });
 
 // Start experiment
@@ -103,7 +117,7 @@ router.post('/scenarios/:id/select', (req, res) => {
 
 // Export analytics data
 router.get('/analytics/export', (req, res) => {
-    const data = generateAnalyticsData();
+    const data = generators.generateAnalyticsData();
     res.json({
         success: true,
         data,
@@ -118,6 +132,13 @@ router.get('/health', (req, res) => {
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
     });
+});
+
+// Rescue Agent Troubleshooting
+router.post('/system/rescue', async (req, res) => {
+    const { rescueAgent } = await import('../services/rescueAgent.js');
+    const result = await rescueAgent.troubleshootAll();
+    res.json(result);
 });
 
 // Simulation State
@@ -138,20 +159,22 @@ router.post('/system/autoconfig', (req, res) => {
     }
 
     // Start Real-Time Simulation Loop
-    simulationInterval = setInterval(() => {
-        if (!simulationState.active) return;
-
+    const emitUpdate = () => {
         const updateData = {
             timestamp: new Date().toISOString(),
-            topology: generateNetworkTopology(),
-            metrics: generateNetworkMetrics(),
-            agents: generateAgentStates(),
-            analytics: generateAnalyticsData()
+            topology: generators.generateNetworkTopology(),
+            topologyType: simulationState.currentTopologyType,
+            metrics: generators.generateNetworkMetrics(),
+            agents: generators.generateAgentStates(),
+            analytics: generators.generateAnalyticsData()
         };
+        io.emit('network:update', updateData);
+    };
 
-        io.emit('network:update', updateData); // Standardized event name
-        // console.log('📡 [Simulation] Emitted network:update');
-    }, 1000); // 1 second heartbeat
+    // Emit immediately
+    emitUpdate();
+
+    simulationInterval = setInterval(emitUpdate, 1000); // 1 second heartbeat
 
     broadcastSimulationState(io);
 

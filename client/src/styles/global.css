@@ -23,6 +23,7 @@
     --color-warning: #ffd700;
     --color-error: #ff4444;
     --color-info: #00f3ff;
+    --color-blue: #0066ff;
 
     /* Layout & Spacing */
     --header-height: 70px;
@@ -48,11 +49,19 @@
     /* Transitions */
     --transition-fast: 0.15s ease;
     --transition-normal: 0.3s ease;
+    --transition-base: var(--transition-normal);
+
+    /* Glows */
+    --glow-green: 0 0 20px rgba(118, 185, 0, 0.3);
+    --glow-cyan: 0 0 20px rgba(0, 243, 255, 0.3);
+
+    /* Extra Text Colors */
+    --text-tertiary: #666666;
 
     /* Legacy variable mappings (for compatibility) */
     --bg-primary: var(--bg-dark);
     --bg-secondary: var(--bg-card);
-    --color-cyan: var(--nvidia-green);
+    --color-cyan: var(--color-info);
     --glass-bg: rgba(20, 20, 20, 0.95);
     --glass-border: #333;
 }

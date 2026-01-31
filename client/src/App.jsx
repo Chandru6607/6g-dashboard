@@ -29,18 +29,27 @@ function App() {
 
   useEffect(() => {
     // Initialize WebSocket connection
-    socketService.connect();
+    const socket = socketService.connect();
+
+    // Set initial state if already connected
+    if (socket && socket.connected) {
+      console.log('✅ WebSocket already connected');
+      setConnected(true);
+    }
 
     // Use wrapper methods that persist listeners across reconnections
     socketService.on('connect', () => {
+      console.log('✅ WebSocket connect event');
       setConnected(true);
     });
 
     socketService.on('disconnect', () => {
+      console.log('❌ WebSocket disconnect event');
       setConnected(false);
     });
 
     socketService.on('simulation:state', (state) => {
+      console.log('📡 Simulation state update:', state);
       setSimulationActive(state.active);
     });
 

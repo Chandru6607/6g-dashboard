@@ -1,4 +1,5 @@
 // Mock Data Generators for 6G Network Dashboard
+import { simulationState } from './state.js';
 
 // Generate random number within range
 const randomRange = (min, max) => Math.random() * (max - min) + min;
@@ -7,25 +8,93 @@ const randomRange = (min, max) => Math.random() * (max - min) + min;
 const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 // Generate network topology data
-export const generateNetworkTopology = () => {
-  const gNBs = Array.from({ length: 5 }, (_, i) => ({
-    id: `gnb-${i + 1}`,
-    type: 'gNB',
-    x: randomRange(100, 700),
-    y: randomRange(100, 300),
-    status: Math.random() > 0.1 ? 'active' : 'degraded',
-  }));
+const getTopologyLayout = (type) => {
+  // Base gNBs and UEs for stability, but positioned differently
+  const gNBs = [];
+  const UEs = [];
+  const width = 800;
+  const height = 400;
 
-  const UEs = Array.from({ length: 12 }, (_, i) => ({
-    id: `ue-${i + 1}`,
-    type: 'UE',
-    x: randomRange(100, 700),
-    y: randomRange(100, 300),
-    connectedTo: gNBs[randomInt(0, gNBs.length - 1)].id,
-    status: 'active',
-  }));
+  switch (type) {
+    case 'Ring':
+      // Circular arrangement
+      for (let i = 0; i < 5; i++) {
+        const angle = (i / 5) * Math.PI * 2;
+        const radius = 150;
+        gNBs.push({
+          id: `gnb-${i + 1}`, type: 'gNB',
+          x: width / 2 + Math.cos(angle) * radius,
+          y: height / 2 + Math.sin(angle) * radius,
+          status: 'active'
+        });
+        // UEs around ring
+        UEs.push({ id: `ue-${i * 2 + 1}`, type: 'UE', x: width / 2 + Math.cos(angle) * (radius + 40), y: height / 2 + Math.sin(angle) * (radius + 40), connectedTo: `gnb-${i + 1}`, status: 'active' });
+        UEs.push({ id: `ue-${i * 2 + 2}`, type: 'UE', x: width / 2 + Math.cos(angle) * (radius - 40), y: height / 2 + Math.sin(angle) * (radius - 40), connectedTo: `gnb-${i + 1}`, status: 'active' });
+      }
+      break;
 
+    case 'Bus':
+      // Linear arrangement
+      for (let i = 0; i < 5; i++) {
+        gNBs.push({
+          id: `gnb-${i + 1}`, type: 'gNB',
+          x: 100 + (i * 150),
+          y: height / 2,
+          status: 'active'
+        });
+        UEs.push({ id: `ue-${i * 2 + 1}`, type: 'UE', x: 100 + (i * 150), y: height / 2 - 60, connectedTo: `gnb-${i + 1}`, status: 'active' });
+        UEs.push({ id: `ue-${i * 2 + 2}`, type: 'UE', x: 100 + (i * 150), y: height / 2 + 60, connectedTo: `gnb-${i + 1}`, status: 'active' });
+      }
+      break;
+
+    case 'Star':
+      // Central node with satellites
+      gNBs.push({ id: 'gnb-1', type: 'gNB', x: width / 2, y: height / 2, status: 'active' });
+      for (let i = 0; i < 4; i++) {
+        const angle = (i / 4) * Math.PI * 2;
+        gNBs.push({
+          id: `gnb-${i + 2}`, type: 'gNB',
+          x: width / 2 + Math.cos(angle) * 180,
+          y: height / 2 + Math.sin(angle) * 180,
+          status: 'active'
+        });
+      }
+      // Distribute UEs
+      UEs.push({ id: 'ue-1', type: 'UE', x: width / 2 + 50, y: height / 2 + 50, connectedTo: 'gnb-1', status: 'active' });
+      UEs.push({ id: 'ue-2', type: 'UE', x: width / 2 - 50, y: height / 2 - 50, connectedTo: 'gnb-1', status: 'active' });
+      // ... more quick UEs randomly
+      for (let i = 0; i < 8; i++) {
+        UEs.push({ id: `ue-${i + 3}`, type: 'UE', x: randomInt(100, 700), y: randomInt(50, 350), connectedTo: `gnb-${randomInt(1, 5)}`, status: 'active' });
+      }
+      break;
+
+    case 'Tree':
+      // Hierarchical
+      gNBs.push({ id: 'gnb-1', type: 'gNB', x: width / 2, y: 50, status: 'active' }); // Root
+      gNBs.push({ id: 'gnb-2', type: 'gNB', x: width / 4, y: 150, status: 'active' });
+      gNBs.push({ id: 'gnb-3', type: 'gNB', x: (width / 4) * 3, y: 150, status: 'active' });
+      gNBs.push({ id: 'gnb-4', type: 'gNB', x: width / 8, y: 250, status: 'active' });
+      gNBs.push({ id: 'gnb-5', type: 'gNB', x: (width / 8) * 3, y: 250, status: 'active' });
+      for (let i = 0; i < 10; i++) {
+        UEs.push({ id: `ue-${i + 1}`, type: 'UE', x: randomInt(100, 700), y: randomInt(200, 350), connectedTo: `gnb-${randomInt(1, 5)}`, status: 'active' });
+      }
+      break;
+
+    case 'Hybrid':
+    case 'Mesh':
+    default:
+      // The original random-ish scatter
+      return simulationState.topology;
+  }
   return { gNBs, UEs };
+};
+
+export const generateNetworkTopology = () => {
+  // If state has a specific topology type requested, generate it
+  if (simulationState.currentTopologyType && simulationState.currentTopologyType !== 'Mesh') {
+    return getTopologyLayout(simulationState.currentTopologyType);
+  }
+  return simulationState.topology;
 };
 
 // Generate real-time network metrics
@@ -36,8 +105,6 @@ export const generateNetworkMetrics = () => ({
   activeNodes: randomInt(15, 20),
   timestamp: Date.now(),
 });
-
-import { simulationState } from './state.js';
 
 // Generate agent states
 export const generateAgentStates = () => {

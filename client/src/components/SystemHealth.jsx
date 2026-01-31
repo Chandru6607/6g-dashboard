@@ -4,8 +4,21 @@ import './SystemHealth.css';
 
 const SystemHealth = () => {
     const [alerts, setAlerts] = useState([]);
-    const newAlert = useSocket('system:alert');
+    const newAlert = useSocket('alert:new'); // Corrected channel
     const alertsRef = useRef(null);
+
+    const handleRescueTroubleshoot = async () => {
+        try {
+            console.log('🆘 [UI] Triggering Rescue Agent troubleshooting...');
+            const response = await fetch('/api/system/rescue', { method: 'POST' });
+            const data = await response.json();
+            if (data.success) {
+                alert('🛡️ Rescue Agent: ' + data.message);
+            }
+        } catch (error) {
+            console.error('❌ Rescue request failed:', error);
+        }
+    };
 
     useEffect(() => {
         if (newAlert) {
@@ -21,8 +34,14 @@ const SystemHealth = () => {
     return (
         <div className="panel system-health">
             <div className="panel-header">
-                <h2 className="panel-title">System Health & Alerts</h2>
+                <div className="title-with-icon">
+                    <h2 className="panel-title">System Health & Alerts</h2>
+                    <span className="rescue-agent-badge" title="Rescue Agent is active and monitoring">🛡️ Rescue Active</span>
+                </div>
                 <div className="panel-actions">
+                    <button className="rescue-action-btn" onClick={handleRescueTroubleshoot} title="Perform Intensive System Troubleshooting">
+                        Fix Everything
+                    </button>
                     <span className="alert-count">{alerts.length}</span>
                 </div>
             </div>

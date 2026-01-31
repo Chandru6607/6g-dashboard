@@ -8,12 +8,22 @@ import cors from 'cors';
 import apiRoutes from './routes/api.js';
 import { initializeWebSocket } from './websocket/handlers.js';
 import { attachMCPServer } from './mcpServer.js';
+import { rescueAgent } from './services/rescueAgent.js';
 
 const app = express();
 const httpServer = createServer(app);
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:5173',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:3001',
+    'http://127.0.0.1:5173'
+];
+
 const io = new Server(httpServer, {
     cors: {
-        origin: ['http://localhost:3000', 'http://localhost:5173'],
+        origin: allowedOrigins,
         methods: ['GET', 'POST'],
         credentials: true
     }
@@ -25,16 +35,16 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware & MCP
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:5173'],
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true
 }));
 
+// Initialize MCP Server (Must be before body parsers to allow transport to handle its own streams)
+attachMCPServer(app);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Initialize MCP Server (before API routes but after body parsers)
-attachMCPServer(app);
 
 // API Routes
 app.use('/api', apiRoutes);
@@ -55,8 +65,11 @@ app.get('/', (req, res) => {
 // Initialize WebSocket
 initializeWebSocket(io);
 
+// Initialize Rescue Agent
+rescueAgent.initialize(io);
+
 // Start server
-httpServer.listen(PORT, () => {
+httpServer.listen(PORT, '0.0.0.0', () => {
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log('🚀 6G Digital Twin Dashboard Server');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');

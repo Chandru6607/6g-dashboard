@@ -14,7 +14,7 @@ class ApiService {
 
         // Fallback: Standard REST API
         try {
-            const response = await fetch('http://localhost:5000/api/network/status');
+            const response = await fetch('/api/network/status');
             if (response.ok) {
                 return await response.json();
             }
@@ -38,7 +38,7 @@ class ApiService {
         // For now, using a direct REST call as per the instruction's implied structure.
         try {
             // Placeholder for API_BASE_URL, assuming it would be defined elsewhere or hardcoded for this example
-            const API_BASE_URL = 'http://localhost:5000/api'; // Example base URL
+            const API_BASE_URL = '/api'; // Using relative path via Vite proxy
             const response = await fetch(`${API_BASE_URL}/agents/${agentId}/toggle`, {
                 method: 'POST',
             });
@@ -109,18 +109,27 @@ class ApiService {
 
     // System endpoints
     async autoConfigure() {
-        const response = await fetch('http://localhost:5000/api/system/autoconfig', {
+        console.log('📡 [API] Triggering system autoconfig...');
+        const response = await fetch('/api/system/autoconfig', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Autoconfig failed: ${response.status} ${errorText}`);
+        }
         return await response.json();
     }
 
     async disconnectSystem() {
-        const response = await fetch('http://localhost:5000/api/system/disconnect', {
+        console.log('📡 [API] Triggering system disconnect...');
+        const response = await fetch('/api/system/disconnect', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });
+        if (!response.ok) {
+            throw new Error(`Disconnect failed: ${response.status}`);
+        }
         return await response.json();
     }
 }

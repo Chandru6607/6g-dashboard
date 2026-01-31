@@ -1,6 +1,7 @@
 // WebSocket Handlers for Real-time Data Streaming
 
 import {
+    generateNetworkTopology,
     generateNetworkMetrics,
     generateAgentStates,
     generateTelemetryEvent,
@@ -23,21 +24,17 @@ export const initializeWebSocket = (io) => {
 
         // Send initial data
         socket.emit('simulation:state', { active: simulationState.active });
-        socket.emit('network:metrics', generateNetworkMetrics());
+        socket.emit('network:update', {
+            topology: generateNetworkTopology(),
+            metrics: generateNetworkMetrics()
+        });
         socket.emit('agents:update', generateAgentStates());
         socket.emit('sync:progress', { progress: getSyncProgress(), confidence: getAIConfidence() });
 
         // Start broadcasting intervals
         const intervals = [];
 
-        // Network metrics - every 2 seconds
-        intervals.push(
-            setInterval(() => {
-                if (simulationState.active) {
-                    socket.emit('network:metrics', generateNetworkMetrics());
-                }
-            }, 2000)
-        );
+        // Network metrics handled by global interval in api.js to ensure consistency
 
         // Agent states - every 5 seconds
         intervals.push(
