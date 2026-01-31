@@ -33,19 +33,23 @@ const Header = ({ connected, simulationActive, isSidebarOpen, onToggleSidebar })
     const handleAutoConfig = async () => {
         setIsConfiguring(true);
         console.log('🔧 [System] Starting auto-configuration...');
+
         try {
+            // Priority 1: Ensure Socket is connected first
+            if (!socketService.socket?.connected) {
+                console.log('🔌 [Socket] Initializing connection...');
+                socketService.connect();
+                // Wait a bit for connection
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+
+            // Priority 2: Call Autoconfig API
             const result = await apiService.autoConfigure();
             console.log('✅ [System] Auto-config result:', result);
 
-            // Re-initialize connections to ensure everything is fresh
+            // Priority 3: Connect MCP
             await mcpClient.connect();
             console.log('✅ [MCP] Connected');
-
-            // Force a socket state check if needed, though App.jsx handles it
-            if (!socketService.socket?.connected) {
-                console.log('🔌 [Socket] Reconnecting...');
-                socketService.connect();
-            }
 
         } catch (error) {
             console.error('❌ [System] Auto-configuration failed:', error);
