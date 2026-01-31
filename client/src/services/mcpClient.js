@@ -22,7 +22,8 @@ class MCPClientService {
             this.isManualDisconnect = false; // Reset flag on new connection attempt
 
             try {
-                const url = new URL("/mcp", window.location.origin);
+                const baseURL = import.meta.env.VITE_API_URL || window.location.origin;
+                const url = new URL("/mcp", baseURL);
                 this.transport = new SSEClientTransport(url);
 
                 this.client = new Client({

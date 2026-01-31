@@ -14,7 +14,8 @@ class ApiService {
 
         // Fallback: Standard REST API
         try {
-            const response = await fetch('/api/network/status');
+            const baseURL = import.meta.env.VITE_API_URL || '';
+            const response = await fetch(`${baseURL}/api/network/status`);
             if (response.ok) {
                 return await response.json();
             }
@@ -37,8 +38,9 @@ class ApiService {
         // const result = await mcpClient.callTool('control_agent', { action: 'toggle', agentId });
         // For now, using a direct REST call as per the instruction's implied structure.
         try {
-            // Placeholder for API_BASE_URL, assuming it would be defined elsewhere or hardcoded for this example
-            const API_BASE_URL = '/api'; // Using relative path via Vite proxy
+            // Use environment variable for base URL or fallback to relative path (proxy)
+            const baseURL = import.meta.env.VITE_API_URL || '';
+            const API_BASE_URL = `${baseURL}/api`;
             const response = await fetch(`${API_BASE_URL}/agents/${agentId}/toggle`, {
                 method: 'POST',
             });
@@ -110,7 +112,8 @@ class ApiService {
     // System endpoints
     async autoConfigure() {
         console.log('📡 [API] Triggering system autoconfig...');
-        const response = await fetch('/api/system/autoconfig', {
+        const baseURL = import.meta.env.VITE_API_URL || '';
+        const response = await fetch(`${baseURL}/api/system/autoconfig`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -123,7 +126,8 @@ class ApiService {
 
     async disconnectSystem() {
         console.log('📡 [API] Triggering system disconnect...');
-        const response = await fetch('/api/system/disconnect', {
+        const baseURL = import.meta.env.VITE_API_URL || '';
+        const response = await fetch(`${baseURL}/api/system/disconnect`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });

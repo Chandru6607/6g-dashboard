@@ -10,7 +10,8 @@ const SystemHealth = () => {
     const handleRescueTroubleshoot = async () => {
         try {
             console.log('🆘 [UI] Triggering Rescue Agent troubleshooting...');
-            const response = await fetch('/api/system/rescue', { method: 'POST' });
+            const baseURL = import.meta.env.VITE_API_URL || '';
+            const response = await fetch(`${baseURL}/api/system/rescue`, { method: 'POST' });
             const data = await response.json();
             if (data.success) {
                 alert('🛡️ Rescue Agent: ' + data.message);
