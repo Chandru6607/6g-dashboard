@@ -1,0 +1,231 @@
+.docs-container {
+    display: flex;
+    min-height: calc(100vh - var(--header-height));
+    background: #000000;
+    /* Deep black bg for enterprise docs */
+    color: #e5e7eb;
+    /* Light text */
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Left Sidebar - Navigation Tree */
+.docs-sidebar-left {
+    width: 260px;
+    flex-shrink: 0;
+    border-right: 1px solid #222;
+    background: #0a0a0a;
+    padding: 32px 0;
+    position: sticky;
+    top: calc(var(--header-height) + 1px);
+    height: calc(100vh - var(--header-height));
+    overflow-y: auto;
+}
+
+.docs-nav-group {
+    margin-bottom: 24px;
+}
+
+.docs-nav-title {
+    color: #f3f4f6;
+    font-size: 0.875rem;
+    font-weight: 700;
+    padding: 0 24px;
+    margin-bottom: 12px;
+}
+
+.docs-nav-link {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: 8px 24px;
+    color: #9ca3af;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+}
+
+.docs-nav-link:hover {
+    color: #fff;
+    background: #111;
+}
+
+.docs-nav-link.active {
+    color: #fff;
+    font-weight: 600;
+    border-left-color: var(--nvidia-green);
+    background: #1a1a1a;
+}
+
+/* Center Content */
+.docs-main-content {
+    flex: 1;
+    padding: 64px 80px;
+    max-width: 1000px;
+}
+
+.docs-article h1 {
+    font-size: 2.75rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 32px;
+    letter-spacing: -0.02em;
+}
+
+.docs-article h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 64px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 12px;
+}
+
+.docs-article p,
+.docs-article li {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #cccccc;
+    margin-bottom: 20px;
+}
+
+.docs-article a {
+    color: var(--nvidia-green);
+    text-decoration: none;
+}
+
+.docs-article a:hover {
+    text-decoration: underline;
+}
+
+/* Architecture Diagram Frame */
+.arch-diagram-frame {
+    margin: 48px 0;
+    padding: 32px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    background: #0a0a0a;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.arch-boxes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.arch-node {
+    flex: 1;
+    padding: 24px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    text-align: center;
+    background: #111;
+    transition: all 0.3s ease;
+}
+
+.arch-node:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(118, 185, 0, 0.1);
+    border-color: var(--nvidia-green);
+}
+
+.arch-node h4 {
+    color: #fff;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.arch-node p {
+    font-size: 0.85rem !important;
+    margin: 0 !important;
+    color: #aaa !important;
+}
+
+.arch-arrow {
+    color: #555;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Codeblocks */
+.docs-article pre {
+    background: #111;
+    color: #e5e7eb;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'Fira Code', ui-monospace, monospace;
+    font-size: 0.9rem;
+    margin: 32px 0;
+    border: 1px solid #222;
+}
+
+.docs-article code {
+    background: #222;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--nvidia-green);
+    font-family: 'Fira Code', ui-monospace, monospace;
+    font-size: 0.875em;
+}
+
+.docs-article pre code {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+}
+
+/* Right Sidebar - TOC */
+.docs-sidebar-right {
+    width: 240px;
+    flex-shrink: 0;
+    padding: 48px 24px;
+    position: sticky;
+    top: calc(var(--header-height) + 1px);
+    height: calc(100vh - var(--header-height));
+    overflow-y: auto;
+    background: #000;
+}
+
+.toc-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toc-link {
+    display: block;
+    font-size: 0.875rem;
+    color: #777;
+    text-decoration: none;
+    padding: 8px 0;
+    border-left: 2px solid transparent;
+    padding-left: 12px;
+    margin-left: -14px;
+    transition: all 0.2s;
+}
+
+.toc-link:hover {
+    color: #ddd;
+}
+
+.toc-link.active {
+    color: var(--nvidia-green);
+    border-left-color: var(--nvidia-green);
+    font-weight: 600;
+}

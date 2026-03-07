@@ -1,0 +1,30 @@
+{
+  "name": "6g-dashboard-backend",
+  "version": "1.0.0",
+  "description": "Backend API and WebSocket server for 6G Digital Twin Dashboard",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "cors": "^2.8.5",
+    "socket.io": "^4.8.1",
+    "redis": "^4.6.10",
+    "@socket.io/redis-adapter": "^8.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "6g",
+    "digital-twin",
+    "websocket",
+    "api",
+    "dashboard"
+  ],
+  "author": "",
+  "license": "MIT"
+}
