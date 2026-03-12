@@ -1,0 +1,664 @@
+/*!*******************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./components/Header.css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************/
+.header {
+    background: rgba(0, 0, 0, 0.8);
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+    border-bottom: 1px solid #333;
+    padding: var(--spacing-md) var(--spacing-lg);
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+}
+
+.header.glass {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: var(--glass-blur);
+            backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+    margin: 0;
+    border-radius: 0;
+    width: 100%;
+}
+
+.header-content {
+    max-width: 2560px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.logo-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.logo-glow {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, var(--nvidia-green) 0%, transparent 70%);
+    opacity: 0.2;
+    filter: blur(10px);
+    z-index: -1;
+}
+
+.header-logo-image {
+    width: 50px;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 5px rgba(118, 185, 0, 0.5));
+}
+
+.logo-title {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.logo-subtitle {
+    font-size: 0.75rem;
+    color: #888;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.header-stats {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.stat-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.stat-value-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.status-pill {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.stat-value {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #fff;
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+}
+
+.status-active {
+    color: var(--nvidia-green);
+    text-shadow: 0 0 10px rgba(118, 185, 0, 0.4);
+}
+
+.status-inactive {
+    color: #ff4444;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    padding-left: var(--spacing-lg);
+}
+
+.connect-btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 0;
+    /* Sharp */
+    border: 1px solid var(--nvidia-green);
+    background: transparent;
+    color: var(--nvidia-green);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.connect-btn:hover {
+    background: var(--nvidia-green);
+    color: #000;
+    box-shadow: 0 0 20px rgba(118, 185, 0, 0.4);
+}
+
+.connect-btn.connected {
+    border-color: #666;
+    color: #888;
+}
+
+.connect-btn.connected:hover {
+    border-color: #ff4444;
+    color: #ff4444;
+    background: transparent;
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.2);
+}
+
+.menu-toggle-btn {
+    background: transparent;
+    border: 1px solid #333;
+    color: var(--nvidia-green);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    margin-right: var(--spacing-md);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-toggle-btn:hover {
+    background: #111;
+    border-color: var(--nvidia-green);
+    box-shadow: 0 0 10px rgba(118, 185, 0, 0.2);
+}
+
+.disconnect-btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 0;
+    border: 1px solid #ff4444;
+    background: transparent;
+    color: #ff4444;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.disconnect-btn:hover {
+    background: #ff4444;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.4);
+}
+
+.connect-btn.loading,
+.disconnect-btn.loading {
+    border-color: #ffd700;
+    color: #ffd700;
+    cursor: wait;
+}
+/*!***********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./components/Navigation.css ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************/
+.navigation {
+    width: var(--sidebar-width-expanded);
+    height: 100vh;
+    background: #000;
+    /* Deep black for ChatGPT sidebar look */
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    flex-shrink: 0;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Inter', sans-serif;
+}
+
+.nav-header {
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: var(--header-height);
+    margin-bottom: var(--spacing-sm);
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-logo-image {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    border-radius: 6px;
+}
+
+.nav-logo-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #ececf1;
+    /* ChatGPT light text */
+    white-space: nowrap;
+}
+
+.nav-items {
+    flex: 1 1;
+    padding: 0 var(--spacing-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+}
+
+/* Base item styling mimicking ChatGPT pill buttons */
+.nav-item,
+.viz-osi-entry {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    /* Clean pill radius */
+    color: #ececf1;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+
+.nav-item:hover,
+.viz-osi-entry:hover {
+    background: #202123;
+    /* Subtle gray hover */
+}
+
+/* Active state is less pronounced, just slightly lighter bg */
+.nav-item.active {
+    background: #343541;
+    /* Active pane bg */
+    font-weight: 500;
+}
+
+.nav-icon-svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: #d1d5db;
+}
+
+.nav-item.active .nav-icon-svg {
+    color: #ececf1;
+}
+
+.nav-label {
+    flex: 1 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nav-footer {
+    padding: var(--spacing-sm);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    /* Thin subtle divider */
+    margin-top: auto;
+}
+
+.viz-osi-entry {
+    background: transparent;
+    border: none;
+    margin: 0;
+}
+
+.viz-osi-svg {
+    color: var(--nvidia-green);
+    /* Keep a hint of branding */
+}
+
+.viz-osi-entry:hover {
+    background: rgba(118, 185, 0, 0.1);
+}
+
+/* Collapsed State */
+.navigation.collapsed {
+    width: 60px;
+}
+
+.navigation.collapsed .nav-logo-text,
+.navigation.collapsed .nav-label {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-logo-text,
+.nav-label {
+    transition: opacity 0.2s ease, width 0.3s ease;
+}
+
+.navigation.collapsed .nav-header {
+    padding: var(--spacing-md) 16px;
+    justify-content: center;
+}
+
+.navigation.collapsed .nav-logo {
+    justify-content: center;
+    gap: 0;
+}
+
+.navigation.collapsed .nav-item,
+.navigation.collapsed .collapsed-entry {
+    justify-content: center;
+    padding: 10px;
+}
+
+.navigation.collapsed .nav-icon-svg {
+    margin: 0;
+}
+/*!*******************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./components/Footer.css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************/
+.footer {
+    background: #000;
+    border-top: 1px solid #222;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    width: 100%;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 2560px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.footer-main-text {
+    flex: 1 1;
+}
+
+.footer-main-text p {
+    color: #888;
+    font-size: 0.8rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-bullet {
+    color: var(--nvidia-green);
+}
+
+.footer-links {
+    display: flex;
+    gap: var(--spacing-lg);
+}
+
+.footer-link {
+    color: #888;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+    color: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .footer-links {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .footer-main-text p {
+        justify-content: center;
+    }
+}
+/*!*************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./app/globals.css ***!
+  \*************************************************************************************************************************************************************************************************************************************************************/
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+/*!*******************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./components/global.css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************/
+/* ===========================
+   6G Digital Twin Dashboard
+   Nvidia-Style Premium Theme
+   =========================== */
+
+/* CSS Variables - Design System */
+:root {
+    /* Brand Colors */
+    --nvidia-green: #76b900;
+    --nvidia-green-hover: #8cd600;
+    --bg-dark: #050505;
+    --bg-card: rgba(20, 20, 20, 0.7);
+    --bg-hover: rgba(40, 40, 40, 0.8);
+
+    /* Text Colors */
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1a1;
+    --text-accent: var(--nvidia-green);
+
+    /* Semantic Colors */
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-error: #ef4444;
+    --color-info: #00f3ff;
+    --color-blue: #3b82f6;
+
+    /* Spacing System (Tighter, high-density scaling for smaller rectangles) */
+    --spacing-xs: clamp(0.2rem, 0.4vw, 0.4rem);
+    --spacing-sm: clamp(0.4rem, 0.8vw, 0.75rem);
+    --spacing-md: clamp(0.75rem, 1vw, 1rem);
+    --spacing-lg: clamp(1rem, 1.5vw, 1.25rem);
+    --spacing-xl: clamp(1.5rem, 2vw, 2rem);
+
+    /* Curvy / Glassmorphism Theme Base */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.9);
+
+    /* Glassmorphism */
+    --glass-bg: rgba(20, 20, 20, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-blur: blur(12px);
+
+    /* Glows */
+    --glow-green: 0 0 20px rgba(118, 185, 0, 0.3);
+    --glow-cyan: 0 0 20px rgba(0, 243, 255, 0.4);
+
+    /* Transitions */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-size: clamp(14px, 1vw, 16px);
+    /* Fluid base font size to prevent 100% res overwhelming */
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: clamp(1.8rem, 2vw, 2.5rem);
+}
+
+h2 {
+    font-size: clamp(1.4rem, 1.5vw, 1.8rem);
+    margin-bottom: var(--spacing-md);
+}
+
+h3 {
+    font-size: clamp(1.1rem, 1.2vw, 1.4rem);
+}
+
+a {
+    color: var(--nvidia-green);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--nvidia-green-hover);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--nvidia-green);
+}
+
+/* Utilities */
+.text-accent {
+    color: var(--nvidia-green);
+}
+
+.bg-dark {
+    background-color: var(--bg-dark);
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

@@ -1,0 +1,225 @@
+.app {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+.main-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+  /* Changed to hidden to let content-area scroll */
+  position: relative;
+  height: 100vh;
+}
+
+.content-area {
+  flex: 1;
+  padding: 0;
+  max-width: 100%;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  min-height: calc(100vh - var(--header-height));
+  align-content: start;
+}
+
+/* Panel Styles */
+.panel {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  position: relative;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--nvidia-green), transparent);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.panel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  border-color: #555;
+}
+
+.panel:hover::before {
+  opacity: 1;
+}
+
+.panel-header {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.panel-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.panel-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.panel-body {
+  padding: var(--spacing-lg);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Grid Positioning */
+.network-overview {
+  grid-column: span 12;
+  min-height: 250px;
+  /* Reduced from 400px to eliminate wasted space */
+}
+
+.digital-twin-control {
+  grid-column: span 6;
+}
+
+.multi-agent-rl {
+  grid-column: span 6;
+}
+
+.telemetry-stream {
+  grid-column: span 4;
+}
+
+.experiment-manager {
+  grid-column: span 8;
+}
+
+.performance-analytics {
+  grid-column: span 8;
+}
+
+.system-health {
+  grid-column: span 4;
+}
+
+.curvy-theme .panel {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  padding: var(--spacing-sm);
+}
+
+.panel.glass {
+  box-shadow: var(--shadow-lg);
+}
+
+.topology-selector {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.topo-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.topo-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.topo-btn.active {
+  background: var(--nvidia-green);
+  color: #000;
+  border-color: var(--nvidia-green);
+  box-shadow: var(--glow-green);
+}
+
+.full-width {
+  grid-column: span 12 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 1600px) {
+  .dashboard {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  .network-overview {
+    grid-column: span 8;
+  }
+
+  .digital-twin-control,
+  .multi-agent-rl {
+    grid-column: span 4;
+  }
+
+  .telemetry-stream {
+    grid-column: span 3;
+  }
+
+  .experiment-manager {
+    grid-column: span 5;
+  }
+
+  .performance-analytics {
+    grid-column: span 5;
+  }
+
+  .system-health {
+    grid-column: span 3;
+  }
+}
+
+@media (max-width: 1200px) {
+  .dashboard {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .network-overview,
+  .digital-twin-control,
+  .multi-agent-rl,
+  .telemetry-stream,
+  .experiment-manager,
+  .performance-analytics,
+  .system-health {
+    grid-column: span 4;
+  }
+}

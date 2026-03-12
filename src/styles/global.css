@@ -1,0 +1,154 @@
+/* ===========================
+   6G Digital Twin Dashboard
+   Nvidia-Style Premium Theme
+   =========================== */
+
+/* CSS Variables - Design System */
+:root {
+    /* Brand Colors */
+    --nvidia-green: #76b900;
+    --nvidia-green-hover: #8cd600;
+    --bg-dark: #050505;
+    --bg-card: rgba(20, 20, 20, 0.7);
+    --bg-hover: rgba(40, 40, 40, 0.8);
+
+    /* Text Colors */
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1a1;
+    --text-accent: var(--nvidia-green);
+
+    /* Semantic Colors */
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-error: #ef4444;
+    --color-info: #00f3ff;
+    --color-blue: #3b82f6;
+
+    /* Spacing System (Tighter, high-density scaling for smaller rectangles) */
+    --spacing-xs: clamp(0.2rem, 0.4vw, 0.4rem);
+    --spacing-sm: clamp(0.4rem, 0.8vw, 0.75rem);
+    --spacing-md: clamp(0.75rem, 1vw, 1rem);
+    --spacing-lg: clamp(1rem, 1.5vw, 1.25rem);
+    --spacing-xl: clamp(1.5rem, 2vw, 2rem);
+
+    /* Curvy / Glassmorphism Theme Base */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.9);
+
+    /* Glassmorphism */
+    --glass-bg: rgba(20, 20, 20, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-blur: blur(12px);
+
+    /* Glows */
+    --glow-green: 0 0 20px rgba(118, 185, 0, 0.3);
+    --glow-cyan: 0 0 20px rgba(0, 243, 255, 0.4);
+
+    /* Transitions */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-size: clamp(14px, 1vw, 16px);
+    /* Fluid base font size to prevent 100% res overwhelming */
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: clamp(1.8rem, 2vw, 2.5rem);
+}
+
+h2 {
+    font-size: clamp(1.4rem, 1.5vw, 1.8rem);
+    margin-bottom: var(--spacing-md);
+}
+
+h3 {
+    font-size: clamp(1.1rem, 1.2vw, 1.4rem);
+}
+
+a {
+    color: var(--nvidia-green);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--nvidia-green-hover);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--nvidia-green);
+}
+
+/* Utilities */
+.text-accent {
+    color: var(--nvidia-green);
+}
+
+.bg-dark {
+    background-color: var(--bg-dark);
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

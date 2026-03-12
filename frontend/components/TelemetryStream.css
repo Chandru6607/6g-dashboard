@@ -1,0 +1,116 @@
+.telemetry-stats {
+    display: flex;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+}
+
+.telemetry-stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.telemetry-stat .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+}
+
+.telemetry-stat .stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-cyan);
+}
+
+.telemetry-stat .stat-unit {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.event-timeline {
+    max-height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.event-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid var(--color-cyan);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    animation: slideIn 0.3s ease;
+}
+
+.event-item.severity-warning {
+    border-left-color: var(--color-warning);
+}
+
+.event-item.severity-error {
+    border-left-color: var(--color-danger);
+}
+
+.event-item.severity-critical {
+    border-left-color: var(--color-danger);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.event-timestamp {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    font-family: 'Courier New', monospace;
+}
+
+.event-source {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+}
+
+.event-message {
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    font-family: 'Courier New', monospace;
+}
+
+.select-filter {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.75rem;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    outline: none;
+    transition: all var(--transition-base);
+}
+
+.select-filter:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--color-cyan);
+}
+
+.select-filter option {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-tertiary);
+    padding: var(--spacing-xl);
+}

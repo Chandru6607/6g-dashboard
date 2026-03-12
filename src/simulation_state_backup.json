@@ -1,0 +1,148 @@
+{
+  "active": true,
+  "startTime": 1772736765598,
+  "scenario": "default",
+  "agents": [
+    {
+      "id": "resource-allocation",
+      "name": "Resource Allocation Agent",
+      "state": "training",
+      "episodes": 120,
+      "avgReward": "0.1320",
+      "convergence": "13.20"
+    },
+    {
+      "id": "congestion-control",
+      "name": "Congestion Control Agent",
+      "state": "training",
+      "episodes": 120,
+      "avgReward": "0.1320",
+      "convergence": "13.20"
+    },
+    {
+      "id": "mobility-management",
+      "name": "Mobility Management Agent",
+      "state": "training",
+      "episodes": 120,
+      "avgReward": "0.1320",
+      "convergence": "13.20"
+    }
+  ],
+  "topology": {
+    "gNBs": [
+      {
+        "id": "gnb-1",
+        "type": "gNB",
+        "x": 150,
+        "y": 100,
+        "status": "active"
+      },
+      {
+        "id": "gnb-2",
+        "type": "gNB",
+        "x": 150,
+        "y": 220,
+        "status": "active"
+      },
+      {
+        "id": "gnb-3",
+        "type": "gNB",
+        "x": 150,
+        "y": 340,
+        "status": "active"
+      },
+      {
+        "id": "gnb-4",
+        "type": "gNB",
+        "x": 330,
+        "y": 100,
+        "status": "active"
+      },
+      {
+        "id": "gnb-5",
+        "type": "gNB",
+        "x": 330,
+        "y": 220,
+        "status": "active"
+      },
+      {
+        "id": "gnb-6",
+        "type": "gNB",
+        "x": 330,
+        "y": 340,
+        "status": "active"
+      },
+      {
+        "id": "gnb-7",
+        "type": "gNB",
+        "x": 510,
+        "y": 100,
+        "status": "active"
+      },
+      {
+        "id": "gnb-8",
+        "type": "gNB",
+        "x": 510,
+        "y": 220,
+        "status": "active"
+      },
+      {
+        "id": "gnb-9",
+        "type": "gNB",
+        "x": 510,
+        "y": 340,
+        "status": "active"
+      },
+      {
+        "id": "gnb-10",
+        "type": "gNB",
+        "x": 690,
+        "y": 100,
+        "status": "active"
+      },
+      {
+        "id": "gnb-11",
+        "type": "gNB",
+        "x": 690,
+        "y": 220,
+        "status": "active"
+      },
+      {
+        "id": "gnb-12",
+        "type": "gNB",
+        "x": 690,
+        "y": 340,
+        "status": "active"
+      }
+    ],
+    "UEs": [
+      {
+        "id": "ue-gnb-1-0",
+        "type": "UE",
+        "x": 129.59827196067033,
+        "y": 94.11357335408914,
+        "connectedTo": "gnb-1",
+        "status": "active"
+      },
+      {
+        "id": "ue-gnb-1-1",
+        "type": "UE",
+        "x": 140.48036145232274,
+        "y": 103.80737712753596,
+        "connectedTo": "gnb-1",
+        "status": "active"
+      },
+      {
+        "id": "ue-gnb-2-0",
+        "type": "UE",
+        "x": 155.12251396312948,
+        "y": 184.56092392263992,
+        "connectedTo": "gnb-2",
+        "status": "active"
+      },
+      {
+        "id": "ue-gnb-2-1",
+        "type": "UE",
+        "x": 178.39664883101258,
+        "y": 225.2126020190717,
+        "con

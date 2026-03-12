@@ -1,30 +1,38 @@
 {
-  "name": "6g-dashboard-backend",
-  "version": "1.0.0",
-  "description": "Backend API and WebSocket server for 6G Digital Twin Dashboard",
+  "name": "6g-dashboard-next",
+  "version": "0.1.0",
+  "private": true,
   "type": "module",
-  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js",
+    "lint": "next lint"
   },
   "dependencies": {
-    "express": "^4.21.2",
-    "cors": "^2.8.5",
-    "socket.io": "^4.8.1",
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "@react-three/drei": "9.122.0",
+    "@react-three/fiber": "8.18.0",
+    "@socket.io/redis-adapter": "^8.2.0",
+    "chart.js": "4.4.1",
+    "cors": "2.8.5",
+    "express": "^4.22.1",
+    "framer-motion": "11.18.2",
+    "jspdf": "^4.2.0",
+    "jspdf-autotable": "5.0.7",
+    "next": "14.2.22",
+    "react": "18.3.1",
+    "react-chartjs-2": "5.2.0",
+    "react-dom": "18.3.1",
+    "recharts": "2.15.4",
     "redis": "^4.6.10",
-    "@socket.io/redis-adapter": "^8.2.0"
+    "socket.io": "4.8.1",
+    "socket.io-client": "4.7.4",
+    "three": "0.160.0"
   },
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "keywords": [
-    "6g",
-    "digital-twin",
-    "websocket",
-    "api",
-    "dashboard"
-  ],
-  "author": "",
-  "license": "MIT"
+  "devDependencies": {
+    "eslint": "9.0.0",
+    "eslint-config-next": "14.2.22",
+    "nodemon": "3.1.9"
+  }
 }
