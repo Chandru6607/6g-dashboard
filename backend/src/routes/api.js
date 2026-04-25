@@ -239,4 +239,31 @@ router.post('/network/topology/select', (req, res) => {
     }
 });
 
+// Hotspot endpoints
+router.get('/hotspot/status', (req, res) => {
+    res.json(simulationState.hotspot);
+});
+
+router.post('/hotspot/toggle', (req, res) => {
+    simulationState.hotspot.active = !simulationState.hotspot.active;
+    
+    if (simulationState.hotspot.active) {
+        simulationState.hotspot.optimized = true;
+        console.log('📶 [Hotspot] 6G-Dashboard Connect activated with optimized speed');
+    } else {
+        simulationState.hotspot.optimized = false;
+        console.log('📶 [Hotspot] 6G-Dashboard Connect deactivated');
+    }
+
+    const io = req.app.get('io');
+    io.emit('hotspot:update', simulationState.hotspot);
+
+    res.json({
+        success: true,
+        active: simulationState.hotspot.active,
+        ssid: simulationState.hotspot.ssid,
+        optimized: simulationState.hotspot.optimized
+    });
+});
+
 export default router;

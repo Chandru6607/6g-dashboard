@@ -83,6 +83,13 @@ export default function DashboardPage() {
                     <div className="system-health panel glass full-width">
                         <div className="panel-header">
                             <h2 className="panel-title">🏥 System Integrity</h2>
+                            <div className="panel-actions">
+                                <Link href="/hotspot">
+                                    <button className="topo-btn active" style={{ background: '#8b5cf6', borderColor: '#8b5cf6' }}>
+                                        🚀 Initiate 6G Hotspot
+                                    </button>
+                                </Link>
+                            </div>
                         </div>
                         <div className="panel-body">
                             <SystemHealth />

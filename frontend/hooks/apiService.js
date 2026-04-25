@@ -93,6 +93,15 @@ class ApiService {
         console.log('📡 [API] Triggering system disconnect...');
         return this._fetch('/api/system/disconnect', { method: 'POST' });
     }
+
+    // Hotspot methods
+    async getHotspotStatus() {
+        return this._fetch('/api/hotspot/status');
+    }
+
+    async toggleHotspot() {
+        return this._fetch('/api/hotspot/toggle', { method: 'POST' });
+    }
 }
 
 export default new ApiService();
