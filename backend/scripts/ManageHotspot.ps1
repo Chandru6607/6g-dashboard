@@ -40,8 +40,26 @@ try {
         Write-Host "State: $($tetheringManager.TetheringOperationalState)"
         Write-Host "ClientCount: $($tetheringManager.ClientCount)"
     }
+    elseif ($action -eq "get-clients") {
+        $clients = $tetheringManager.GetClients()
+        if ($null -eq $clients) {
+            Write-Host "[]"
+        } else {
+            $clientList = @()
+            foreach ($client in $clients) {
+                $clientList += @{
+                    IPAddress = $client.HostNames[0].ToString()
+                    MacAddress = $client.MacAddress
+                }
+            }
+            $clientList | ConvertTo-Json
+        }
+    }
 }
 catch {
-    Write-Error $_.Exception.Message
-    exit 1
+    if ($action -eq "get-clients") { Write-Host "[]" }
+    else {
+        Write-Error $_.Exception.Message
+        exit 1
+    }
 }

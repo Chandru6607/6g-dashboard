@@ -65,46 +65,31 @@ class HotspotService {
 
     async updateConnectedDevices() {
         try {
-            // Step 1: Discover the Hotspot Interface Index
-            // Usually Windows Hotspot uses the 192.168.137.x subnet
-            const findInterfaceCmd = `powershell -Command "Get-NetIPAddress -IPAddress '192.168.137.1' | Select-Object -ExpandProperty InterfaceIndex"`;
-            let interfaceIndex = 17; // Default fallback
-            try {
-                const { stdout: idx } = await execAsync(findInterfaceCmd);
-                if (idx.trim()) interfaceIndex = parseInt(idx.trim());
-            } catch (e) {}
-
-            // Step 2: Get neighbors on that specific interface
-            // We include Reachable, Stale, Delay, and Permanent (ignore Unreachable/Incomplete)
-            const psCommand = `powershell -Command "Get-NetNeighbor -InterfaceIndex ${interfaceIndex} | Where-Object { $_.State -match 'Reachable|Stale|Delay|Permanent' } | Select-Object IPAddress, LinkLayerAddress, State | ConvertTo-Json"`;
-            const { stdout } = await execAsync(psCommand);
+            // Step 1: Use the native Windows Hotspot Manager to get the client list
+            // This is the most accurate source and reflects the same list seen in Windows Settings
+            const command = `powershell -ExecutionPolicy Bypass -File "${SCRIPT_PATH}" -action get-clients`;
+            const { stdout } = await execAsync(command);
             
-            let neighbors = [];
-            if (stdout.trim()) {
+            let clients = [];
+            if (stdout.trim() && stdout.trim() !== '[]') {
                 try {
-                    neighbors = JSON.parse(stdout);
-                    if (!Array.isArray(neighbors)) neighbors = [neighbors];
+                    // Extract JSON from stdout (in case PS writes other info)
+                    const jsonMatch = stdout.match(/\[[\s\S]*\]/);
+                    if (jsonMatch) {
+                        clients = JSON.parse(jsonMatch[0]);
+                        if (!Array.isArray(clients)) clients = [clients];
+                    }
                 } catch (e) {
-                    console.error('⚠️ [Hotspot] PS Parse Error:', e.message);
+                    console.error('⚠️ [Hotspot] Native Client Parse Error:', e.message);
                 }
             }
 
-            // Step 3: Parse and Map
-            const devices = neighbors.map(n => {
-                const ip = n.IPAddress;
-                const mac = n.LinkLayerAddress;
+            // Step 2: Parse and Map
+            const devices = clients.map(c => {
+                const ip = c.IPAddress;
+                const mac = c.MacAddress;
 
-                // STRICT FILTERING: 
-                // 1. Must be a valid IPv4
-                // 2. Must NOT be multicast (224.x.x.x or 239.x.x.x)
-                // 3. Must NOT be the gateway (192.168.137.1)
-                // 4. Must NOT be a broadcast/loopback entry
-                if (!ip || ip.includes(':')) return null;
-                if (ip.startsWith('224.') || ip.startsWith('239.') || ip.startsWith('169.254.')) return null;
-                if (ip === '192.168.137.1' || ip.endsWith('.255')) return null;
-                
-                // Avoid entries with all-zero MACs (often transient broadcast placeholders)
-                if (mac === '00-00-00-00-00-00' || !mac) return null;
+                if (!ip || !mac) return null;
 
                 return {
                     id: `dev-${mac.replace(/[:-]/g, '').toLowerCase()}-${ip.split('.').pop()}`,
@@ -117,24 +102,15 @@ class HotspotService {
                 };
             }).filter(Boolean);
 
-            // Step 4: De-duplicate by MAC (keep only one entry per device)
-            const uniqueDevices = [];
-            const seenMacs = new Set();
-            for (const dev of devices) {
-                if (!seenMacs.has(dev.mac)) {
-                    seenMacs.add(dev.mac);
-                    uniqueDevices.push(dev);
-                }
-            }
-
-            // Step 5: Final State Update
-            simulationState.hotspot.connectedDevices = uniqueDevices;
+            // Step 3: Final State Update
+            simulationState.hotspot.connectedDevices = devices;
             
             if (this.io) {
                 this.io.emit('hotspot:update', simulationState.hotspot);
             }
         } catch (error) {
-            // Robust Fallback: ARP scan for the specific hotspot subnet
+            console.error('❌ [Hotspot] Native discovery failed, falling back to ARP:', error.message);
+            // Fallback: ARP scan as a safety net
             try {
                 const { stdout: arpOut } = await execAsync('arp -a');
                 const devices = this.parseArpOutput(arpOut);
