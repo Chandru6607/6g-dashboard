@@ -56,7 +56,9 @@ const SystemHealth = () => {
                                 <span className={`badge badge-${alert.severity === 'critical' ? 'danger' : alert.severity === 'warning' ? 'warning' : 'info'}`}>
                                     {alert.severity.toUpperCase()}
                                 </span>
-                                <span className="alert-time">{new Date(alert.timestamp).toLocaleTimeString()}</span>
+                                <span className="alert-time">
+                                    {alert.timestamp ? new Date(alert.timestamp).toLocaleTimeString() : new Date().toLocaleTimeString()}
+                                </span>
                             </div>
                             <div className="alert-message">{alert.message}</div>
                             <div className="alert-source">{alert.source}</div>

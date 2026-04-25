@@ -30,71 +30,47 @@ class SimpleErrorBoundary extends React.Component {
                     textAlign: 'center',
                     padding: '20px'
                 }}>
-                    <div style={{ fontSize: '48px', marginBottom: '20px' }}>🚀</div>
-                    <h1 style={{ color: '#00f3ff', marginBottom: '20px' }}>
-                        6G Digital Twin Dashboard
+                    <div style={{ fontSize: '48px', marginBottom: '20px' }}>⚠️</div>
+                    <h1 style={{ color: '#00f3ff', marginBottom: '10px' }}>
+                        System Interface Error
                     </h1>
-                    <p style={{ fontSize: '18px', marginBottom: '30px', opacity: 0.8 }}>
-                        Demo Mode - Visualization System
+                    <p style={{ fontSize: '16px', marginBottom: '30px', opacity: 0.8 }}>
+                        The 6G Dashboard encountered an unexpected issue while rendering.
                     </p>
                     
                     <div style={{
-                        background: 'rgba(0, 0, 0, 0.5)',
-                        border: '1px solid #00f3ff',
-                        borderRadius: '12px',
-                        padding: '30px',
-                        maxWidth: '600px',
-                        margin: '0 auto'
+                        background: 'rgba(0, 0, 0, 0.4)',
+                        border: '1px solid #ef4444',
+                        borderRadius: '8px',
+                        padding: '20px',
+                        maxWidth: '800px',
+                        margin: '0 auto',
+                        textAlign: 'left',
+                        fontFamily: 'monospace',
+                        overflowX: 'auto'
                     }}>
-                        <h2 style={{ color: '#f59e0b', marginBottom: '15px' }}>
-                            🎯 Demo Features Available:
-                        </h2>
-                        <ul style={{ textAlign: 'left', lineHeight: '1.8' }}>
-                            <li>🌐 Network Topology Visualization</li>
-                            <li>🧠 AI Agent Training Simulation</li>
-                            <li>📊 Real-time Performance Metrics</li>
-                            <li>📡 System Health Monitoring</li>
-                            <li>🔄 Automatic Topology Switching</li>
-                        </ul>
-                        
-                        <div style={{ marginTop: '20px' }}>
-                            <button 
-                                onClick={() => window.location.href = '/'}
-                                style={{
-                                    background: '#00f3ff',
-                                    color: '#0f172a',
-                                    border: 'none',
-                                    padding: '12px 24px',
-                                    borderRadius: '6px',
-                                    fontSize: '16px',
-                                    fontWeight: 'bold',
-                                    cursor: 'pointer',
-                                    marginRight: '10px'
-                                }}
-                            >
-                                🏠 Go to Dashboard
-                            </button>
-                            <button 
-                                onClick={() => window.location.href = '/digital-twin'}
-                                style={{
-                                    background: '#8b5cf6',
-                                    color: '#ffffff',
-                                    border: 'none',
-                                    padding: '12px 24px',
-                                    borderRadius: '6px',
-                                    fontSize: '16px',
-                                    fontWeight: 'bold',
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                🔧 Try Twin Engine
-                            </button>
-                        </div>
+                        <p style={{ color: '#ef4444', fontWeight: 'bold', marginBottom: '10px' }}>Error Details:</p>
+                        <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
+                            {this.state.error?.toString()}
+                        </pre>
                     </div>
                     
-                    <div style={{ marginTop: '30px', fontSize: '14px', opacity: 0.6 }}>
-                        <p>6G Digital Twin Dashboard - Research & Education Platform</p>
-                        <p>Advanced Network Visualization with AI Agent Training</p>
+                    <div style={{ marginTop: '30px' }}>
+                        <button 
+                            onClick={() => window.location.reload()}
+                            style={{
+                                background: '#00f3ff',
+                                color: '#0f172a',
+                                border: 'none',
+                                padding: '12px 24px',
+                                borderRadius: '6px',
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            🔄 Reload & Retry
+                        </button>
                     </div>
                 </div>
             );

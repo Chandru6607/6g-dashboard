@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import apiService from '../hooks/apiService';
 import { mcpClient } from '../hooks/mcpClient';
+import socketService from '../hooks/socketService';
 import './ConnectedServers.css';
 
 const ConnectedServers = () => {

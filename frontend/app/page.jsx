@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import NetworkOverview from '../components/NetworkOverview';
 import SystemHealth from '../components/SystemHealth';
 import ConnectedServers from '../components/ConnectedServers';
-import ExperimentManager from '../components/ExperimentManager';
 import { motion } from 'framer-motion';
 
 export default function DashboardPage() {
@@ -81,14 +80,7 @@ export default function DashboardPage() {
                         </div>
                     </div>
 
-                    <div className="multi-agent-rl panel glass">
-                        <div className="panel-header">
-                            <h2 className="panel-title">🧠 Agent Training</h2>
-                        </div>
-                        <div className="panel-body">
-                            <ExperimentManager />
-                        </div>
-                    </div>
+
 
                     <div className="system-health panel glass full-width">
                         <div className="panel-header">
