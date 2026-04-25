@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -30,36 +30,26 @@ export default function RootLayout({ children }) {
         setTimeout(() => {
             try {
                 const socket = socketService.connect();
-                if (socket && socket.connected) {
-                    console.log('✅ [UI] Real WebSocket connected');
-                }
                 
                 socketService.on('connect', () => {
                     console.log('✅ [UI] Real WebSocket connected');
-                });
-
-                socketService.on('disconnect', () => {
-                    console.log('❌ [UI] Real WebSocket disconnected');
                 });
 
                 socketService.on('simulation:state', (state) => {
                     setSimulationActive(state.active);
                 });
 
-
             } catch (error) {
                 console.log('⚠️ [UI] Real connections failed, continuing with fake data');
             }
-        }, 2000); // Try real connections after 2 seconds
+        }, 2000); 
 
-        return () => {
-            // socketService.disconnect();
-        };
+        return () => {};
     }, []);
 
     return (
         <html lang="en">
-            <body suppressHydrationWarning>
+            <body suppressHydrationWarning style={{ margin: 0, padding: 0, background: '#050505' }}>
                 <SimpleErrorBoundary>
                     <div className="app">
                         <Navigation isOpen={isSidebarOpen} />
@@ -70,8 +60,21 @@ export default function RootLayout({ children }) {
                                 isSidebarOpen={isSidebarOpen}
                                 onToggleSidebar={toggleSidebar}
                             />
-                            <div className="content-area">
-                                {children}
+                            <div className="content-area" id="main-content-area">
+                                <Suspense fallback={
+                                    <div style={{ 
+                                        display: 'flex', 
+                                        justifyContent: 'center', 
+                                        alignItems: 'center', 
+                                        height: '100%', 
+                                        color: '#76b900' 
+                                    }}>
+                                        <div className="loader"></div>
+                                        <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>Loading 6G Module...</span>
+                                    </div>
+                                }>
+                                    {children}
+                                </Suspense>
                             </div>
                             <Footer />
                         </div>

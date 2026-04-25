@@ -17,7 +17,7 @@ export default function ComparisonPage() {
                 <p className="page-subtitle">Compare different scenarios and configurations</p>
             </div>
 
-            <div className="dashboard">
+            <div className="dashboard" style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 'var(--spacing-lg)' }}>
                 <div style={{ gridColumn: 'span 12' }}>
                     <ConnectedServers />
                 </div>

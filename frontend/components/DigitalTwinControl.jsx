@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
 import { useSocket } from '../hooks/useSocket';
 import { Line } from 'react-chartjs-2';
 import {

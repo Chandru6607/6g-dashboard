@@ -22,7 +22,14 @@
     --color-warning: #f59e0b;
     --color-error: #ef4444;
     --color-info: #00f3ff;
+    --color-cyan: #00f3ff;
     --color-blue: #3b82f6;
+    --color-danger: #ef4444;
+
+    /* Backgrounds */
+    --bg-primary: #050505;
+    --bg-secondary: #0f172a;
+    --text-tertiary: #64748b;
 
     /* Spacing System (Tighter, high-density scaling for smaller rectangles) */
     --spacing-xs: clamp(0.2rem, 0.4vw, 0.4rem);

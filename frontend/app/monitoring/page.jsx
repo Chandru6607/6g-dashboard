@@ -18,7 +18,7 @@ export default function MonitoringPage() {
                 <p className="page-subtitle">Live control and telemetry stream</p>
             </div>
 
-            <div className="dashboard">
+            <div className="dashboard" style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 'var(--spacing-lg)' }}>
                 <div className="digital-twin-control" style={{ gridColumn: 'span 6' }}>
                     <DigitalTwinControl />
                 </div>
