@@ -1,42 +1,28 @@
 {
   "name": "6g-dashboard-next",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "main": "main.js",
+  "description": "6G Digital Twin Dashboard — AI-Native Multi-Agent Orchestration Platform",
   "scripts": {
-    "dev": "node server.js",
     "electron": "electron .",
-    "build": "next build",
-    "start": "NODE_ENV=production node server.js",
-    "lint": "next lint"
+    "backend": "npm run dev --prefix backend",
+    "frontend": "npm run dev --prefix frontend",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "lint": "next lint --prefix frontend"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.27.1",
-    "@react-three/drei": "9.122.0",
-    "@react-three/fiber": "8.18.0",
     "@socket.io/redis-adapter": "^8.2.0",
-    "chart.js": "4.4.1",
     "cors": "2.8.5",
     "express": "^4.22.1",
-    "framer-motion": "11.18.2",
-    "jspdf": "^4.2.0",
-    "jspdf-autotable": "5.0.7",
-    "next": "14.2.22",
-    "react": "18.3.1",
-    "react-chartjs-2": "5.2.0",
-    "react-dom": "18.3.1",
-    "recharts": "2.15.4",
     "redis": "^4.6.10",
-    "socket.io": "4.8.1",
-    "socket.io-client": "4.7.4",
-    "three": "0.160.0"
+    "socket.io": "4.8.1"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "electron": "^41.3.0",
     "electron-is-dev": "^3.0.1",
-    "eslint": "9.0.0",
-    "eslint-config-next": "14.2.22",
     "nodemon": "3.1.9"
   }
 }

@@ -149,11 +149,152 @@ a:hover {
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
+
+/* ===========================
+   Dashboard Layout
+   =========================== */
+.dashboard {
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+/* ===========================
+   Panel / Card System
+   =========================== */
+.panel {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.panel.glass {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.panel-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: 0.02em;
+}
+
+.panel-body {
+    padding: var(--spacing-lg);
+}
+
+.panel-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* ===========================
+   Topology Selector Buttons
+   =========================== */
+.topology-selector {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.topo-btn {
+    padding: 0.3rem 0.9rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.topo-btn:hover {
+    border-color: var(--nvidia-green);
+    color: var(--nvidia-green);
+    background: rgba(118, 185, 0, 0.08);
+}
+
+.topo-btn.active {
+    background: var(--nvidia-green);
+    border-color: var(--nvidia-green);
+    color: #000;
+    box-shadow: 0 0 12px rgba(118, 185, 0, 0.4);
+}
+
+/* ===========================
+   Badge / Pill
+   =========================== */
+.badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badge-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--color-success);
+    border: 1px solid var(--color-success);
+}
+
+.pulse {
+    animation: pulseBadge 2s infinite ease-in-out;
+}
+
+@keyframes pulseBadge {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.6; }
+}
+
+/* ===========================
+   Utility / Color Helpers
+   =========================== */
+.text-accent  { color: var(--nvidia-green); }
+.text-info    { color: var(--color-info); }
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-error   { color: var(--color-error); }
+
+.status-active  { color: var(--nvidia-green); text-shadow: 0 0 10px rgba(118,185,0,0.4); }
+.status-warning { color: var(--color-warning); }
+.status-inactive{ color: var(--color-error); }
+
+/* pill dot inside header stat cards */
+.status-pill {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+.status-pill.status-active   { background: var(--nvidia-green); box-shadow: 0 0 8px rgba(118,185,0,0.6); }
+.status-pill.status-warning  { background: var(--color-warning); }
+.status-pill.status-inactive { background: var(--color-error); }
+
+/* ===========================
+   Curvy / Extra theme flag
+   (kept for backwards compat)
+   =========================== */
+.curvy-theme { /* no-op — theme handled via CSS vars */ }

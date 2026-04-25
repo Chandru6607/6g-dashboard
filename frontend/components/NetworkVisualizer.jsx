@@ -1,33 +1,40 @@
 'use client';
 
-import { useRef, useEffect, useState, Suspense } from 'react';
+import React, { useRef, useEffect, useState, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Html } from '@react-three/drei';
 import * as THREE from 'three';
+import SimpleNetworkVisualizer from './SimpleNetworkVisualizer';
 
-// Error boundary for 3D rendering
-const NetworkVisualizerErrorBoundary = ({ children }) => {
-    return (
-        <div style={{ 
-            display: 'flex', 
-            flexDirection: 'column',
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            height: '100%',
-            color: '#00f3ff',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            textAlign: 'center',
-            padding: '20px'
-        }}>
-            <div style={{ fontSize: '48px', marginBottom: '20px' }}>⚠️</div>
-            <div>3D Visualization Error</div>
-            <div style={{ fontSize: '14px', opacity: 0.7, marginTop: '10px' }}>
-                Switching to 2D view for better performance
-            </div>
-        </div>
-    );
-};
+// Real React class-based error boundary — the ONLY way to catch render errors
+class NetworkVisualizerErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false };
+    }
+
+    static getDerivedStateFromError() {
+        return { hasError: true };
+    }
+
+    componentDidCatch(error, info) {
+        console.error('🔴 [3D] Canvas render error, falling back to 2D:', error, info);
+    }
+
+    render() {
+        if (this.state.hasError) {
+            // Fall back to the SVG 2D visualizer seamlessly
+            return (
+                <SimpleNetworkVisualizer
+                    topology={this.props.topology}
+                    onNodeClick={this.props.onNodeClick}
+                    agents={this.props.agents}
+                />
+            );
+        }
+        return this.props.children;
+    }
+}
 
 // Loading component
 const LoadingFallback = () => (
@@ -346,7 +353,7 @@ const NetworkScene = ({ topology, onNodeClick, viewMode, throughput, agents }) =
 
 export default function NetworkVisualizer({ topology, onNodeClick, viewMode, throughput, agents }) {
     return (
-        <NetworkVisualizerErrorBoundary>
+        <NetworkVisualizerErrorBoundary topology={topology} onNodeClick={onNodeClick} agents={agents}>
             <Suspense fallback={<LoadingFallback />}>
                 <Canvas
                     camera={{ position: [5, 5, 5], fov: 60 }}
@@ -357,15 +364,15 @@ export default function NetworkVisualizer({ topology, onNodeClick, viewMode, thr
                     }}
                     performance={{ min: 0.5, max: 1 }}
                 >
-                <NetworkScene
-                    topology={topology}
-                    onNodeClick={onNodeClick}
-                    viewMode={viewMode}
-                    throughput={throughput}
-                    agents={agents}
-                />
-            </Canvas>
-        </Suspense>
+                    <NetworkScene
+                        topology={topology}
+                        onNodeClick={onNodeClick}
+                        viewMode={viewMode}
+                        throughput={throughput}
+                        agents={agents}
+                    />
+                </Canvas>
+            </Suspense>
         </NetworkVisualizerErrorBoundary>
     );
 }
