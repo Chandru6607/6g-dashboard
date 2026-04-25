@@ -56,15 +56,15 @@ expressApp.use(express.urlencoded({ extended: true }));
 // Initialize Redis and Socket.io adapter
 async function initializeServer() {
     try {
-        // Initialize Redis connections (optional)
-        const redisInitialized = await initializeRedis();
+        // Initialize Redis connections
+        const redisSuccess = await initializeRedis();
         
         // Set up Redis adapter for Socket.io only if Redis is available
-        if (redisInitialized) {
+        if (redisSuccess) {
             io.adapter(createAdapter(pubClient, subClient));
             console.log('🔗 [Socket.io] Redis adapter configured');
         } else {
-            console.log('⚠️ [Socket.io] Running without Redis adapter (single instance mode)');
+            console.log('ℹ️ [Socket.io] Running without Redis adapter (local memory only)');
         }
         
         // Initialize MCP Server
@@ -88,7 +88,6 @@ async function initializeServer() {
             console.log(`📡 Server: http://localhost:${PORT}`);
             console.log(`🔌 WebSocket: ws://localhost:${PORT}`);
             console.log(`📊 API Endpoints: http://localhost:${PORT}/api`);
-            console.log(redisInitialized ? '🔗 Redis: Connected' : '⚠️ Redis: Not connected (single instance mode)');
             console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         });
         

@@ -143,6 +143,8 @@ router.post('/system/rescue', async (req, res) => {
 
 // Simulation State
 let simulationInterval = null;
+let topologyCycleCounter = 0;
+const TOPOLOGY_CYCLE_INTERVAL = 20; // 20 iterations = 20 seconds
 
 // System Autoconfig (Start Simulation)
 router.post('/system/autoconfig', (req, res) => {
@@ -160,6 +162,24 @@ router.post('/system/autoconfig', (req, res) => {
 
     // Start Real-Time Simulation Loop
     const emitUpdate = () => {
+        // Check if any agent is training to trigger topology cycling
+        const isAnyAgentTraining = simulationState.agents.some(a => a.state === 'training');
+        
+        if (isAnyAgentTraining) {
+            topologyCycleCounter++;
+            if (topologyCycleCounter >= TOPOLOGY_CYCLE_INTERVAL) {
+                topologyCycleCounter = 0;
+                const topologies = ['Mesh', 'Ring', 'Bus', 'Star', 'Hybrid'];
+                const nextType = topologies[Math.floor(Math.random() * topologies.length)];
+                simulationState.currentTopologyType = nextType;
+                console.log(`🔄 [Auto-Training] Topology cycled to ${nextType}`);
+                generators.generateNetworkTopology(nextType);
+                generators.resetTrainingStates(); // Reset rewards for new environment
+            }
+        } else {
+            topologyCycleCounter = 0;
+        }
+
         const updateData = {
             timestamp: new Date().toISOString(),
             topology: generators.generateNetworkTopology(),

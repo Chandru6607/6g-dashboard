@@ -11,6 +11,12 @@
       "static/chunks/main-app.js",
       "static/css/app/page.css",
       "static/chunks/app/page.js"
+    ],
+    "/digital-twin/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/digital-twin/page.css",
+      "static/chunks/app/digital-twin/page.js"
     ]
   }
 }

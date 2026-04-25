@@ -39,11 +39,18 @@ const ExperimentManager = () => {
             return;
         }
 
+        console.log(`🎭 [Demo] Starting experiment: ${selectedScenario}`);
         setIsRunning(true);
         setProgress(0);
 
-        const response = await apiService.startExperiment(selectedScenario, trafficProfile, duration);
-        socketService.emit('experiment:start', response);
+        // Demo mode - simulate experiment start
+        const mockResponse = { 
+            experimentId: `demo-${Date.now()}`, 
+            scenario: selectedScenario,
+            status: 'started'
+        };
+        
+        socketService.emit('experiment:start', mockResponse);
 
         // Simulate progress
         const interval = setInterval(() => {
@@ -51,6 +58,7 @@ const ExperimentManager = () => {
                 if (prev >= 100) {
                     clearInterval(interval);
                     setIsRunning(false);
+                    console.log('🎭 [Demo] Experiment completed successfully');
                     return 100;
                 }
                 return prev + (100 / (duration / 1000));

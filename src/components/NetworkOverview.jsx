@@ -9,15 +9,41 @@ const NetworkOverview = () => {
     const canvasRef = useRef(null);
     const [topology, setTopology] = useState(null);
     const [metrics, setMetrics] = useState(null);
+    const [progress, setProgress] = useState(0);
+    const [displayedOptimizedSpeed, setDisplayedOptimizedSpeed] = useState(null);
 
     const socketData = useSocket('network:update');
 
     useEffect(() => {
         if (socketData) {
             if (socketData.topology) setTopology(socketData.topology);
-            if (socketData.metrics) setMetrics(socketData.metrics);
+            if (socketData.metrics) {
+                setMetrics(socketData.metrics);
+                // Initial set if null
+                if (!displayedOptimizedSpeed && socketData.metrics.optimizedSpeed) {
+                    setDisplayedOptimizedSpeed(socketData.metrics.optimizedSpeed);
+                }
+            }
         }
     }, [socketData]);
+
+    // 10 second optimization cycle
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setProgress((prev) => {
+                if (prev >= 100) {
+                    // When progress finishes, update the displayed optimized speed from latest metrics
+                    if (metrics?.optimizedSpeed) {
+                        setDisplayedOptimizedSpeed(metrics.optimizedSpeed);
+                    }
+                    return 0;
+                }
+                return prev + 1;
+            });
+        }, 100); // 100ms * 100 = 10 seconds
+
+        return () => clearInterval(interval);
+    }, [metrics]);
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -207,6 +233,30 @@ const NetworkOverview = () => {
                             <span className="metric-label">Active Nodes</span>
                             <span className="metric-value">{metrics?.activeNodes || '--'}</span>
                             <span className="metric-unit">nodes</span>
+                        </div>
+                    </div>
+                    <div className="metric-card">
+                        <div className="metric-icon">🌐</div>
+                        <div className="metric-content">
+                            <span className="metric-label">Internet Speed</span>
+                            <span className="metric-value">{metrics?.internetSpeed || '--'}</span>
+                            <span className="metric-unit">Mbps</span>
+                        </div>
+                    </div>
+                    <div className="metric-card optimized">
+                        <div className="metric-icon">🚀</div>
+                        <div className="metric-content">
+                            <span className="metric-label">Optimized Speed (10s Cycle)</span>
+                            <span className="metric-value">{displayedOptimizedSpeed || '--'}</span>
+                            <span className="metric-unit">Mbps</span>
+                            <div className="optimization-progress-container">
+                                <div className="optimization-progress-bar">
+                                    <div 
+                                        className="optimization-progress-fill" 
+                                        style={{ width: `${progress}%` }}
+                                    ></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

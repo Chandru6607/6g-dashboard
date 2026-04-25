@@ -109,13 +109,24 @@ export const generateNetworkTopology = (type = simulationState.currentTopologyTy
 };
 
 // Generate real-time network metrics
-export const generateNetworkMetrics = () => ({
-  latency: randomRange(1, 5).toFixed(2),
-  throughput: randomRange(8, 15).toFixed(2),
-  packetLoss: randomRange(0, 0.5).toFixed(3),
-  activeNodes: randomInt(15, 20),
-  timestamp: Date.now(),
-});
+export const generateNetworkMetrics = () => {
+  const internetSpeed = randomInt(500, 2000);
+  const optimizedSpeed = (internetSpeed * (1.15 + (Math.random() * 0.1))).toFixed(2);
+  
+  // Update state
+  simulationState.internetSpeed = internetSpeed;
+  simulationState.optimizedSpeed = optimizedSpeed;
+
+  return {
+    latency: randomRange(1, 5).toFixed(2),
+    throughput: randomRange(8, 15).toFixed(2),
+    packetLoss: randomRange(0, 0.5).toFixed(3),
+    activeNodes: randomInt(15, 20),
+    internetSpeed,
+    optimizedSpeed,
+    timestamp: Date.now(),
+  };
+};
 
 // Generate agent states
 export const generateAgentStates = () => {

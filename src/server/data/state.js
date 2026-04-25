@@ -4,6 +4,8 @@ export const simulationState = {
     startTime: null,
     scenario: 'default',
     currentTopologyType: 'Mesh',
+    internetSpeed: 1250, // Initial Mbps
+    optimizedSpeed: 1450, // Initial Mbps
     agents: [
         {
             id: 'resource-allocation',

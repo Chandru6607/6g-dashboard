@@ -29,7 +29,15 @@ ChartJS.register(
 const DigitalTwinControl = () => {
     const [isLiveMode, setIsLiveMode] = useState(true);
     const [predictiveData, setPredictiveData] = useState(null);
+    const [currentTopology, setCurrentTopology] = useState('Mesh');
     const syncData = useSocket('sync:progress');
+    const networkData = useSocket('network:update');
+
+    useEffect(() => {
+        if (networkData?.topologyType) {
+            setCurrentTopology(networkData.topologyType);
+        }
+    }, [networkData]);
 
     useEffect(() => {
         apiService.getPredictiveData().then((data) => {
@@ -130,6 +138,13 @@ const DigitalTwinControl = () => {
                                 style={{ width: `${syncData?.confidence || 94}%` }}
                             ></div>
                             <span className="confidence-label">{syncData?.confidence || 94}%</span>
+                        </div>
+                    </div>
+                    <div className="control-item">
+                        <label className="control-label">Training Topology</label>
+                        <div className="topology-badge-container">
+                            <span className="badge badge-info">{currentTopology}</span>
+                            <span className="topology-status-label">Continuous Learning...</span>
                         </div>
                     </div>
                 </div>

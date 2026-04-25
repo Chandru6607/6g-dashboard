@@ -5,8 +5,27 @@ import { createClient } from 'redis';
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
 
 // Create Redis clients for pub/sub
-export const pubClient = createClient({ url: REDIS_URL });
-export const subClient = createClient({ url: REDIS_URL });
+// Create Redis clients with timeout to prevent hanging
+export const pubClient = createClient({ 
+    url: REDIS_URL,
+    socket: {
+        connectTimeout: 5000,
+        reconnectStrategy: (retries) => {
+            if (retries > 2) return new Error('Redis connection failed');
+            return 1000;
+        }
+    }
+});
+export const subClient = createClient({ 
+    url: REDIS_URL,
+    socket: {
+        connectTimeout: 5000,
+        reconnectStrategy: (retries) => {
+            if (retries > 2) return new Error('Redis connection failed');
+            return 1000;
+        }
+    }
+});
 
 // Flag to track Redis availability
 let redisAvailable = false;

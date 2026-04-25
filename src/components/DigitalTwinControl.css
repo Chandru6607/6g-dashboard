@@ -193,3 +193,14 @@
         transform: rotate(360deg);
     }
 }
+.topology-badge-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.topology-status-label {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    font-style: italic;
+}
