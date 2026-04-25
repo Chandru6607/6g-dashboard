@@ -62,10 +62,6 @@ export const simulationState = {
         ssid: '6G-Dashboard Connect',
         password: '6G-OPTIMIZED-X',
         optimized: false,
-        connectedDevices: [
-            { id: 'dev-iphone', name: 'iPhone 15 Pro', ip: '192.168.137.54', mac: 'BC:D1:D3:E5:A2:11', signal: -42 },
-            { id: 'dev-samsung', name: 'Samsung S24 Ultra', ip: '192.168.137.89', mac: 'A4:C2:22:F1:B9:08', signal: -55 },
-            { id: 'dev-laptop', name: 'MacBook Air M3', ip: '192.168.137.12', mac: '70:EE:50:D1:44:2A', signal: -38 }
-        ]
+        connectedDevices: []
     }
 };

@@ -10,6 +10,7 @@ import { initializeRedis, pubClient, subClient } from './redis.js';
 import apiRoutes from './src/routes/api.js';
 import { initializeWebSocket } from './src/websocket/handlers.js';
 import { rescueAgent } from './src/services/rescueAgent.js';
+import { hotspotService } from './src/services/hotspotService.js';
 
 const PORT = process.env.PORT || 3001;
 
@@ -76,6 +77,9 @@ async function initializeServer() {
         
         // Initialize Rescue Agent
         rescueAgent.initialize(io);
+        
+        // Initialize Hotspot Service
+        hotspotService.setIo(io);
         
         // Start server
         httpServer.listen(PORT, (err) => {

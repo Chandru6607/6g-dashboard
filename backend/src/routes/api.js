@@ -4,6 +4,7 @@ import express from 'express';
 import * as generators from '../data/generators.js';
 import { simulationState } from '../data/state.js';
 import { broadcastSimulationState } from '../websocket/handlers.js';
+import { hotspotService } from '../services/hotspotService.js';
 
 const router = express.Router();
 
@@ -244,26 +245,22 @@ router.get('/hotspot/status', (req, res) => {
     res.json(simulationState.hotspot);
 });
 
-router.post('/hotspot/toggle', (req, res) => {
-    simulationState.hotspot.active = !simulationState.hotspot.active;
+router.post('/hotspot/toggle', async (req, res) => {
+    const newState = !simulationState.hotspot.active;
     
-    if (simulationState.hotspot.active) {
-        simulationState.hotspot.optimized = true;
-        console.log('📶 [Hotspot] 6G-Dashboard Connect activated with optimized speed');
+    const result = await hotspotService.toggle(newState);
+    
+    if (result.success) {
+        simulationState.hotspot.optimized = newState;
+        res.json({
+            success: true,
+            active: simulationState.hotspot.active,
+            ssid: simulationState.hotspot.ssid,
+            optimized: simulationState.hotspot.optimized
+        });
     } else {
-        simulationState.hotspot.optimized = false;
-        console.log('📶 [Hotspot] 6G-Dashboard Connect deactivated');
+        res.status(500).json({ success: false, message: result.error });
     }
-
-    const io = req.app.get('io');
-    io.emit('hotspot:update', simulationState.hotspot);
-
-    res.json({
-        success: true,
-        active: simulationState.hotspot.active,
-        ssid: simulationState.hotspot.ssid,
-        optimized: simulationState.hotspot.optimized
-    });
 });
 
 export default router;
