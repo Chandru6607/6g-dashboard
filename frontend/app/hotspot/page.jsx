@@ -245,8 +245,11 @@ export default function HotspotPage() {
                                     )}
                                 </AnimatePresence>
                             </div>
-                        </div>
-                       <style jsx>{`
+                    </div>
+                </aside>
+            </div>
+
+            <style jsx>{`
                 .hotspot-page {
                     height: 100%;
                     width: 100%;
