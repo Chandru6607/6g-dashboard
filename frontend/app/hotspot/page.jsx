@@ -245,6 +245,7 @@ export default function HotspotPage() {
                                     )}
                                 </AnimatePresence>
                             </div>
+                        </div>
                     </div>
                 </aside>
             </div>

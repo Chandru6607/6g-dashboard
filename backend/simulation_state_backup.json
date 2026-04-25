@@ -10,8 +10,8 @@
       "episodes": 2,
       "avgReward": "0.1202",
       "convergence": "12.02",
-      "currentTopology": "Ring",
-      "trainingProgress": "12.20"
+      "currentTopology": "Bus",
+      "trainingProgress": "13.47"
     },
     {
       "id": "congestion-control",
@@ -20,8 +20,8 @@
       "episodes": 2,
       "avgReward": "0.1202",
       "convergence": "12.02",
-      "currentTopology": "Ring",
-      "trainingProgress": "13.49"
+      "currentTopology": "Bus",
+      "trainingProgress": "13.76"
     },
     {
       "id": "mobility-management",
@@ -30,8 +30,8 @@
       "episodes": 2,
       "avgReward": "0.1202",
       "convergence": "12.02",
-      "currentTopology": "Ring",
-      "trainingProgress": "12.46"
+      "currentTopology": "Bus",
+      "trainingProgress": "13.61"
     }
   ],
   "topology": {
@@ -39,36 +39,36 @@
       {
         "id": "gnb-1",
         "type": "gNB",
-        "x": 550,
+        "x": 100,
         "y": 200,
         "status": "active"
       },
       {
         "id": "gnb-2",
         "type": "gNB",
-        "x": 446.3525491562421,
-        "y": 342.658477444273,
+        "x": 250,
+        "y": 200,
         "status": "active"
       },
       {
         "id": "gnb-3",
         "type": "gNB",
-        "x": 278.6474508437579,
-        "y": 288.167787843871,
+        "x": 400,
+        "y": 200,
         "status": "active"
       },
       {
         "id": "gnb-4",
         "type": "gNB",
-        "x": 278.6474508437579,
-        "y": 111.83221215612905,
+        "x": 550,
+        "y": 200,
         "status": "active"
       },
       {
         "id": "gnb-5",
         "type": "gNB",
-        "x": 446.3525491562421,
-        "y": 57.341522555726954,
+        "x": 700,
+        "y": 200,
         "status": "active"
       }
     ],
@@ -76,80 +76,80 @@
       {
         "id": "ue-1",
         "type": "UE",
-        "x": 590,
-        "y": 200,
+        "x": 100,
+        "y": 140,
         "connectedTo": "gnb-1",
         "status": "active"
       },
       {
         "id": "ue-2",
         "type": "UE",
-        "x": 510,
-        "y": 200,
+        "x": 100,
+        "y": 260,
         "connectedTo": "gnb-1",
         "status": "active"
       },
       {
         "id": "ue-3",
         "type": "UE",
-        "x": 458.71322893124,
-        "y": 380.70073809607914,
+        "x": 250,
+        "y": 140,
         "connectedTo": "gnb-2",
         "status": "active"
       },
       {
         "id": "ue-4",
         "type": "UE",
-        "x": 433.9918693812442,
-        "y": 304.6162167924669,
+        "x": 250,
+        "y": 260,
         "connectedTo": "gnb-2",
         "status": "active"
       },
       {
         "id": "ue-5",
         "type": "UE",
-        "x": 246.28677106876,
-        "y": 311.6791979355699,
+        "x": 400,
+        "y": 140,
         "connectedTo": "gnb-3",
         "status": "active"
       },
       {
         "id": "ue-6",
         "type": "UE",
-        "x": 311.0081306187558,
-        "y": 264.65637775217203,
+        "x": 400,
+        "y": 260,
         "connectedTo": "gnb-3",
         "status": "active"
       },
       {
         "id": "ue-7",
         "type": "UE",
-        "x": 246.28677106875998,
-        "y": 88.32080206443013,
+        "x": 550,
+        "y": 140,
         "connectedTo": "gnb-4",
         "status": "active"
       },
       {
         "id": "ue-8",
         "type": "UE",
-        "x": 311.0081306187558,
-        "y": 135.34362224782797,
+        "x": 550,
+        "y": 260,
         "connectedTo": "gnb-4",
         "status": "active"
       },
       {
         "id": "ue-9",
         "type": "UE",
-        "x": 458.71322893124,
-        "y": 19.299261903920808,
+        "x": 700,
+        "y": 140,
         "connectedTo": "gnb-5",
         "status": "active"
       },
       {
         "id": "ue-10",
         "type": "UE",
-        "x": 433.9918693812442,
-        "y": 95.3837832075331,
+        "x": 700,
+        "y": 260,
         "connectedTo": "gnb-5",
         "status": "active"
       }
