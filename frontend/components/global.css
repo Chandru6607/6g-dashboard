@@ -50,6 +50,11 @@
     --glow-green: 0 0 20px rgba(118, 185, 0, 0.3);
     --glow-cyan: 0 0 20px rgba(0, 243, 255, 0.4);
 
+    /* Layout */
+    --sidebar-width-expanded: 260px;
+    --sidebar-width-collapsed: 60px;
+    --header-height: 64px;
+
     /* Transitions */
     --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-normal: 0.4s cubic-bezier(0.4, 0, 0.2, 1);

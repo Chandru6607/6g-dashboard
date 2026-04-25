@@ -351,16 +351,11 @@ export default function NetworkVisualizer({ topology, onNodeClick, viewMode, thr
                 <Canvas
                     camera={{ position: [5, 5, 5], fov: 60 }}
                     gl={{ 
-                        antialias: false,  // Disable antialiasing for better performance
+                        antialias: false,
                         alpha: false,
                         powerPreference: "high-performance"
                     }}
-                    dpr={window.devicePixelRatio > 1 ? 1.5 : 1}  // Limit DPR for performance
                     performance={{ min: 0.5, max: 1 }}
-                    onError={(error) => {
-                        console.error('🔴 3D Canvas Error:', error);
-                        return <NetworkVisualizerErrorBoundary />;
-                    }}
                 >
                 <NetworkScene
                     topology={topology}

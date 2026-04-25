@@ -18,54 +18,108 @@ const Navigation = ({ isOpen }) => {
     ];
 
     return (
-        <motion.nav
-            className={`navigation ${!isOpen ? 'collapsed' : ''}`}
-            initial={{ x: -300 }}
-            animate={{ x: 0 }}
-            transition={{ duration: 0.5 }}
-        >
-            <div className="nav-header">
-                <div className="nav-logo">
-                    <Image src={logo} alt="6G Control" className="nav-logo-image" width={40} height={40} />
-                    <span className="nav-logo-text">6G Control</span>
+        <nav className={`sidebar ${isOpen ? 'expanded' : 'collapsed'}`}>
+            <div className="sidebar-content">
+                <div className="nav-group">
+                    {navItems.map((item) => {
+                        const isActive = pathname === item.path;
+                        return (
+                            <Link
+                                key={item.path}
+                                href={item.path}
+                                className={`nav-link ${isActive ? 'active' : ''}`}
+                                title={!isOpen ? item.label : ''}
+                            >
+                                <span className="icon-wrapper">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d={item.icon} strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                    {isActive && <div className="active-glow"></div>}
+                                </span>
+                                {isOpen && <span className="label">{item.label}</span>}
+                            </Link>
+                        );
+                    })}
+                </div>
+
+                <div className="sidebar-footer">
+                    <div className="user-profile">
+                        <div className="avatar">CN</div>
+                        {isOpen && (
+                            <div className="user-info">
+                                <span className="name">Command Node</span>
+                                <span className="role">Operator</span>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
-            <div className="nav-items">
-                {navItems.map((item) => {
-                    const isActive = pathname === item.path;
-                    return (
-                        <Link
-                            key={item.path}
-                            href={item.path}
-                            className={`nav-item ${isActive ? 'active' : ''}`}
-                        >
-                            <svg className="nav-icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
-                            </svg>
-                            <span className="nav-label">{item.label}</span>
-                        </Link>
-                    );
-                })}
-            </div>
-
-            <div className="nav-footer">
-                {!isOpen ? (
-                    <Link href="/viz-osi" className="viz-osi-entry collapsed-entry">
-                        <svg className="nav-icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
-                        </svg>
-                    </Link>
-                ) : (
-                    <Link href="/viz-osi" className="viz-osi-entry">
-                        <svg className="nav-icon-svg viz-osi-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
-                        </svg>
-                        <span className="nav-label">Viz OSI AI-Native Stack</span>
-                    </Link>
-                )}
-            </div>
-        </motion.nav>
+            <style jsx>{`
+                .sidebar {
+                    width: ${isOpen ? 'var(--sidebar-width)' : '68px'};
+                    height: 100vh;
+                    background: var(--sidebar-bg);
+                    border-right: 1px solid var(--card-border);
+                    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    display: flex;
+                    flex-direction: column;
+                }
+                .sidebar-content {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    padding: 24px 12px;
+                }
+                .nav-group {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+                }
+                .nav-link {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                    padding: 12px;
+                    border-radius: 10px;
+                    color: var(--text-secondary);
+                    text-decoration: none;
+                    transition: all 0.2s;
+                }
+                .nav-link:hover {
+                    background: rgba(255, 255, 255, 0.05);
+                    color: var(--foreground);
+                }
+                .nav-link.active {
+                    background: rgba(0, 243, 255, 0.08);
+                    color: var(--accent-primary);
+                }
+                .icon-wrapper {
+                    width: 24px;
+                    height: 24px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                }
+                .active-glow {
+                    position: absolute;
+                    width: 30px;
+                    height: 30px;
+                    background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%);
+                    opacity: 0.2;
+                    filter: blur(8px);
+                }
+                .label { font-size: 0.85rem; font-weight: 500; }
+                .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--card-border); }
+                .user-profile { display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 8px; cursor: pointer; }
+                .user-profile:hover { background: rgba(255, 255, 255, 0.05); }
+                .avatar { width: 32px; height: 32px; background: var(--accent-purple); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #fff; }
+                .user-info { display: flex; flex-direction: column; }
+                .user-info .name { font-size: 0.8rem; font-weight: 600; }
+                .user-info .role { font-size: 0.65rem; color: var(--text-secondary); }
+            `}</style>
+        </nav>
     );
 };
 
