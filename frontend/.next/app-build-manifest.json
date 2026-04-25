@@ -18,10 +18,22 @@
       "static/css/app/digital-twin/page.css",
       "static/chunks/app/digital-twin/page.js"
     ],
-    "/_not-found/page": [
+    "/analytics/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+      "static/css/app/analytics/page.css",
+      "static/chunks/app/analytics/page.js"
+    ],
+    "/monitoring/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/monitoring/page.css",
+      "static/chunks/app/monitoring/page.js"
+    ],
+    "/viz-osi/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/viz-osi/page.js"
     ]
   }
 }

@@ -9,7 +9,6 @@ import { initializeRedis, pubClient, subClient } from './redis.js';
 // Backend modules
 import apiRoutes from './src/routes/api.js';
 import { initializeWebSocket } from './src/websocket/handlers.js';
-import { attachMCPServer } from './src/mcpServer.js';
 import { rescueAgent } from './src/services/rescueAgent.js';
 
 const PORT = process.env.PORT || 3001;
@@ -67,8 +66,7 @@ async function initializeServer() {
             console.log('ℹ️ [Socket.io] Running without Redis adapter (local memory only)');
         }
         
-        // Initialize MCP Server
-        attachMCPServer(expressApp);
+
         
         // Register API routes
         expressApp.use('/api', apiRoutes);

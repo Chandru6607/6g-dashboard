@@ -6,7 +6,6 @@ import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import SimpleErrorBoundary from '../components/SimpleErrorBoundary';
 import socketService from '../hooks/socketService';
-import { mcpClient } from '../hooks/mcpClient';
 import './globals.css';
 import '../components/global.css';
 
@@ -47,10 +46,7 @@ export default function RootLayout({ children }) {
                     setSimulationActive(state.active);
                 });
 
-                // Initialize MCP connection
-                mcpClient.connect().catch(err => {
-                    console.log('⚠️ [UI] MCP connection failed, using fake data');
-                });
+
             } catch (error) {
                 console.log('⚠️ [UI] Real connections failed, continuing with fake data');
             }

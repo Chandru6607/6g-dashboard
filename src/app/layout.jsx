@@ -6,7 +6,7 @@ import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import ErrorBoundary from '../components/ErrorBoundary';
 import socketService from '../services/socketService';
-import { mcpClient } from '../services/mcpClient';
+import socketService from '../services/socketService';
 import '../styles/global.css';
 import '../App.css';
 
@@ -39,8 +39,7 @@ export default function RootLayout({ children }) {
             setSimulationActive(state.active);
         });
 
-        // Initialize MCP connection
-        mcpClient.connect();
+
 
         return () => {
             // socketService.disconnect();

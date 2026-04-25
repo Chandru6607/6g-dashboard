@@ -2,18 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import socketService from '../services/socketService';
-import { mcpClient } from '../services/mcpClient';
 import './ConnectedServers.css';
 
 const ConnectedServers = () => {
     const [servers, setServers] = useState([
-        {
-            id: 'mcp-server',
-            name: 'Protocol Server (MCP)',
-            endpoint: '/mcp',
-            type: 'SSE/MCP',
-            connected: false
-        },
+
         {
             id: 'ws-server',
             name: 'Realtime WebSocket',
@@ -33,9 +26,7 @@ const ConnectedServers = () => {
     useEffect(() => {
         const checkConnections = () => {
             setServers(prev => prev.map(server => {
-                if (server.id === 'mcp-server') {
-                    return { ...server, connected: mcpClient.isConnected };
-                }
+
                 if (server.id === 'ws-server') {
                     return { ...server, connected: socketService.socket?.connected || false };
                 }

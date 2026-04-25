@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import apiService from '../hooks/apiService';
-import { mcpClient } from '../hooks/mcpClient';
 import socketService from '../hooks/socketService';
 import logo from '../logo.png';
 import './Header.css';
@@ -52,9 +51,7 @@ const Header = ({ connected, simulationActive, isSidebarOpen, onToggleSidebar })
             const result = await apiService.autoConfigure();
             console.log('✅ [System] Auto-config result:', result);
 
-            // Priority 3: Connect MCP
-            await mcpClient.connect();
-            console.log('✅ [MCP] Connected');
+
 
         } catch (error) {
             console.error('❌ [System] Auto-configuration failed:', error);
