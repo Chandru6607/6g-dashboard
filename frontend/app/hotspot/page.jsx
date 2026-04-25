@@ -59,49 +59,70 @@ export default function HotspotPage() {
             <div className="hotspot-layout">
                 {/* Left Section - Control */}
                 <section className="hotspot-control">
-                    <div className="panel glass premium-card">
+                    <div className="panel glass premium-card hotspot-hero-panel">
                         <div className="panel-header">
                             <h2 className="panel-title">📡 6G Network Node Control</h2>
+                            <div className="status-dot-container">
+                                <span className={`status-text ${status.active ? 'active' : ''}`}>
+                                    {status.active ? 'BROADCASTING' : 'OFFLINE'}
+                                </span>
+                                <span className={`status-dot ${status.active ? 'active' : ''}`}></span>
+                            </div>
                         </div>
-                        <div className="panel-body centered">
+                        <div className="panel-body compact-centered">
                             <div className="status-hero">
                                 <div className={`signal-ring ${status.active ? 'active' : ''} ${optimizing ? 'optimizing' : ''}`}>
                                     <div className="signal-core">
                                         {optimizing ? '⚡' : status.active ? '📶' : '💤'}
                                     </div>
+                                    {status.active && <div className="scanning-line"></div>}
                                 </div>
                                 <h1 className="hero-title">
-                                    {optimizing ? 'Optimizing Connection...' : status.active ? 'Network Active' : 'Network Standby'}
+                                    {optimizing ? 'Optimizing...' : status.active ? '6G Node Active' : 'Node Standby'}
                                 </h1>
-                                <p className="hero-subtitle">
-                                    {status.active ? 'Broadcasting optimized 6G fabric signal' : 'Ready to initiate secure hotspot'}
-                                </p>
                             </div>
 
-                            <div className="hotspot-actions">
-                                <div className="info-box">
-                                    <span className="label">SSID</span>
-                                    <span className="value">{status.ssid}</span>
+                            <div className="hotspot-actions-wrapper">
+                                <div className="credentials-grid">
+                                    <div className="credential-item">
+                                        <span className="label">SSID</span>
+                                        <span className="value">{status.ssid}</span>
+                                    </div>
+                                    <div className="credential-item">
+                                        <span className="label">PASSWORD</span>
+                                        <span className="value">••••••••</span>
+                                    </div>
                                 </div>
                                 
                                 <button 
-                                    className={`toggle-btn ${status.active ? 'active' : ''}`}
+                                    className={`main-toggle-btn ${status.active ? 'active' : ''}`}
                                     onClick={handleToggle}
                                     disabled={isToggling || optimizing}
+                                    id="hotspot-activate-button"
                                 >
                                     {isToggling || optimizing ? (
-                                        <span className="loader"></span>
+                                        <div className="btn-loading">
+                                            <span className="loader-ring"></span>
+                                            <span>INITIALIZING...</span>
+                                        </div>
                                     ) : (
-                                        status.active ? 'DEACTIVATE HOTSPOT' : 'ACTIVATE 6G HOTSPOT'
+                                        <>
+                                            <span className="btn-icon">{status.active ? '⏹' : '🚀'}</span>
+                                            <span className="btn-text">{status.active ? 'SHUTDOWN NETWORK' : 'ACTIVATE 6G HOTSPOT'}</span>
+                                        </>
                                     )}
                                 </button>
                             </div>
 
-                            {status.optimized && (
-                                <div className="optimization-badge">
-                                    <span className="pulse-dot"></span>
-                                    INTERNET SPEED OPTIMIZED VIA 6G FABRIC
-                                </div>
+                            {status.active && (
+                                <motion.div 
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="active-optimization-pill"
+                                >
+                                    <span className="sparkle">✨</span>
+                                    <span>REAL-TIME 6G FABRIC OPTIMIZATION ENABLED</span>
+                                </motion.div>
                             )}
                         </div>
                     </div>
@@ -225,481 +246,360 @@ export default function HotspotPage() {
                                 </AnimatePresence>
                             </div>
                         </div>
-                    </div>
-                </aside>
-            </div>
-
-            <style jsx>{`
+                       <style jsx>{`
                 .hotspot-page {
                     height: 100%;
                     width: 100%;
-                    padding: 24px;
+                    padding: 20px;
                     overflow: hidden;
+                    background: radial-gradient(circle at 0% 0%, rgba(118, 185, 0, 0.05) 0%, transparent 50%);
                 }
 
                 .hotspot-layout {
                     display: grid;
                     grid-template-columns: 1fr 420px;
-                    gap: 24px;
-                    height: calc(100vh - 140px);
+                    gap: 20px;
+                    height: calc(100vh - 120px);
                 }
 
                 .hotspot-control {
                     display: flex;
                     flex-direction: column;
-                    gap: 24px;
+                    gap: 20px;
                     overflow-y: auto;
-                    padding-right: 8px;
+                    padding-right: 10px;
                 }
 
-                /* Custom Scrollbar */
-                .hotspot-control::-webkit-scrollbar,
-                .scroll-y::-webkit-scrollbar {
-                    width: 4px;
-                }
-                .hotspot-control::-webkit-scrollbar-thumb,
-                .scroll-y::-webkit-scrollbar-thumb {
-                    background: rgba(255, 255, 255, 0.1);
-                    border-radius: 10px;
-                }
-
-                .centered {
+                .compact-centered {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    justify-content: center;
-                    padding: 60px 40px;
-                    text-align: center;
+                    padding: 30px 20px;
                 }
 
-                .status-hero {
-                    margin-bottom: 40px;
-                }
-
-                .signal-ring {
-                    width: 140px;
-                    height: 140px;
-                    border-radius: 50%;
-                    border: 2px solid rgba(255, 255, 255, 0.05);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin: 0 auto 32px;
-                    position: relative;
-                    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-                }
-
-                .signal-ring.active {
-                    border-color: var(--nvidia-green);
-                    box-shadow: 0 0 50px rgba(118, 185, 0, 0.15), inset 0 0 20px rgba(118, 185, 0, 0.1);
-                }
-
-                .signal-ring.optimizing {
-                    border-color: var(--color-info);
-                    animation: pulse-ring 2s infinite;
-                }
-
-                .signal-core {
-                    font-size: 50px;
-                    filter: drop-shadow(0 0 10px currentColor);
-                }
-
-                @keyframes pulse-ring {
-                    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.4); }
-                    70% { transform: scale(1.05); box-shadow: 0 0 0 30px rgba(0, 243, 255, 0); }
-                    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 243, 255, 0); }
-                }
-
-                .hero-title {
-                    font-size: 2.5rem;
-                    font-weight: 900;
-                    margin-bottom: 12px;
-                    letter-spacing: -0.02em;
-                }
-
-                .hero-subtitle {
-                    color: var(--text-secondary);
-                    font-size: 1.1rem;
-                    max-width: 400px;
-                    line-height: 1.6;
-                }
-
-                .hotspot-actions {
+                .hotspot-hero-panel {
+                    min-height: 480px;
                     display: flex;
                     flex-direction: column;
-                    gap: 24px;
-                    width: 100%;
-                    max-width: 440px;
-                    margin-top: 20px;
                 }
 
-                .info-box {
-                    background: rgba(255, 255, 255, 0.02);
-                    padding: 20px 24px;
-                    border-radius: 16px;
+                .status-dot-container {
                     display: flex;
-                    justify-content: space-between;
                     align-items: center;
-                    border: 1px solid rgba(255, 255, 255, 0.05);
-                    backdrop-filter: blur(4px);
+                    gap: 10px;
                 }
 
-                .info-box .label {
-                    color: var(--text-tertiary);
-                    font-size: 0.75rem;
-                    text-transform: uppercase;
+                .status-text {
+                    font-size: 0.7rem;
                     font-weight: 800;
+                    color: var(--text-tertiary);
                     letter-spacing: 0.1em;
                 }
 
-                .info-box .value {
-                    font-weight: 800;
-                    font-size: 1.1rem;
-                    color: var(--nvidia-green);
-                    text-shadow: 0 0 15px rgba(118, 185, 0, 0.3);
+                .status-text.active { color: var(--nvidia-green); }
+
+                .status-dot {
+                    width: 8px;
+                    height: 8px;
+                    background: #333;
+                    border-radius: 50%;
+                    position: relative;
                 }
 
-                .toggle-btn {
-                    padding: 22px;
-                    border-radius: 16px;
-                    font-weight: 900;
-                    font-size: 1rem;
-                    letter-spacing: 0.08em;
-                    cursor: pointer;
-                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                    border: none;
+                .status-dot.active {
                     background: var(--nvidia-green);
-                    color: #000;
+                    box-shadow: 0 0 10px var(--nvidia-green);
+                }
+
+                .status-hero {
+                    margin-bottom: 30px;
+                    text-align: center;
+                }
+
+                .signal-ring {
+                    width: 160px;
+                    height: 160px;
+                    border-radius: 50%;
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 auto 24px;
                     position: relative;
+                    background: rgba(255, 255, 255, 0.01);
+                    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
                     overflow: hidden;
                 }
 
-                .toggle-btn.active {
-                    background: rgba(255, 68, 68, 0.1);
-                    border: 1px solid rgba(255, 68, 68, 0.3);
-                    color: #ff4444;
+                .signal-ring.active {
+                    border-color: rgba(118, 185, 0, 0.3);
+                    box-shadow: 0 0 40px rgba(118, 185, 0, 0.1);
                 }
 
-                .toggle-btn:hover:not(:disabled) {
-                    transform: translateY(-4px);
+                .scanning-line {
+                    position: absolute;
+                    width: 100%;
+                    height: 2px;
+                    background: linear-gradient(90deg, transparent, var(--nvidia-green), transparent);
+                    top: 0;
+                    animation: scan-vertical 3s linear infinite;
+                    opacity: 0.5;
+                }
+
+                @keyframes scan-vertical {
+                    0% { top: 0; }
+                    100% { top: 100%; }
+                }
+
+                .signal-core {
+                    font-size: 60px;
+                    z-index: 2;
+                }
+
+                .hero-title {
+                    font-size: 2.8rem;
+                    font-weight: 900;
+                    letter-spacing: -0.03em;
+                    background: linear-gradient(180deg, #fff 0%, #888 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+
+                .hotspot-actions-wrapper {
+                    width: 100%;
+                    max-width: 460px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                }
+
+                .credentials-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 12px;
+                }
+
+                .credential-item {
+                    background: rgba(255, 255, 255, 0.03);
+                    padding: 12px 16px;
+                    border-radius: 12px;
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+                }
+
+                .credential-item .label {
+                    font-size: 0.6rem;
+                    font-weight: 800;
+                    color: var(--text-tertiary);
+                    letter-spacing: 0.05em;
+                }
+
+                .credential-item .value {
+                    font-size: 0.9rem;
+                    font-weight: 700;
+                    color: #fff;
+                }
+
+                .main-toggle-btn {
+                    width: 100%;
+                    padding: 24px;
+                    border-radius: 16px;
+                    border: none;
+                    background: var(--nvidia-green);
+                    color: #000;
+                    font-weight: 900;
+                    font-size: 1.1rem;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 12px;
+                    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                    box-shadow: 0 10px 30px rgba(118, 185, 0, 0.2);
+                }
+
+                .main-toggle-btn.active {
+                    background: #ff4444;
+                    color: #fff;
+                    box-shadow: 0 10px 30px rgba(255, 68, 68, 0.2);
+                }
+
+                .main-toggle-btn:hover:not(:disabled) {
+                    transform: translateY(-5px) scale(1.02);
                     filter: brightness(1.1);
-                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
                 }
 
-                .optimization-badge {
-                    margin-top: 40px;
-                    background: rgba(0, 243, 255, 0.05);
+                .main-toggle-btn:active {
+                    transform: translateY(0) scale(0.98);
+                }
+
+                .btn-icon { font-size: 1.4rem; }
+
+                .active-optimization-pill {
+                    margin-top: 30px;
+                    background: rgba(0, 243, 255, 0.08);
+                    border: 1px solid rgba(0, 243, 255, 0.2);
+                    padding: 8px 20px;
+                    border-radius: 20px;
                     color: var(--color-info);
-                    padding: 10px 24px;
-                    border-radius: 30px;
-                    font-size: 0.8rem;
+                    font-size: 0.75rem;
                     font-weight: 800;
                     display: flex;
                     align-items: center;
-                    gap: 12px;
-                    border: 1px solid rgba(0, 243, 255, 0.15);
-                    box-shadow: 0 4px 15px rgba(0, 243, 255, 0.1);
-                }
-
-                .pulse-dot {
-                    width: 10px;
-                    height: 10px;
-                    background: var(--color-info);
-                    border-radius: 50%;
-                    box-shadow: 0 0 10px var(--color-info);
-                    animation: dot-pulse 1.5s infinite;
-                }
-
-                @keyframes dot-pulse {
-                    0% { transform: scale(1); opacity: 1; }
-                    50% { transform: scale(1.5); opacity: 0.5; }
-                    100% { transform: scale(1); opacity: 1; }
+                    gap: 10px;
+                    box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
                 }
 
                 .grid-2 {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
-                    gap: 24px;
+                    gap: 20px;
                 }
 
                 .stat-item {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 8px;
-                    padding: 16px;
-                    background: rgba(255, 255, 255, 0.01);
-                    border-radius: 12px;
-                    border: 1px solid rgba(255, 255, 255, 0.03);
+                    background: rgba(255, 255, 255, 0.02);
+                    padding: 20px;
+                    border-radius: 16px;
+                    border: 1px solid rgba(255, 255, 255, 0.05);
                 }
 
                 .stat-label {
-                    font-size: 0.75rem;
+                    display: block;
+                    font-size: 0.7rem;
                     color: var(--text-tertiary);
                     font-weight: 700;
-                    letter-spacing: 0.05em;
+                    margin-bottom: 8px;
                 }
 
                 .stat-value {
-                    font-size: 1.6rem;
+                    font-size: 1.8rem;
                     font-weight: 900;
+                    color: #fff;
                 }
-
-                .full-height { height: 100%; }
-                .no-padding { padding: 0 !important; }
-                .scroll-y { overflow-y: auto; }
 
                 .premium-side {
+                    background: linear-gradient(180deg, rgba(10,10,10,0.4) 0%, rgba(0,0,0,0.8) 100%);
                     border-left: 1px solid rgba(255, 255, 255, 0.05);
-                    background: linear-gradient(180deg, rgba(15,15,15,0.4) 0%, rgba(5,5,5,0.8) 100%);
-                }
-
-                .header-with-badge {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 4px;
-                }
-
-                .status-badge {
-                    font-size: 0.65rem;
-                    font-weight: 900;
-                    padding: 2px 8px;
-                    border-radius: 4px;
-                    width: fit-content;
-                    letter-spacing: 0.1em;
-                }
-
-                .status-badge.online {
-                    background: rgba(16, 185, 129, 0.1);
-                    color: #10b981;
-                    animation: scanning-pulse 2s infinite;
-                }
-                
-                @keyframes scanning-pulse {
-                    0% { opacity: 1; }
-                    50% { opacity: 0.5; }
-                    100% { opacity: 1; }
-                }
-
-                .status-badge.offline {
-                    background: rgba(255, 255, 255, 0.05);
-                    color: var(--text-tertiary);
-                }
-
-                .device-count {
-                    font-size: 0.7rem;
-                    font-weight: 900;
-                    color: var(--nvidia-green);
-                    border: 1px solid var(--nvidia-green);
-                    padding: 4px 12px;
-                    border-radius: 20px;
-                }
-
-                .device-list {
-                    padding: 16px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 12px;
                 }
 
                 .device-card {
-                    position: relative;
-                    border-radius: 16px;
-                    background: rgba(255, 255, 255, 0.02);
+                    background: rgba(255, 255, 255, 0.03);
                     border: 1px solid rgba(255, 255, 255, 0.05);
+                    border-radius: 16px;
+                    padding: 16px;
+                    margin-bottom: 12px;
+                    position: relative;
                     overflow: hidden;
-                    transition: all 0.3s ease;
                 }
 
                 .device-card:hover {
-                    background: rgba(255, 255, 255, 0.04);
-                    border-color: rgba(118, 185, 0, 0.3);
-                    transform: scale(1.02);
+                    border-color: var(--nvidia-green);
+                    background: rgba(118, 185, 0, 0.03);
                 }
 
                 .card-inner {
-                    padding: 20px;
                     display: flex;
                     align-items: center;
                     gap: 16px;
-                    position: relative;
-                    z-index: 1;
                 }
 
                 .device-type-icon {
-                    width: 48px;
-                    height: 48px;
-                    background: rgba(255, 255, 255, 0.03);
-                    border-radius: 12px;
+                    width: 44px;
+                    height: 44px;
+                    background: rgba(0, 0, 0, 0.3);
+                    border-radius: 10px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 1.5rem;
-                    box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
+                    font-size: 1.4rem;
                 }
 
-                .device-main {
-                    flex: 1;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 4px;
-                }
+                .device-main { flex: 1; }
 
                 .device-header {
                     display: flex;
                     justify-content: space-between;
-                    align-items: center;
+                    margin-bottom: 4px;
                 }
 
-                .device-header .name {
-                    font-weight: 800;
-                    font-size: 1rem;
-                    color: var(--text-primary);
-                }
-
-                .connection-time {
-                    font-size: 0.7rem;
-                    color: var(--text-tertiary);
-                    font-weight: 600;
-                }
+                .name { font-weight: 800; font-size: 0.95rem; }
+                .connection-time { font-size: 0.65rem; color: var(--text-tertiary); }
 
                 .device-sub {
-                    display: flex;
-                    gap: 6px;
-                    font-size: 0.75rem;
+                    font-size: 0.7rem;
                     color: var(--text-secondary);
                     font-family: monospace;
+                    opacity: 0.7;
                 }
-
-                .separator { opacity: 0.3; }
 
                 .device-telemetry {
                     display: flex;
                     gap: 12px;
-                    margin-top: 8px;
+                    margin-top: 10px;
                 }
 
                 .tel-item {
                     display: flex;
                     align-items: center;
                     gap: 4px;
-                    background: rgba(0, 0, 0, 0.2);
-                    padding: 2px 8px;
-                    border-radius: 6px;
+                    font-size: 0.65rem;
+                    font-weight: 700;
+                    color: var(--text-tertiary);
                 }
 
-                .tel-icon { font-size: 0.7rem; }
-                .tel-val { 
-                    font-size: 0.7rem; 
-                    font-weight: 700; 
-                    color: var(--color-info);
-                }
-
-                .signal-indicator {
-                    display: flex;
-                    align-items: center;
-                }
-
-                .bars-container {
-                    display: flex;
-                    align-items: flex-end;
-                    gap: 2px;
-                    height: 20px;
-                }
-
-                .bar {
-                    width: 4px;
-                    background: rgba(255, 255, 255, 0.05);
-                    border-radius: 1px;
-                    transition: all 0.5s;
-                }
-
-                .bar.b1 { height: 25%; }
-                .bar.b2 { height: 50%; }
-                .bar.b3 { height: 75%; }
-                .bar.b4 { height: 100%; }
-
-                .bar.active {
-                    background: var(--nvidia-green);
-                    box-shadow: 0 0 8px var(--nvidia-green);
-                }
-
-                .card-glow {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    width: 100%;
-                    height: 100%;
-                    transform: translate(-50%, -50%);
-                    opacity: 0;
-                    transition: opacity 0.3s;
-                    pointer-events: none;
-                }
-
-                .device-card:hover .card-glow {
-                    opacity: 0.05;
-                }
+                .tel-val { color: var(--nvidia-green); }
 
                 .searching-state {
-                    padding: 80px 40px;
+                    padding: 100px 40px;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     gap: 24px;
                     color: var(--text-tertiary);
-                    text-align: center;
                 }
 
                 .radar {
+                    width: 80px;
+                    height: 80px;
                     position: relative;
-                    width: 60px;
-                    height: 60px;
                 }
 
                 .ripple {
                     position: absolute;
-                    top: 0;
-                    left: 0;
                     width: 100%;
                     height: 100%;
                     border: 2px solid var(--nvidia-green);
                     border-radius: 50%;
-                    animation: ripple-anim 2s infinite cubic-bezier(0, 0.2, 0.8, 1);
+                    animation: ripple-pulse 2s infinite cubic-bezier(0, 0.2, 0.8, 1);
                     opacity: 0;
                 }
 
                 .ripple:nth-child(2) { animation-delay: -0.5s; }
                 .ripple:nth-child(3) { animation-delay: -1s; }
 
-                @keyframes ripple-anim {
+                @keyframes ripple-pulse {
                     0% { transform: scale(0.1); opacity: 1; }
                     100% { transform: scale(1.5); opacity: 0; }
                 }
 
-                .empty-state {
-                    padding: 80px 40px;
+                .btn-loading {
                     display: flex;
-                    flex-direction: column;
                     align-items: center;
-                    gap: 16px;
-                    color: var(--text-tertiary);
-                    text-align: center;
+                    gap: 12px;
                 }
 
-                .lock-icon { font-size: 3rem; opacity: 0.3; }
-
-                .loader {
-                    width: 24px;
-                    height: 24px;
-                    border: 3px solid rgba(0, 0, 0, 0.1);
-                    border-top-color: #000;
+                .loader-ring {
+                    width: 20px;
+                    height: 20px;
+                    border: 2px solid rgba(0,0,0,0.1);
+                    border-top-color: currentColor;
                     border-radius: 50%;
-                    display: inline-block;
                     animation: spin 0.8s linear infinite;
                 }
 
-                @keyframes spin {
-                    to { transform: rotate(360deg); }
-                }
+                @keyframes spin { to { transform: rotate(360deg); } }
             `}</style>
         </main>
     );

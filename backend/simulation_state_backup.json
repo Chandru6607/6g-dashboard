@@ -7,31 +7,31 @@
       "id": "resource-allocation",
       "name": "Resource Allocation Agent",
       "state": "training",
-      "episodes": 1,
-      "avgReward": "0.1201",
-      "convergence": "12.01",
-      "currentTopology": "Ring",
-      "trainingProgress": "12.49"
+      "episodes": 3,
+      "avgReward": "0.1203",
+      "convergence": "12.03",
+      "currentTopology": "Tree",
+      "trainingProgress": "13.91"
     },
     {
       "id": "congestion-control",
       "name": "Congestion Control Agent",
       "state": "training",
-      "episodes": 1,
-      "avgReward": "0.1201",
-      "convergence": "12.01",
-      "currentTopology": "Ring",
-      "trainingProgress": "13.47"
+      "episodes": 3,
+      "avgReward": "0.1203",
+      "convergence": "12.03",
+      "currentTopology": "Tree",
+      "trainingProgress": "13.24"
     },
     {
       "id": "mobility-management",
       "name": "Mobility Management Agent",
       "state": "training",
-      "episodes": 1,
-      "avgReward": "0.1201",
-      "convergence": "12.01",
-      "currentTopology": "Ring",
-      "trainingProgress": "12.66"
+      "episodes": 3,
+      "avgReward": "0.1203",
+      "convergence": "12.03",
+      "currentTopology": "Tree",
+      "trainingProgress": "12.60"
     }
   ],
   "topology": {
@@ -39,14 +39,14 @@
       {
         "id": "gnb-1",
         "type": "gNB",
-        "x": 100,
+        "x": 400,
         "y": 200,
         "status": "active"
       },
       {
         "id": "gnb-2",
         "type": "gNB",
-        "x": 250,
+        "x": 580,
         "y": 200,
         "status": "active"
       },
@@ -54,21 +54,21 @@
         "id": "gnb-3",
         "type": "gNB",
         "x": 400,
-        "y": 200,
+        "y": 380,
         "status": "active"
       },
       {
         "id": "gnb-4",
         "type": "gNB",
-        "x": 550,
-        "y": 200,
+        "x": 220,
+        "y": 200.00000000000003,
         "status": "active"
       },
       {
         "id": "gnb-5",
         "type": "gNB",
-        "x": 700,
-        "y": 200,
+        "x": 399.99999999999994,
+        "y": 20,
         "status": "active"
       }
     ],
@@ -76,81 +76,81 @@
       {
         "id": "ue-1",
         "type": "UE",
-        "x": 100,
-        "y": 140,
+        "x": 450,
+        "y": 250,
         "connectedTo": "gnb-1",
         "status": "active"
       },
       {
         "id": "ue-2",
         "type": "UE",
-        "x": 100,
-        "y": 260,
+        "x": 350,
+        "y": 150,
         "connectedTo": "gnb-1",
         "status": "active"
       },
       {
         "id": "ue-3",
         "type": "UE",
-        "x": 250,
-        "y": 140,
-        "connectedTo": "gnb-2",
+        "x": 413,
+        "y": 337,
+        "connectedTo": "gnb-4",
         "status": "active"
       },
       {
         "id": "ue-4",
         "type": "UE",
-        "x": 250,
-        "y": 260,
-        "connectedTo": "gnb-2",
+        "x": 522,
+        "y": 186,
+        "connectedTo": "gnb-1",
         "status": "active"
       },
       {
         "id": "ue-5",
         "type": "UE",
-        "x": 400,
-        "y": 140,
+        "x": 315,
+        "y": 227,
         "connectedTo": "gnb-3",
         "status": "active"
       },
       {
         "id": "ue-6",
         "type": "UE",
-        "x": 400,
-        "y": 260,
-        "connectedTo": "gnb-3",
+        "x": 126,
+        "y": 52,
+        "connectedTo": "gnb-5",
         "status": "active"
       },
       {
         "id": "ue-7",
         "type": "UE",
-        "x": 550,
-        "y": 140,
-        "connectedTo": "gnb-4",
+        "x": 604,
+        "y": 248,
+        "connectedTo": "gnb-5",
         "status": "active"
       },
       {
         "id": "ue-8",
         "type": "UE",
-        "x": 550,
-        "y": 260,
-        "connectedTo": "gnb-4",
+        "x": 213,
+        "y": 243,
+        "connectedTo": "gnb-5",
         "status": "active"
       },
       {
         "id": "ue-9",
         "type": "UE",
-        "x": 700,
-        "y": 140,
-        "connectedTo": "gnb-5",
+        "x": 284,
+        "y": 198,
+        "connectedTo": "gnb-4",
         "status": "active"
       },
       {
         "id": "ue-10",
         "type": "UE",
-        "x": 700,
-        "y": 260,
-        "connectedTo": "gnb-5",
+        "x": 477,
+        "y": 270,
+        "connectedTo": "gnb-1",
         "status": "active"
       }
     ]
