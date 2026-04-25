@@ -94,22 +94,41 @@ class HotspotService {
                 const ip = n.IPAddress;
                 const mac = n.LinkLayerAddress;
 
-                // Filter out non-IPv4 or gateway
-                if (!ip || ip.includes(':') || ip === '192.168.137.1' || ip.endsWith('.255')) return null;
+                // STRICT FILTERING: 
+                // 1. Must be a valid IPv4
+                // 2. Must NOT be multicast (224.x.x.x or 239.x.x.x)
+                // 3. Must NOT be the gateway (192.168.137.1)
+                // 4. Must NOT be a broadcast/loopback entry
+                if (!ip || ip.includes(':')) return null;
+                if (ip.startsWith('224.') || ip.startsWith('239.') || ip.startsWith('169.254.')) return null;
+                if (ip === '192.168.137.1' || ip.endsWith('.255')) return null;
+                
+                // Avoid entries with all-zero MACs (often transient broadcast placeholders)
+                if (mac === '00-00-00-00-00-00' || !mac) return null;
 
                 return {
-                    id: `dev-${mac.replace(/[:-]/g, '').toLowerCase()}`,
+                    id: `dev-${mac.replace(/[:-]/g, '').toLowerCase()}-${ip.split('.').pop()}`,
                     name: this.getDeviceName(ip, mac),
                     ip: ip,
                     mac: mac,
-                    signal: -Math.floor(Math.random() * 25 + 40),
+                    signal: -Math.floor(Math.random() * 20 + 40),
                     connectedAt: this.getConnectionTime(mac),
-                    traffic: (Math.random() * 8 + 0.5).toFixed(1) + ' Mbps'
+                    traffic: (Math.random() * 6 + 0.5).toFixed(1) + ' Mbps'
                 };
             }).filter(Boolean);
 
-            // Step 4: Final State Update
-            simulationState.hotspot.connectedDevices = devices;
+            // Step 4: De-duplicate by MAC (keep only one entry per device)
+            const uniqueDevices = [];
+            const seenMacs = new Set();
+            for (const dev of devices) {
+                if (!seenMacs.has(dev.mac)) {
+                    seenMacs.add(dev.mac);
+                    uniqueDevices.push(dev);
+                }
+            }
+
+            // Step 5: Final State Update
+            simulationState.hotspot.connectedDevices = uniqueDevices;
             
             if (this.io) {
                 this.io.emit('hotspot:update', simulationState.hotspot);
