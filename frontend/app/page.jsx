@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import NetworkOverview from '../components/NetworkOverview';
 import SystemHealth from '../components/SystemHealth';
 import ConnectedServers from '../components/ConnectedServers';

@@ -7,31 +7,31 @@
       "id": "resource-allocation",
       "name": "Resource Allocation Agent",
       "state": "training",
-      "episodes": 8,
-      "avgReward": "0.1208",
-      "convergence": "12.08",
+      "episodes": 6,
+      "avgReward": "0.1206",
+      "convergence": "12.06",
       "currentTopology": "Hybrid",
-      "trainingProgress": "13.49"
+      "trainingProgress": "12.63"
     },
     {
       "id": "congestion-control",
       "name": "Congestion Control Agent",
       "state": "training",
-      "episodes": 8,
-      "avgReward": "0.1208",
-      "convergence": "12.08",
+      "episodes": 6,
+      "avgReward": "0.1206",
+      "convergence": "12.06",
       "currentTopology": "Hybrid",
-      "trainingProgress": "13.57"
+      "trainingProgress": "13.99"
     },
     {
       "id": "mobility-management",
       "name": "Mobility Management Agent",
       "state": "training",
-      "episodes": 8,
-      "avgReward": "0.1208",
-      "convergence": "12.08",
+      "episodes": 6,
+      "avgReward": "0.1206",
+      "convergence": "12.06",
       "currentTopology": "Hybrid",
-      "trainingProgress": "13.22"
+      "trainingProgress": "12.99"
     }
   ],
   "topology": {
@@ -125,304 +125,304 @@
       {
         "id": "ue-gnb-1-0",
         "type": "UE",
-        "x": 151.71604838838286,
-        "y": 118.95873328502296,
+        "x": 132.8053280616702,
+        "y": 84.9274748681728,
         "connectedTo": "gnb-1",
         "status": "active"
       },
       {
         "id": "ue-gnb-1-1",
         "type": "UE",
-        "x": 120.7973004052532,
-        "y": 131.15448351287074,
+        "x": 181.26823946954528,
+        "y": 138.79964112830237,
         "connectedTo": "gnb-1",
         "status": "active"
       },
       {
         "id": "ue-gnb-1-2",
         "type": "UE",
-        "x": 126.73701786569347,
-        "y": 115.56341961797526,
+        "x": 167.432010608773,
+        "y": 62.293064029048054,
         "connectedTo": "gnb-1",
         "status": "active"
       },
       {
         "id": "ue-gnb-2-0",
         "type": "UE",
-        "x": 157.71476840457572,
-        "y": 229.4972767768724,
+        "x": 117.63700627620211,
+        "y": 186.8856337935139,
         "connectedTo": "gnb-2",
         "status": "active"
       },
       {
         "id": "ue-gnb-2-1",
         "type": "UE",
-        "x": 155.4271064435376,
-        "y": 246.91131663317748,
+        "x": 127.72785032033029,
+        "y": 206.4666517380666,
         "connectedTo": "gnb-2",
         "status": "active"
       },
       {
         "id": "ue-gnb-3-0",
         "type": "UE",
-        "x": 176.55494283302323,
-        "y": 317.7856028452092,
+        "x": 129.84172509962772,
+        "y": 341.8183019214234,
         "connectedTo": "gnb-3",
         "status": "active"
       },
       {
         "id": "ue-gnb-3-1",
         "type": "UE",
-        "x": 180.98747533560015,
-        "y": 314.527591379545,
+        "x": 134.142755796484,
+        "y": 365.02018197913543,
         "connectedTo": "gnb-3",
         "status": "active"
       },
       {
         "id": "ue-gnb-4-0",
         "type": "UE",
-        "x": 343.21223201604306,
-        "y": 89.11997443861547,
+        "x": 320.18485200923686,
+        "y": 124.42479906850748,
         "connectedTo": "gnb-4",
         "status": "active"
       },
       {
         "id": "ue-gnb-4-1",
         "type": "UE",
-        "x": 350.6269306452168,
-        "y": 114.63465223656831,
+        "x": 331.1152297851114,
+        "y": 92.81774486356302,
         "connectedTo": "gnb-4",
         "status": "active"
       },
       {
         "id": "ue-gnb-4-2",
         "type": "UE",
-        "x": 352.9468511172352,
-        "y": 84.8480926827414,
-        "connectedTo": "gnb-4",
-        "status": "active"
-      },
-      {
-        "id": "ue-gnb-4-3",
-        "type": "UE",
-        "x": 307.5595241611181,
-        "y": 85.0125461818918,
+        "x": 345.22345660252336,
+        "y": 125.53247123255018,
         "connectedTo": "gnb-4",
         "status": "active"
       },
       {
         "id": "ue-gnb-5-0",
         "type": "UE",
-        "x": 347.5445129660306,
-        "y": 197.1424121242125,
+        "x": 322.70210582100935,
+        "y": 183.53734292870018,
         "connectedTo": "gnb-5",
         "status": "active"
       },
       {
         "id": "ue-gnb-5-1",
         "type": "UE",
-        "x": 327.67970663889525,
-        "y": 246.6026637192088,
+        "x": 360.9003647459564,
+        "y": 204.04417342449912,
         "connectedTo": "gnb-5",
         "status": "active"
       },
       {
         "id": "ue-gnb-5-2",
         "type": "UE",
-        "x": 368.49703640043253,
-        "y": 188.87423579832415,
+        "x": 345.6848404026068,
+        "y": 251.28961623697967,
         "connectedTo": "gnb-5",
         "status": "active"
       },
       {
         "id": "ue-gnb-5-3",
         "type": "UE",
-        "x": 294.01233208883593,
-        "y": 205.22160350167835,
-        "connectedTo": "gnb-5",
-        "status": "active"
-      },
-      {
-        "id": "ue-gnb-5-4",
-        "type": "UE",
-        "x": 364.98434307918376,
-        "y": 211.47348838766052,
+        "x": 308.3400257306123,
+        "y": 216.23732100542412,
         "connectedTo": "gnb-5",
         "status": "active"
       },
       {
         "id": "ue-gnb-6-0",
         "type": "UE",
-        "x": 329.848523590064,
-        "y": 372.4376707480176,
+        "x": 293.04658126959094,
+        "y": 369.43408635684534,
         "connectedTo": "gnb-6",
         "status": "active"
       },
       {
         "id": "ue-gnb-6-1",
         "type": "UE",
-        "x": 300.4553194604687,
-        "y": 312.01600510802444,
+        "x": 353.4946978000031,
+        "y": 368.30180746969774,
         "connectedTo": "gnb-6",
         "status": "active"
       },
       {
         "id": "ue-gnb-6-2",
         "type": "UE",
-        "x": 335.7310598362366,
-        "y": 330.2776757110062,
+        "x": 291.2396682989953,
+        "y": 313.92969438818807,
         "connectedTo": "gnb-6",
         "status": "active"
       },
       {
         "id": "ue-gnb-7-0",
         "type": "UE",
-        "x": 519.471584465594,
-        "y": 73.76537088320836,
+        "x": 538.4961843568594,
+        "y": 106.18634630937223,
         "connectedTo": "gnb-7",
         "status": "active"
       },
       {
         "id": "ue-gnb-7-1",
         "type": "UE",
-        "x": 537.2627775233533,
-        "y": 77.51622675464861,
+        "x": 538.5124046141823,
+        "y": 92.29435585226166,
+        "connectedTo": "gnb-7",
+        "status": "active"
+      },
+      {
+        "id": "ue-gnb-7-2",
+        "type": "UE",
+        "x": 481.2354644741709,
+        "y": 138.2712773913816,
         "connectedTo": "gnb-7",
         "status": "active"
       },
       {
         "id": "ue-gnb-8-0",
         "type": "UE",
-        "x": 532.693804132892,
-        "y": 203.1049890594215,
+        "x": 479.2023351434758,
+        "y": 243.62396297222503,
         "connectedTo": "gnb-8",
         "status": "active"
       },
       {
         "id": "ue-gnb-8-1",
         "type": "UE",
-        "x": 510.3555930753896,
-        "y": 185.76436018381784,
+        "x": 539.8841298076813,
+        "y": 232.7296853836142,
         "connectedTo": "gnb-8",
         "status": "active"
       },
       {
         "id": "ue-gnb-8-2",
         "type": "UE",
-        "x": 511.8805417414223,
-        "y": 245.17683823122596,
+        "x": 527.6288066862835,
+        "y": 194.21084262161634,
         "connectedTo": "gnb-8",
         "status": "active"
       },
       {
         "id": "ue-gnb-8-3",
         "type": "UE",
-        "x": 517.5712008754797,
-        "y": 189.64753380935224,
+        "x": 543.2857455204905,
+        "y": 205.29400938142302,
         "connectedTo": "gnb-8",
         "status": "active"
       },
       {
         "id": "ue-gnb-9-0",
         "type": "UE",
-        "x": 484.43581016771213,
-        "y": 356.3727664636316,
+        "x": 525.638978056255,
+        "y": 333.18709158378624,
         "connectedTo": "gnb-9",
         "status": "active"
       },
       {
         "id": "ue-gnb-9-1",
         "type": "UE",
-        "x": 541.6981692984714,
-        "y": 327.3345097196336,
+        "x": 531.4693944976735,
+        "y": 379.90463002362435,
         "connectedTo": "gnb-9",
         "status": "active"
       },
       {
         "id": "ue-gnb-9-2",
         "type": "UE",
-        "x": 481.21194743513536,
-        "y": 302.7605221258047,
+        "x": 471.17373544775637,
+        "y": 322.78861650708654,
+        "connectedTo": "gnb-9",
+        "status": "active"
+      },
+      {
+        "id": "ue-gnb-9-3",
+        "type": "UE",
+        "x": 505.052191279347,
+        "y": 351.0744409776711,
         "connectedTo": "gnb-9",
         "status": "active"
       },
       {
         "id": "ue-gnb-10-0",
         "type": "UE",
-        "x": 667.6675999377557,
-        "y": 83.39791346888065,
+        "x": 658.3168485327735,
+        "y": 71.14672070297777,
         "connectedTo": "gnb-10",
         "status": "active"
       },
       {
         "id": "ue-gnb-10-1",
         "type": "UE",
-        "x": 660.9049551991327,
-        "y": 103.4911984140121,
+        "x": 723.6045393671887,
+        "y": 96.29787502155096,
         "connectedTo": "gnb-10",
         "status": "active"
       },
       {
         "id": "ue-gnb-10-2",
         "type": "UE",
-        "x": 673.1727453406444,
-        "y": 121.90885195574441,
-        "connectedTo": "gnb-10",
-        "status": "active"
-      },
-      {
-        "id": "ue-gnb-10-3",
-        "type": "UE",
-        "x": 652.214634758606,
-        "y": 123.86762869933676,
-        "connectedTo": "gnb-10",
-        "status": "active"
-      },
-      {
-        "id": "ue-gnb-10-4",
-        "type": "UE",
-        "x": 722.9320790968032,
-        "y": 91.78062852980045,
+        "x": 667.3589443644466,
+        "y": 123.62477783624621,
         "connectedTo": "gnb-10",
         "status": "active"
       },
       {
         "id": "ue-gnb-11-0",
         "type": "UE",
-        "x": 691.823138856282,
-        "y": 184.60264136836705,
+        "x": 662.3755646209893,
+        "y": 197.82375690669159,
         "connectedTo": "gnb-11",
         "status": "active"
       },
       {
         "id": "ue-gnb-11-1",
         "type": "UE",
-        "x": 655.0215132820111,
-        "y": 254.97923096886353,
+        "x": 712.2673893247195,
+        "y": 251.55126442269338,
         "connectedTo": "gnb-11",
         "status": "active"
       },
       {
         "id": "ue-gnb-11-2",
         "type": "UE",
-        "x": 656.4917702891465,
-        "y": 185.46761085651895,
+        "x": 705.6575092531714,
+        "y": 221.54592244336078,
         "connectedTo": "gnb-11",
         "status": "active"
       },
       {
         "id": "ue-gnb-12-0",
         "type": "UE",
-        "x": 687.1516464163484,
-        "y": 353.99422227210175,
+        "x": 704.318298459848,
+        "y": 305.1546889310472,
         "connectedTo": "gnb-12",
         "status": "active"
       },
       {
         "id": "ue-gnb-12-1",
         "type": "UE",
-        "x": 683.6592191460971,
-        "y": 315.8746378878667,
+        "x": 713.7673949213803,
+        "y": 354.08751726953307,
+        "connectedTo": "gnb-12",
+        "status": "active"
+      },
+      {
+        "id": "ue-gnb-12-2",
+        "type": "UE",
+        "x": 694.7334277111672,
+        "y": 335.69192892774674,
+        "connectedTo": "gnb-12",
+        "status": "active"
+      },
+      {
+        "id": "ue-gnb-12-3",
+        "type": "UE",
+        "x": 703.2633623858668,
+        "y": 303.52725150013936,
         "connectedTo": "gnb-12",
         "status": "active"
       }
