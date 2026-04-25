@@ -65,55 +65,64 @@ class HotspotService {
 
     async updateConnectedDevices() {
         try {
-            // Step 1: Get neighbors using PowerShell (more reliable than arp -a for real-time)
-            // This finds devices in 'Reachable' or 'Permanent' state
-            const psCommand = `powershell -Command "Get-NetNeighbor | Where-Object { $_.State -eq 'Reachable' } | Select-Object IPAddress, LinkLayerAddress | ConvertTo-Json"`;
+            // Step 1: Discover the Hotspot Interface Index
+            // Usually Windows Hotspot uses the 192.168.137.x subnet
+            const findInterfaceCmd = `powershell -Command "Get-NetIPAddress -IPAddress '192.168.137.1' | Select-Object -ExpandProperty InterfaceIndex"`;
+            let interfaceIndex = 17; // Default fallback
+            try {
+                const { stdout: idx } = await execAsync(findInterfaceCmd);
+                if (idx.trim()) interfaceIndex = parseInt(idx.trim());
+            } catch (e) {}
+
+            // Step 2: Get neighbors on that specific interface
+            // We include Reachable, Stale, Delay, and Permanent (ignore Unreachable/Incomplete)
+            const psCommand = `powershell -Command "Get-NetNeighbor -InterfaceIndex ${interfaceIndex} | Where-Object { $_.State -match 'Reachable|Stale|Delay|Permanent' } | Select-Object IPAddress, LinkLayerAddress, State | ConvertTo-Json"`;
             const { stdout } = await execAsync(psCommand);
             
             let neighbors = [];
-            try {
-                neighbors = JSON.parse(stdout);
-                if (!Array.isArray(neighbors)) neighbors = neighbors ? [neighbors] : [];
-            } catch (e) {
-                // Fallback to empty if parse fails
+            if (stdout.trim()) {
+                try {
+                    neighbors = JSON.parse(stdout);
+                    if (!Array.isArray(neighbors)) neighbors = [neighbors];
+                } catch (e) {
+                    console.error('⚠️ [Hotspot] PS Parse Error:', e.message);
+                }
             }
 
-            // Step 2: Validate reachability (Optional but good for clearing stale entries)
-            // We'll keep the ones found by Get-NetNeighbor as they are actively seen by the stack
-            
+            // Step 3: Parse and Map
             const devices = neighbors.map(n => {
                 const ip = n.IPAddress;
                 const mac = n.LinkLayerAddress;
 
-                // Filter out non-client IPs (like gateway or broadcast)
-                if (ip.includes(':') || ip.endsWith('.1') || ip.endsWith('.255')) return null;
+                // Filter out non-IPv4 or gateway
+                if (!ip || ip.includes(':') || ip === '192.168.137.1' || ip.endsWith('.255')) return null;
 
                 return {
-                    id: `dev-${mac.replace(/[:-]/g, '')}`,
+                    id: `dev-${mac.replace(/[:-]/g, '').toLowerCase()}`,
                     name: this.getDeviceName(ip, mac),
                     ip: ip,
                     mac: mac,
-                    signal: -Math.floor(Math.random() * 30 + 35),
+                    signal: -Math.floor(Math.random() * 25 + 40),
                     connectedAt: this.getConnectionTime(mac),
-                    traffic: (Math.random() * 5 + 1).toFixed(1) + ' Mbps'
+                    traffic: (Math.random() * 8 + 0.5).toFixed(1) + ' Mbps'
                 };
             }).filter(Boolean);
 
-            // Update state
+            // Step 4: Final State Update
             simulationState.hotspot.connectedDevices = devices;
             
             if (this.io) {
                 this.io.emit('hotspot:update', simulationState.hotspot);
             }
         } catch (error) {
-            // Fallback to ARP if PowerShell fails for some reason
+            // Robust Fallback: ARP scan for the specific hotspot subnet
             try {
-                const { stdout } = await execAsync('arp -a');
-                const devices = this.parseArpOutput(stdout);
+                const { stdout: arpOut } = await execAsync('arp -a');
+                const devices = this.parseArpOutput(arpOut);
                 simulationState.hotspot.connectedDevices = devices;
                 if (this.io) this.io.emit('hotspot:update', simulationState.hotspot);
             } catch (arpError) {
-                console.error('❌ [Hotspot] Total monitoring failure:', arpError);
+                console.error('❌ [Hotspot] Critical discovery failure:', arpError);
             }
         }
     }
@@ -130,33 +139,36 @@ class HotspotService {
         const devices = [];
         for (const line of lines) {
             const trimmed = line.trim();
-            if (trimmed.includes('dynamic')) {
+            // Specifically look for dynamic entries in the Hotspot subnet
+            if (trimmed.includes('192.168.137.') && trimmed.includes('dynamic')) {
                 const parts = trimmed.split(/\s+/);
                 if (parts.length >= 3) {
                     const ip = parts[0];
                     const mac = parts[1];
-                    if (ip.endsWith('.1') || ip.endsWith('.255')) continue;
+                    if (ip === '192.168.137.1' || ip.endsWith('.255')) continue;
+                    
                     devices.push({
-                        id: `dev-${mac.replace(/-/g, '')}`,
+                        id: `dev-${mac.replace(/-/g, '').toLowerCase()}`,
                         name: this.getDeviceName(ip, mac),
                         ip: ip,
                         mac: mac,
-                        signal: -Math.floor(Math.random() * 40 + 30),
+                        signal: -Math.floor(Math.random() * 30 + 35),
                         connectedAt: 'Active',
-                        traffic: '---'
+                        traffic: (Math.random() * 4 + 0.1).toFixed(1) + ' Mbps'
                     });
                 }
             }
         }
-        return devices.slice(0, 5);
+        return devices;
     }
 
     getDeviceName(ip, mac) {
         const m = mac.toLowerCase();
-        if (m.startsWith('00:') || m.startsWith('00-')) return 'Apple iPhone';
-        if (m.startsWith('0a:') || m.startsWith('0a-')) return 'Android Workstation';
-        if (m.startsWith('b4:') || m.startsWith('b4-')) return 'Samsung Node';
-        if (m.startsWith('3c:') || m.startsWith('3c-')) return 'Remote Console';
+        if (m.startsWith('00:') || m.startsWith('00-')) return 'iPhone 6G-Fabric';
+        if (m.startsWith('0a:') || m.startsWith('0a-')) return 'Android Neural Node';
+        if (m.startsWith('b4:') || m.startsWith('b4-')) return 'Samsung Galaxy Core';
+        if (m.startsWith('3c:') || m.startsWith('3c-')) return '6G Dev Terminal';
+        if (m.startsWith('d8:') || m.startsWith('d8-')) return 'Nvidia Jetson Node';
         return `U-Node ${ip.split('.').pop()}`;
     }
 }
